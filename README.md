@@ -1,5 +1,9 @@
 # Project-One---Fatigue-Index
 
+## dúvidas
+
+- ingles ou portugues
+
 ## todo
 
 - codificar var categoricas
@@ -25,6 +29,13 @@
     - divisao dos dados: treino e teste
 
 - confirmar que as variaveis estao corretamente presentes onde devem (ex.: matriz da corelacao)
+
+- modelos a usar
+
+    - regressao logistica, redes neuronais, arvore decisao?
+
+    - a partir das var., desenvolver uma regressao que indique a influencia de cada var. no indice de fadiga
+
 
 - meter gráficos com mesmo tipo de letra que o report
 
