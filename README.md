@@ -20,9 +20,9 @@
 
     - ~~ver dist das classes do target~~
 
-        - podemos fazer "SMOTE": criação de exemplos sintéticos das classes minoritárias
+    ~~- podemos fazer "SMOTE": criação de exemplos sintéticos das classes minoritárias~~
 
-    - escolher variaveis que realmente vamos usar
+    ~~- escolher variaveis que realmente vamos usar~~
 
     - normalizacao dos dados
 
@@ -32,7 +32,7 @@
 
 - modelos a usar
 
-    - regressao logistica, redes neuronais, arvore decisao?
+    - regressao logistica, redes neuronais, svm, arvore decisao?
 
     - a partir das var., desenvolver uma regressao que indique a influencia de cada var. no indice de fadiga
 
