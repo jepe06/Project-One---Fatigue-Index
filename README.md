@@ -8,6 +8,24 @@
 
 - analise exploratoria
 
+    - fazer corr rapazes e rapariga
+
+    - no corte, ver se n faz sentido separar rapazes e raparigas
+
+    - usar smote06
+
+    - otimizar cada modelo antes da sua aplicacao concreta, com otimizar os paremetros e tudo mais
+
+    - SABER HIPERPARAMETROS BEM EVERY LINE OF THE CODE, EVEN DEFAULT PARAMETERES
+
+    - comparar acc test e treino
+
+    - otimziar parametros lamda e isso , e usar um grafico apra ver como varia o erro e ns q
+
+    - dividir em VER SLIDES CLASS6
+
+    - remover var sem corr com a fadiga
+
     - Verificou-se uma melhoria no score quando se garantiu que as classes tinham o mesmo número de observações para homens e mulheres (no primeiro teste os homens tinham muito menos observações para risk)
 
         - associado a isto também se reduziu o número de classes (de 4 para 3).
