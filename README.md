@@ -1,9 +1,5 @@
 # Project-One---Fatigue-Index
 
-## dúvidas
-
-- ingles ou portugues
-
 ## todo
 
 - analise exploratoria
@@ -12,17 +8,13 @@
 
     - no corte, ver se n faz sentido separar rapazes e raparigas
 
-    - usar smote06
-
     - otimizar cada modelo antes da sua aplicacao concreta, com otimizar os paremetros e tudo mais
 
-    - SABER HIPERPARAMETROS BEM EVERY LINE OF THE CODE, EVEN DEFAULT PARAMETERES
+        - otimziar parametros lamda e isso , e usar um grafico apra ver como varia o erro e ns q
+
+        - SABER HIPERPARAMETROS BEM EVERY LINE OF THE CODE, EVEN DEFAULT PARAMETERES
 
     - comparar acc test e treino
-
-    - otimziar parametros lamda e isso , e usar um grafico apra ver como varia o erro e ns q
-
-    - dividir em VER SLIDES CLASS6
 
     - remover var sem corr com a fadiga
 
@@ -41,18 +33,9 @@
 
         - Análise de variáveis categóricas: Verifique a relação entre as variáveis categóricas e a variável de classe com gráficos de barras e contagens.
 
-    ~~- podemos fazer "SMOTE": criação de exemplos sintéticos das classes minoritárias~~
-
-    - treinar modelo com dataset separados entre sexo masculino e feminino (normalização atual mistura dados dos dois géneros)
-
-    - divisao dos dados: treino e teste
-
 - modelos a usar
 
     - regressao logistica, redes neuronais, svm, arvore decisao?
-
-    - a partir das var., desenvolver uma regressao que indique a influencia de cada var. no indice de fadiga
-
 
 - meter gráficos com mesmo tipo de letra que o report
 
