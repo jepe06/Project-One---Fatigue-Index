@@ -153,6 +153,7 @@
 % *** FLOAT PACKAGES ***
 %
 %\usepackage{fixltx2e}
+\usepackage{float}
 % fixltx2e, the successor to the earlier fix2col.sty, was written by
 % Frank Mittelbach and David Carlisle. This package corrects a few problems
 % in the LaTeX2e kernel, the most notable of which is that in current
@@ -214,7 +215,7 @@
 
 \begin{document}
 
-\title{Bare Demo of IEEEtran.cls\\ for IEEE Conferences}
+\title{Applying ML to assess fatigue and prevent injury\\in high performance swimming athletes}
 
 
 % author names and affiliations
@@ -230,7 +231,7 @@ hugoverissimo@ua.pt}
 \IEEEauthorblockA{Foundations of Machine Learning 24/25\\
 University of Aveiro\\
 Aveiro, Portugal\\
-!!!!!!!!!!!!!!!!!!!}}
+joaopcardoso@ua.pt}}
 % use for special paper notices
 %\IEEEspecialpapernotice{(Invited Paper)}
 
@@ -249,23 +250,32 @@ temos que arranjar refs para ir metendo por ai
 
 \IEEEpeerreviewmaketitle
 
+\section{NOTAS}
 
+Considerar usar dataset com informação combinada de atletas para reter carácter temporal (progressão da época, aumento de cargas e combinação com features que tenham referência temporal [carga de treino do dia anterior]
 
-\section{Introduction}
+Modelos sugeridos: Random Forest / SVM
 
-bla bla natacao, fadiga é mt importante, ter nocao das lesoes, correlacao com as lesoes dos atletaas. dados de um treinador, atletas de alta competicao.
-
-temos com objetivo generalizar para que qq treinador possa ter nocao do ocmporamento e dos estado dos seus atletas, podendo ajustar os seus treinos e cargas ficiscas consoante as medidas de fadigas.
+temos com objetivo generalizar para que qq treinador possa ter nocao do comporamento e do estado dos seus atletas, podendo ajustar os seus treinos e cargas físicas consoante as medidas de fadigas.
 
 para alem disso tbm se quer ver quais as metricas mais importantes relacionadas coma a fadiga
 
+\section{Introduction}
+{T}{he} evolution in performance of high performance athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved. In recent years, more and more  sports coaches have relied heavily on collected data to better plan and adjust the training plans of their athletes. This allows for a fine balance between intense workouts, that generate more stimulus for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the table. 
+
+In the scope of the first project for Foundations of Machine Learning, we decided to partner with the local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to treat the data (kindly shared by Sr Coach Daniel Tavares) for estimating the fatigue of several athletes. The data was curated and prepared to implement and fit several machine learning algorithms to estimate fatigue after workout.
+
+With this approach, we aim to generalize the models for different athletes/sports, and make it available to the local club for implementation and further testing. 
+
+
+
 \section{State of the Art}
 
-n faço ideia do q meter aqui, nem se devemos meter?
+There are many examples of modeling techniques to assess fatigue, across several sports and prediction windows. The use of machine learning models for sports related prediction has been known at least since 2010, where Gabbet and colleagues modeled the risk of injury with a monodimensional approach using logistic regression, based on athletes rate of perceived exertion. In recent years, several authors have focused in alternative techniques such as Random Forest, Support Vector Machine, or Convulotional Neural Network on Multivariate Timeseries (the references for these papers can be found in the paper "A Narrative Review").
 
 \section{Dataset Analysis}
 
-\subsection{data cleaning / organization ?}
+\subsection{Data Description}
 
 ns q dados fornecidos por um treinador de natacao, tivemos de organizar os dados em folhas de excel, visto estarem por linhas e com graficos e formulas de acordo com o treinador, bla bla, teve-se fazer oq? sabes melhor q eu pq foste tu q fizeste
 
@@ -273,7 +283,7 @@ os valores da fadiga foram convertidos para categoricos, pq e mais interessante 
 
 de seguida agruparam-se os dados todos num novo ficheiro excel, para posterior analise atraves do python, de forma mais facilitata
 
-\subsection{Dataset Description}
+\subsection{Dataset curation}
 
 tem se entao dados diarios, para X atletas, durante ns q tempo, ao longo da epoca tal, totalizando x observacoes (linhas)
 
@@ -285,9 +295,18 @@ as variaveis que irao ser utilizadas no estudo são tal tal, que representa tal,
 
 ... ns mts obs, foi tentado varios metodos, mas ?
 
-\begin{figure}[ht]
+\begin{figure}[H]
 \centering
-\includegraphics[width=2.5in]{FATIGvsSEX.png}
+\includegraphics[width=2.5in]{assets/distribution_FatigInd(0).png}
+\caption{teste grafico}
+\label{teste_grafico}
+\end{figure}
+
+tentamos o smote mas ele criava variaveis continuas mesmo quanto eram categoricas entre outros problemas e por nao precisarmos de uma grande qnt relativa de obs geradas, ent usou se o metodo de "copiar obervacoes (procurar nome melhor)"
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=2.5in]{assets/distribution_FatigInd(1).png}
 \caption{teste grafico}
 \label{teste_grafico}
 \end{figure}
