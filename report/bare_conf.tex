@@ -20,6 +20,7 @@
 
 
 \usepackage{cite}
+\pagestyle{plain}
 
 % *** GRAPHICS RELATED PACKAGES ***
 %
@@ -215,6 +216,7 @@
 
 \begin{document}
 
+
 \title{Applying ML to assess fatigue and prevent injury\\in high performance swimming athletes}
 
 
@@ -240,6 +242,7 @@ joaopcardoso@ua.pt}}
 
 % make the title area
 \maketitle
+\thispagestyle{plain}
 
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
@@ -250,18 +253,9 @@ temos que arranjar refs para ir metendo por ai
 
 \IEEEpeerreviewmaketitle
 
-\section{NOTAS}
-
-Considerar usar dataset com informação combinada de atletas para reter carácter temporal (progressão da época, aumento de cargas e combinação com features que tenham referência temporal [carga de treino do dia anterior]
-
-Modelos sugeridos: Random Forest / SVM
-
-temos com objetivo generalizar para que qq treinador possa ter nocao do comporamento e do estado dos seus atletas, podendo ajustar os seus treinos e cargas físicas consoante as medidas de fadigas.
-
-para alem disso tbm se quer ver quais as metricas mais importantes relacionadas coma a fadiga
 
 \section{Introduction}
-{T}{he} evolution in performance of high performance athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved. In recent years, more and more  sports coaches have relied heavily on collected data to better plan and adjust the training plans of their athletes. This allows for a fine balance between intense workouts, that generate more stimulus for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the table. 
+The evolution in performance of high level athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved, through careful tailoring of the training regimen. One of the most relevant metrics since the dawn of structure training in sports is the feedback from the athlete, commonly described as the rate of perceived exertion (RPE). This single metric comprises the athletes analysis and intuition of the effort that was carried and how ready they feel for another bout of training. In recent years, more and more sports coaches have relied heavily on collected data to better assess, plan and adjust the training plans of their athletes in a systematic way. This allows for a fine balance between intense workouts, that generate stronger stimuli for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the table. 
 
 In the scope of the first project for Foundations of Machine Learning, we decided to partner with the local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to treat the data (kindly shared by Sr Coach Daniel Tavares) for estimating the fatigue of several athletes. The data was curated and prepared to implement and fit several machine learning algorithms to estimate fatigue after workout.
 
@@ -271,29 +265,31 @@ With this approach, we aim to generalize the models for different athletes/sport
 
 \section{State of the Art}
 
-There are many examples of modeling techniques to assess fatigue, across several sports and prediction windows. The use of machine learning models for sports related prediction has been known at least since 2010, where Gabbet and colleagues modeled the risk of injury with a monodimensional approach using logistic regression, based on athletes rate of perceived exertion. In recent years, several authors have focused in alternative techniques such as Random Forest, Support Vector Machine, or Convulotional Neural Network on Multivariate Timeseries (the references for these papers can be found in the paper "A Narrative Review").
+Over the past decade there have been significant improvements in the field of ML applied algorithms for sports' related applications. Here we present the most relevant work in fatigue and injury prediction, which is not specifically on the sport we're assessing in our dataset, which lead to additional interpretations from the works analyzed to our own case of study. In general, the problem of class imbalance is seen throughout the literature, and different solutions are proposed, such as data gathering and preprocessing, over sampling and under sampling, with SMOTE (synthetic minority over-sampling technique) being the most commonly used approach for over sampling. As early as 2010, Gabbet and colleagues modeled the risk of injury with a monodimensional approach using logistic regression, based on athletes rate of perceived exertion, showing that even with a monovariate approach to injury prediction useful results could be attained. In recent years, several authors have focused in alternative techniques such as Logistic Regression, Random Forest, Support Vector Machine, or Convolutional Neural Network on Multivariate Timeseries (the references for these papers can be found in the paper "A Narrative Review").
+Besides model selection, feature engineering and selection is among the most debated topics. Several authors opt to include GPS data, metabolic consumption, mechanical load, RPE, detailed quantification of workloads, ratio between acute:chronice loads. Despite the multivariate imputation, data analysis often shows strong correlations between them, leading to over fitting problems (usually model independent).
+In the work by Carey et al. (2018) different algorithms have been implemented to predict the risk of injury in an Australian football club. The data collection lasted for three seasons, consisting of absolute and relative training load metrics, derived from GPS, accelerometer, and RPE data. The prediction models used were regularized logistic regression, generalized estimating equations, random forests, and support vector machines, with periods of 3, 6, and 21 days (these periods have been studied and verified as adequate for the case of Australian football). The periods served to calculate moving averages and exponentially weighted moving averages (EWMA). The latter allowed to account for the decay in significance of the training load the further it happened from a given day, in accordance with the work from Williams et al. (2016). From the results it was possible to verify that over fitting was very likely due to the multicollinearity between variables, which was confirmed by principal component analysis (PCA). The use of PCA with regularized logistic regression slightly improved the results.
+More recent studies have employed ensemble algorithms, in order to take most of the different learning models selected, taking into account the need to balance the classes as is common practice for this type of problems. 
+In summary, the integration of machine learning techniques in sports fatigue and injury prediction has evolved from simple monovariate models to complex multivariate and ensemble approaches. Addressing challenges such as class imbalance, feature selection, and multicollinearity remains crucial for developing robust predictive models applicable across different sports contexts.
+
 
 \section{Dataset Analysis}
-
 \subsection{Data Description}
 
-ns q dados fornecidos por um treinador de natacao, tivemos de organizar os dados em folhas de excel, visto estarem por linhas e com graficos e formulas de acordo com o treinador, bla bla, teve-se fazer oq? sabes melhor q eu pq foste tu q fizeste
+The data used in this project was collected from the swimming club CAPGE during the season of 2019/2020, where each athlete has several observations corresponding to training days, where each of the features was collected. Not all athletes logged the same number of training days, nor present an equal distribution between low, average and high levels of intense training. The names of the athletes were removed to ensure privacy and confidentiality, keeping only the gender as a variable. The team is comprised by seven athletes, three male and four female. Most of the features are related to feedback from the athletes on different aspects of their lives (e.g., rate of perceived exertion, sleep quality, appetite), while others are measurable (workload, variation in heart rate before and after training, weight variation). A notable feature to mention is the RPE, that is still deemed as one of the most relevant metrics for workload planning and fatigue assessment. All these attributes are classified between 1 — 10, each value corresponding to increasingly 'worse' categories (e.g., 1 great appetite / normal, 10 no appetite at all).
+The fatigue index is calculated from these features, using weights attributed by the coach based on his empirical experience. The resulting fatigue index is between 0 — 100, which was categorized in three classes as seen in Table 1. 
 
-os valores da fadiga foram convertidos para categoricos, pq e mais interessante classificar a fadiga, tendo em conta intervalos dados pelo treinador, do q numero que tornam mais dificl a interpretacao dos mesmos
+There is a big gap between fatigue classes due to the nature of training and performing high effort workouts in specific times of the training cycle. The dataset was provided in Excel format (per athlete), from which we imported and combined the data as a pandas dataFrame to apply the different models.
 
-de seguida agruparam-se os dados todos num novo ficheiro excel, para posterior analise atraves do python, de forma mais facilitata
+
 
 \subsection{Dataset curation}
 
-tem se entao dados diarios, para X atletas, durante ns q tempo, ao longo da epoca tal, totalizando x observacoes (linhas)
+The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for Optimal. At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal'. The use of SMOTE in this scenario would provide continuous classes for our features, which wouldn't yield any physical meaning.
+To assess how the different features vary among them and in relation to the target, we computed the correlation matrix as seen in Fig. 22.
 
-para cada observacao tem se variaveis como ... bla bla e bla, contudo, nem todas serao usadas, devido a insights dados pelo treinador aka expert
-
-as variaveis que irao ser utilizadas no estudo são tal tal, que representa tal, tal tal, ... ns q ns q mais.
-
-\subsection{equilibrar o dataset}
-
-... ns mts obs, foi tentado varios metodos, mas ?
+From this we could exclude several of the features, which are verified by how the classes are distributed across the scales for each feature. In Fig. 22 we present a good and a bad example of class distribution for a given feature.
+Considering that the weights used in the dataset were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split our dataset. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature.
+EWMA {3, 6}
 
 \begin{figure}[H]
 \centering
@@ -359,6 +355,8 @@ meter:
 - recall score
 
 - cross validation
+
+- AUC (area under the curve)
 
 \subsection{modelo 2 lalal}
 
@@ -459,7 +457,37 @@ The conclusion goes here.
 The authors would like to thank... ~\cite{Author2024}
 
 
+\section{NOTAS}
 
+Considerar usar dataset com informação combinada de atletas para reter carácter temporal (progressão da época, aumento de cargas e combinação com features que tenham referência temporal [carga de treino do dia anterior]
+
+Modelos sugeridos: Random Forest / SVM
+
+temos com objetivo generalizar para que qq treinador possa ter nocao do comporamento e do estado dos seus atletas, podendo ajustar os seus treinos e cargas físicas consoante as medidas de fadigas.
+
+para alem disso tbm se quer ver quais as metricas mais importantes relacionadas coma a fadiga
+
+De acordo com a conversa com a professora é importante perceber como é que se deve definir a memória da nossa t-SNE, e a importância que isso tem no período da fadiga.
+
+ns q dados fornecidos por um treinador de natacao, tivemos de organizar os dados em folhas de excel, visto estarem por linhas e com graficos e formulas de acordo com o treinador, bla bla, teve-se fazer oq? sabes melhor q eu pq foste tu q fizeste
+
+os valores da fadiga foram convertidos para categoricos, pq e mais interessante classificar a fadiga, tendo em conta intervalos dados pelo treinador, do q numero que tornam mais dificl a interpretacao dos mesmos
+
+de seguida agruparam-se os dados todos num novo ficheiro excel, para posterior analise atraves do python, de forma mais facilitata
+
+tem se entao dados diarios, para X atletas, durante ns q tempo, ao longo da epoca tal, totalizando x observacoes (linhas)
+
+para cada observacao tem se variaveis como ... bla bla e bla, contudo, nem todas serao usadas, devido a insights dados pelo treinador aka expert
+
+as variaveis que irao ser utilizadas no estudo são tal tal, que representa tal, tal tal, ... ns q ns q mais.
+
+https://doi.org/10.1136/bjsports-2016-096589 better way chronic load
+DOI: 10.2478/ijcss-2018-0002 Predictive Modelling of Training Loads and Injury in Australian Football Carey 2018
+
+Williams, S., West, S., Cross, M. J., & Stokes, K. A. (2016). Better way to determine the acute:chronic workload ratio? British Journal of Sports Medicine, 51(3), 209–210. doi:10.1136/bjsports-2016-096589 
+https://onlinelibrary.wiley.com/doi/10.1002/tsm2.181 another review
+
+https://www.researchgate.net/profile/Tim-Gabbett/publication/311860780_Calculating_acute_Chronic_workload_ratios_using_exponentially_weighted_moving_averages_provides_a_more_sensitive_indicator_of_injury_likelihood_than_rolling_averages/links/5e410661299bf1cdb91be835/Calculating-acute-Chronic-workload-ratios-using-exponentially-weighted-moving-averages-provides-a-more-sensitive-indicator-of-injury-likelihood-than-rolling-averages.pdf Murray et al. (2016
 
 
 % trigger a \newpage just before the given reference
