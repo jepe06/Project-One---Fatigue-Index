@@ -1,66 +1,30 @@
 
 \documentclass[conference]{IEEEtran}
-% *** MISC UTILITY PACKAGES ***
-%
+
 %\usepackage{ifpdf}
 \usepackage{float}  % For handling float environments like [H]
 \usepackage{url}    % For handling URLs
 \usepackage{multirow}
 \usepackage{subcaption} % Required for subfigures
 \usepackage{booktabs}
-
-
 \usepackage{cite}
 \pagestyle{plain}
+\usepackage{amsmath}
+\usepackage{float}
+%\usepackage{url}
 
-% *** GRAPHICS RELATED PACKAGES ***
-%
+
 \ifCLASSINFOpdf
   \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
-  % \graphicspath{{../pdf/}{../jpeg/}}
-  % and their extensions so you won't have to specify these with
-  % every instance of \includegraphics
   % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \else
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
-  % will default to the driver specified in the system graphics.cfg if no
-  % driver is specified.
-  % \usepackage[dvips]{graphicx}
-  % declare the path(s) where your graphic files are
-  % \graphicspath{{../eps/}}
   % and their extensions so you won't have to specify these with
   % every instance of \includegraphics
   % \DeclareGraphicsExtensions{.eps}
 \fi
-% graphicx was written by David Carlisle and Sebastian Rahtz. It is
-% required if you want graphics, photos, etc. graphicx.sty is already
-% installed on most LaTeX systems. The latest version and documentation
-% can be obtained at: 
-% http://www.ctan.org/pkg/graphicx
-% Another good source of documentation is "Using Imported Graphics in
-% LaTeX2e" by Keith Reckdahl which can be found at:
-% http://www.ctan.org/pkg/epslatex
-%
-% latex, and pdflatex in dvi mode, support graphics in encapsulated
-% postscript (.eps) format. pdflatex in pdf mode supports graphics
-% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
-% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
-% not a bitmapped formats (.jpeg, .png). The IEEE frowns on bitmapped formats
-% which can result in "jaggedy"/blurry rendering of lines and letters as
-% well as large increases in file sizes.
-%
-% You can find documentation about the pdfTeX application at:
-% http://www.tug.org/applications/pdftex
-
-% *** MATH PACKAGES ***
-%
-\usepackage{amsmath}
-
-% *** FLOAT PACKAGES ***
-%
-\usepackage{float}
-%\usepackage{url}
+% graphicx was written by David Carlisle and Sebastian Rahtz.
 
 
 % correct bad hyphenation here
@@ -120,15 +84,16 @@ In summary, the integration of machine learning techniques in sports fatigue and
 
 
 \section{Dataset Analysis}
+
 \subsection{Data Description}
 
 The data used in this project was collected from the swimming club CAPGE during the season of 2019/2020, where each athlete has several observations corresponding to training days, where each of the features was collected. Not all athletes logged the same number of training days, nor present an equal distribution between low, average and high levels of intense training. The names of the athletes were removed to ensure privacy and confidentiality, keeping only the gender as a variable. The team is comprised by seven athletes, three male and four female. Most of the features are related to feedback from the athletes on different aspects of their lives (i.e. sleep quality, appetite, and rate of perceived exertion after training), while others are measurable (i.e. workload, variation in heart rate before and after training, weight variation). A notable feature to mention is the RPE, that is still deemed as one of the most relevant metrics for workload planning and fatigue assessment. All these attributes are classified between 1 — 10, each value corresponding to increasingly 'worse' categories (e.g., 1 great appetite / normal, 10 no appetite at all).
-The fatigue index is calculated from these features, using weights attributed by the coach based on his empirical experience. The resulting fatigue index is between 0 — 100, which was categorized in four classes as seen in Table 1. 
+The fatigue index is calculated from these features, using weights attributed by the coach based on his empirical experience. The resulting fatigue index is between 0 — 100, which was categorized in four classes as seen in Table \ref{classTable}. 
 
 
 \begin{table}[H]
 \centering
-\caption{Sample Table with Ranges and Classifications}
+\caption{Classification of fatigue index into categories based on numerical ranges.}
 \label{classTable}
 \begin{tabular}{|c|c|c|}
     \hline
@@ -146,12 +111,12 @@ There is a big gap between fatigue classes due to the nature of training and per
 
 \subsection{Dataset curation}
 
-The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for Optimal, as seen in Figure. 
+The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for Optimal, as seen in Figure \ref{histClasses}. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(0).png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Bar plot of the new classes, once 'Caution' and 'Risk' are combined into one.}
     \label{histClasses}
 \end{figure}
 
@@ -161,33 +126,32 @@ To assess how the different features vary among them and in relation to the targ
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/correlation_matrix.png}
-    \caption{hgfdgushfg}
+    \caption{Correlation matrix for all possible features considered for the models.}
     \label{fig:correlationMatrix}
 \end{figure}
-From this we could exclude several of the features, which are verified by how the classes are distributed across the scales for each feature. Figure illustrates a proper and poor example of class distribution for a given feature.
-\begin{figure}
+
+From this we could exclude several of the features, which are verified by how the classes are distributed across the scales for each feature. Figure \ref{classdist_feat} illustrates a proper and poor example of class distribution for a given feature.
+
+\begin{figure}[H]
     \centering
-    % First subfigure
     \begin{subfigure}[1]{\linewidth}
         \centering
         \includegraphics[width=\linewidth]{assets/distribution_pEffort.png}
-        \caption{Perceived effort distribution.}
+        \caption{Distribution of perceived effort across classes.}
         \label{fig:subfig-a}
     \end{subfigure}
     
-    % Add some vertical space between the figures if needed
     \vspace{0.5cm}
 
-    % Second subfigure
     \begin{subfigure}[2]{\linewidth}
         \centering
         \includegraphics[width=\linewidth]{assets/distribution_StSpirit.png}
-        \caption{Perceived effort distribution.}
+        \caption{Distribution of state spirit across classes.}
         \label{fig:subfig-b}
     \end{subfigure}
     
-    \caption{Class distributions across various metrics: (a) Perceived effort, (b) Another metric.}
-    \label{fig:main-figure}
+    \caption{Class distributions across different metrics: (a) perceived effort, (b) state spirit.}
+    \label{classdist_feat}
 \end{figure}
 
 Considering that the weights used in the dataset were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split our dataset. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature.
@@ -200,12 +164,14 @@ where $\lambda_a$ is a value between 0 and 1 that represents the degree of decay
     \lambda_a = \frac{2}{N + 1}
 \end{equation*} 
 
+DPS METE AQUI A REFERENCIA DE ONDE VISTE A FORMULA PFF
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(F_f).png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
-    \label{histClasses}
+    \caption{Daily fatigue trends for athlete F\_f.}
+    \label{fatig_Ff}
 \end{figure}
 
 tentamos o smote mas ele criava variaveis continuas mesmo quanto eram categoricas entre outros problemas e por nao precisarmos de uma grande qnt relativa de obs geradas, ent usou se o metodo de "copiar obervacoes (procurar nome melhor)"
@@ -230,19 +196,36 @@ uma componente mt importante deste estudo é o avaliar cada modelo, para isso se
 
 mostrar algumas formulas e graficos de exemplo etc etc
 
+metricas q vamos usar
+
+
+\begin{table}[H]
+\centering
+\caption{Metrics for multiclass classification model evaluation.}
+\label{evaluationmetrics}
+\begin{tabular}{lc}
+\toprule
+Measure & Formula \\
+\midrule
+Precision (per class $i$) & $\dfrac{TP_i}{TP_i + FP_i}$ \\[1em]
+Recall (per class $i$) & $\dfrac{TP_i}{TP_i + FN_i}$ \\[1em]
+F1-score (per class $i$) & $2 \cdot \dfrac{\text{Precision}_i \cdot \text{Recall}_i}{\text{Precision}_i + \text{Recall}_i}$ \\[1em] 
+Accuracy & $\dfrac{\sum_{i=1}^{C} TP_i}{\sum_{i=1}^{C} (TP_i + TN_i + FP_i + FN_i)}$ \\[1em]
+\bottomrule
+\end{tabular}
+\end{table}
+
+FALTA CONF MATRIX E LEARNING CURVE PELO MENOS
+
 para alem disso, importante referir q cada modelo sera treinado com $80\%$ dos dados e bla bla \texttt{train\_test\_split}.
+
+
+
 
 
 \section{regressao logistica}
 
 AUSHDIUAHIAHFSIH
-
-
-\subsection{sem termo de castigo ou assim}
-
-ns q resultados bla bla
-
-\subsection{com termo de castigo ou assim}
 
 ns q mais resultados
 
@@ -264,21 +247,21 @@ meter:
 
 \section{Support Vector Machine}
 
-para a otimizacao do modelo, foram testadas varias combinacoes de parametros diferentes, nomedamente o Regularization Parameter ($1/\lambda$), o Kernel Coefficient ($\gamma$), o tipo de kernel, o grau máximo caso para o kernel do tipo `poly` (degree) e o valor do termo indepentende (Coef$_0$), podendo-se obsevar então um resumo? destas combinacoes na tabela \ref{parametrosSVM}.
+para a otimizacao do modelo, foram testadas varias combinacoes de parametros diferentes, nomedamente o Regularization Parameter ($\lambda$), o Kernel Coefficient ($\gamma$), o tipo de kernel, o grau máximo caso para o kernel do tipo `poly` (degree) e o valor do termo indepentende (Coef$_0$), podendo-se obsevar então um resumo? destas combinacoes na tabela \ref{parametrosSVM}.
 
 \begin{table}[H]
 \centering
-\caption{SVM Hyperparameter Search Space ?}
+\caption{SVM model hyperparameters search space.}
 \label{parametrosSVM}
 \begin{tabular}{ll}
 \toprule
-Parameter & Distribution/Values \\
+Hyperparameter & Possible Values \\
 \midrule
 $1/\lambda$ & Uniform$(0, 100)$ \\ 
-$\gamma$ & \{\text{scale, auto, $0.1$, $0.01$, $0.001$}\} \\ 
-Kernel & \{\text{linear, rbf, poly, sigmoid}\} \\ 
+$\gamma$ & \{scale, auto, $0.1$, $0.01$, $0.001$\} \\ 
+Kernel & \{linear, rbf, poly, sigmoid\} \\ 
 Degree & \{1, 2, 3\} \\ 
-Coef$_0$ & \text{Uniform}(-5, 5) \\
+Coef$_0$ & Uniform(-5, 5) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -290,7 +273,7 @@ para isso foi decidido aplicar pesos às classes, fixando o peso de todas as cla
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_OptimalWeight.png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Effect of the 'Optimal' class weight on SVM model accuracy.}
     \label{svm_weight}
 \end{figure}
 
@@ -309,20 +292,20 @@ alguns ele n usa, tp o degree é ignorado, o coef0 se calhar tbm, ver melhor iss
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_LearningCurve.png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Analysis of SVM model performance using learning curve representation across varying training data sizes.}
     \label{svm_learningcurve}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTrain.png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Evaluation of SVM model performance on training data performance via confusion matrix.}
     \label{svm_cm_train}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Classification Report for Model Evaluation (treino)}
+\caption{Classification report for SVM model performance evaluation on training data.}
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
@@ -344,13 +327,13 @@ Risk/Caution & 0.67 & 0.85 & 0.75 & 171 \\
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTest.png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Evaluation of SVM model performance on test data performance via confusion matrix.}
     \label{svm_cm_test}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Classification Report for Model Evaluation (teste)}
+\caption{Classification report for SVM model performance evaluation on test data.}
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
@@ -373,11 +356,11 @@ os paraemtros a otimizar e varias e bla bla Critério de divisão, Profundidade 
 
 \begin{table}[H]
 \centering
-\caption{DTREE Hyperparameter Search Space ?}
+\caption{Decision tree model hyperparameters search space.}
 \label{parametrosDTree}
 \begin{tabular}{ll}
 \toprule
-Parameter & Distribution/Values \\
+Hyperparameter & Possible Values \\
 \midrule
 Split Criterion & \{gini, entropy\} \\ 
 Max Depth & $[2, \dots, 8]$ \\ 
@@ -396,7 +379,7 @@ otimiada a arvore, foi obtida a seguinte estrutua
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/DTREE_Tree.png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Visualization of the decision tree model after optimization using randomized search.}
     \label{dtree_tree}
 \end{figure}
 
@@ -407,20 +390,20 @@ verifica-se que foram o depht é de 4, as cores representam a classe (lanrnja ta
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/DTREE_LearningCurve.png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Analysis of decision tree model performance using learning curve representation across varying training data sizes.}
     \label{dtree_lcurve}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/DTREE_ConfusionMatrixTrain.png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Evaluation of decision tree model performance on training data performance via confusion matrix.}
     \label{dtree_cmtrain}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Classification Report for Model Evaluation (treino)}
+\caption{Classification report for decision tree model performance evaluation on training data.}
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
@@ -441,13 +424,13 @@ Risk/Caution & 0.69 & 0.63 & 0.65 & 171 \\
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/DTREE_ConfusionMatrixTest.png}
-    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \caption{Evaluation of decision tree model performance on test data performance via confusion matrix.}
     \label{dtree_cmtest}
 \end{figure}
 
 \begin{table}[H]
 \centering
-\caption{Classification Report for Model Evaluation (teste)}
+\caption{Classification report for decision tree model performance evaluation on test data.}
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
@@ -483,78 +466,14 @@ observa se q o melhor é tal e tal, mas aquele fez isto e ns q
 
 
 \section{Conclusion}
+
 The conclusion goes here.
-
-
-% An example of a double column floating figure using two subfigures.
-% (The subfig.sty package must be loaded for this to work.)
-% The subfigure \label commands are set within each subfloat command,
-% and the \label for the overall figure must come after \caption.
-% \hfil is used as a separator to get equal spacing.
-% Watch out that the combined width of all the subfigures on a 
-% line do not exceed the text width or a line break will occur.
-%
-%\begin{figure*}[!t]
-%\centering
-%\subfloat[Case I]{\includegraphics[width=2.5in]{box}%
-%\label{fig_first_case}}
-%\hfil
-%\subfloat[Case II]{\includegraphics[width=2.5in]{box}%
-%\label{fig_second_case}}
-%\caption{Simulation results for the network.}
-%\label{fig_sim}
-%\end{figure*}
-%
-% Note that often IEEE papers with subfigures do not employ subfigure
-% captions (using the optional argument to \subfloat[]), but instead will
-% reference/describe all of them (a), (b), etc., within the main caption.
-% Be aware that for subfig.sty to generate the (a), (b), etc., subfigure
-% labels, the optional argument to \subfloat must be present. If a
-% subcaption is not desired, just leave its contents blank,
-% e.g., \subfloat[].
-
-
-% An example of a floating table. Note that, for IEEE style tables, the
-% \caption command should come BEFORE the table and, given that table
-% captions serve much like titles, are usually capitalized except for words
-% such as a, an, and, as, at, but, by, for, in, nor, of, on, or, the, to
-% and up, which are usually not capitalized unless they are the first or
-% last word of the caption. Table text will default to \footnotesize as
-% the IEEE normally uses this smaller font for tables.
-% The \label must come after \caption as always.
-%
-%\begin{table}[!t]
-%% increase table row spacing, adjust to taste
-%\renewcommand{\arraystretch}{1.3}
-% if using array.sty, it might be a good idea to tweak the value of
-% \extrarowheight as needed to properly center the text within the cells
-%\caption{An Example of a Table}
-%\label{table_example}
-%\centering
-%% Some packages, such as MDW tools, offer better commands for making tables
-%% than the plain LaTeX2e tabular which is used here.
-%\begin{tabular}{|c||c|}
-%\hline
-%One & Two\\
-%\hline
-%Three & Four\\
-%\hline
-%\end{tabular}
-%\end{table}
-
-
-
-
-
-
-
-
 
 % use section* for acknowledgment
 \section*{Acknowledgment}
 
 
-%The authors would like to thank... ~\cite{Author2024}
+The authors would like to thank... professora petia e treinador e organizacao do clue
 
 
 \section{NOTAS}
@@ -581,6 +500,13 @@ para cada observacao tem se variaveis como ... bla bla e bla, contudo, nem todas
 
 as variaveis que irao ser utilizadas no estudo são tal tal, que representa tal, tal tal, ... ns q ns q mais.
 
+\cite{Williams17} better way chronic load
+
+\cite{Carey_2018} Predictive Modelling of Training Loads and Injury in Australian Football Carey 2018
+
+\cite{Seow20} another review (Prediction models for musculoskeletal injuries in professional sporting activities: A systematic review)
+
+\cite{Murray16} Murray et al. (2016
 
 
 
@@ -595,9 +521,6 @@ as variaveis que irao ser utilizadas no estudo são tal tal, que representa tal,
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
-\begin{thebibliography}{99}
-\bibitem{example} A. Author, "Title of the paper," Journal Name, vol. 12, no. 3, pp. 45--67, 2024.
-\end{thebibliography}
 
 \end{document}
 
