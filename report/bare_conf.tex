@@ -3,20 +3,11 @@
 % *** MISC UTILITY PACKAGES ***
 %
 %\usepackage{ifpdf}
-% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
-% compilation based on whether the output is pdf or dvi.
-% usage:
-% \ifpdf
-%   % pdf code
-% \else
-%   % dvi code
-% \fi
-% The latest version of ifpdf.sty can be obtained from:
-% http://www.ctan.org/pkg/ifpdf
-% Also, note that IEEEtran.cls V1.7 and later provides a builtin
-% \ifCLASSINFOpdf conditional that works the same way.
-% When switching from latex to pdflatex and vice-versa, the compiler may
-% have to be run twice to clear warning/error messages.
+\usepackage{float}  % For handling float environments like [H]
+\usepackage{url}    % For handling URLs
+\usepackage{multirow}
+\usepackage{subcaption} % Required for subfigures
+\usepackage{booktabs}
 
 
 \usepackage{cite}
@@ -62,152 +53,14 @@
 % You can find documentation about the pdfTeX application at:
 % http://www.tug.org/applications/pdftex
 
-
-
-
-
 % *** MATH PACKAGES ***
 %
 \usepackage{amsmath}
-% A popular package from the American Mathematical Society that provides
-% many useful and powerful commands for dealing with mathematics.
-%
-% Note that the amsmath package sets \interdisplaylinepenalty to 10000
-% thus preventing page breaks from occurring within multiline equations. Use:
-%\interdisplaylinepenalty=2500
-% after loading amsmath to restore such page breaks as IEEEtran.cls normally
-% does. amsmath.sty is already installed on most LaTeX systems. The latest
-% version and documentation can be obtained at:
-% http://www.ctan.org/pkg/amsmath
-
-
-
-
-
-% *** SPECIALIZED LIST PACKAGES ***
-%
-%\usepackage{algorithmic}
-% algorithmic.sty was written by Peter Williams and Rogerio Brito.
-% This package provides an algorithmic environment fo describing algorithms.
-% You can use the algorithmic environment in-text or within a figure
-% environment to provide for a floating algorithm. Do NOT use the algorithm
-% floating environment provided by algorithm.sty (by the same authors) or
-% algorithm2e.sty (by Christophe Fiorio) as the IEEE does not use dedicated
-% algorithm float types and packages that provide these will not provide
-% correct IEEE style captions. The latest version and documentation of
-% algorithmic.sty can be obtained at:
-% http://www.ctan.org/pkg/algorithms
-% Also of interest may be the (relatively newer and more customizable)
-% algorithmicx.sty package by Szasz Janos:
-% http://www.ctan.org/pkg/algorithmicx
-
-
-
-
-% *** ALIGNMENT PACKAGES ***
-%
-%\usepackage{array}
-% Frank Mittelbach's and David Carlisle's array.sty patches and improves
-% the standard LaTeX2e array and tabular environments to provide better
-% appearance and additional user controls. As the default LaTeX2e table
-% generation code is lacking to the point of almost being broken with
-% respect to the quality of the end results, all users are strongly
-% advised to use an enhanced (at the very least that provided by array.sty)
-% set of table tools. array.sty is already installed on most systems. The
-% latest version and documentation can be obtained at:
-% http://www.ctan.org/pkg/array
-
-
-% IEEEtran contains the IEEEeqnarray family of commands that can be used to
-% generate multiline equations as well as matrices, tables, etc., of high
-% quality.
-
-
-
-
-% *** SUBFIGURE PACKAGES ***
-%\ifCLASSOPTIONcompsoc
-%  \usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
-%\else
-%  \usepackage[caption=false,font=footnotesize]{subfig}
-%\fi
-% subfig.sty, written by Steven Douglas Cochran, is the modern replacement
-% for subfigure.sty, the latter of which is no longer maintained and is
-% incompatible with some LaTeX packages including fixltx2e. However,
-% subfig.sty requires and automatically loads Axel Sommerfeldt's caption.sty
-% which will override IEEEtran.cls' handling of captions and this will result
-% in non-IEEE style figure/table captions. To prevent this problem, be sure
-% and invoke subfig.sty's "caption=false" package option (available since
-% subfig.sty version 1.3, 2005/06/28) as this is will preserve IEEEtran.cls
-% handling of captions.
-% Note that the Computer Society format requires a larger sans serif font
-% than the serif footnote size font used in traditional IEEE formatting
-% and thus the need to invoke different subfig.sty package options depending
-% on whether compsoc mode has been enabled.
-%
-% The latest version and documentation of subfig.sty can be obtained at:
-% http://www.ctan.org/pkg/subfig
-
-
-
 
 % *** FLOAT PACKAGES ***
 %
-%\usepackage{fixltx2e}
 \usepackage{float}
-% fixltx2e, the successor to the earlier fix2col.sty, was written by
-% Frank Mittelbach and David Carlisle. This package corrects a few problems
-% in the LaTeX2e kernel, the most notable of which is that in current
-% LaTeX2e releases, the ordering of single and double column floats is not
-% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
-% single column figure to be placed prior to an earlier double column
-% figure.
-% Be aware that LaTeX2e kernels dated 2015 and later have fixltx2e.sty's
-% corrections already built into the system in which case a warning will
-% be issued if an attempt is made to load fixltx2e.sty as it is no longer
-% needed.
-% The latest version and documentation can be found at:
-% http://www.ctan.org/pkg/fixltx2e
-
-
-%\usepackage{stfloats}
-% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
-% the ability to do double column floats at the bottom of the page as well
-% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
-% LaTeX2e). It also provides a command:
-%\fnbelowfloat
-% to enable the placement of footnotes below bottom floats (the standard
-% LaTeX2e kernel puts them above bottom floats). This is an invasive package
-% which rewrites many portions of the LaTeX2e float routines. It may not work
-% with other packages that modify the LaTeX2e float routines. The latest
-% version and documentation can be obtained at:
-% http://www.ctan.org/pkg/stfloats
-% Do not use the stfloats baselinefloat ability as the IEEE does not allow
-% \baselineskip to stretch. Authors submitting work to the IEEE should note
-% that the IEEE rarely uses double column equations and that authors should try
-% to avoid such use. Do not be tempted to use the cuted.sty or midfloat.sty
-% packages (also by Sigitas Tolusis) as the IEEE does not format its papers in
-% such ways.
-% Do not attempt to use stfloats with fixltx2e as they are incompatible.
-% Instead, use Morten Hogholm'a dblfloatfix which combines the features
-% of both fixltx2e and stfloats:
-%
-% \usepackage{dblfloatfix}
-% The latest version can be found at:
-% http://www.ctan.org/pkg/dblfloatfix
-
-
-
-
-% *** PDF, URL AND HYPERLINK PACKAGES ***
-%
 %\usepackage{url}
-% url.sty was written by Donald Arseneau. It provides better support for
-% handling and breaking URLs. url.sty is already installed on most LaTeX
-% systems. The latest version and documentation can be obtained at:
-% http://www.ctan.org/pkg/url
-% Basically, \url{my_url_here}.
-
 
 
 % correct bad hyphenation here
@@ -219,8 +72,6 @@
 
 \title{Applying ML to assess fatigue and prevent injury\\in high performance swimming athletes}
 
-
-% author names and affiliations
 % use a multiple column layout for up to three different
 % affiliations
 \author{\IEEEauthorblockN{Hugo Veríssimo}
@@ -234,10 +85,6 @@ hugoverissimo@ua.pt}
 University of Aveiro\\
 Aveiro, Portugal\\
 joaopcardoso@ua.pt}}
-% use for special paper notices
-%\IEEEspecialpapernotice{(Invited Paper)}
-
-
 
 
 % make the title area
@@ -275,8 +122,23 @@ In summary, the integration of machine learning techniques in sports fatigue and
 \section{Dataset Analysis}
 \subsection{Data Description}
 
-The data used in this project was collected from the swimming club CAPGE during the season of 2019/2020, where each athlete has several observations corresponding to training days, where each of the features was collected. Not all athletes logged the same number of training days, nor present an equal distribution between low, average and high levels of intense training. The names of the athletes were removed to ensure privacy and confidentiality, keeping only the gender as a variable. The team is comprised by seven athletes, three male and four female. Most of the features are related to feedback from the athletes on different aspects of their lives (e.g., rate of perceived exertion, sleep quality, appetite), while others are measurable (workload, variation in heart rate before and after training, weight variation). A notable feature to mention is the RPE, that is still deemed as one of the most relevant metrics for workload planning and fatigue assessment. All these attributes are classified between 1 — 10, each value corresponding to increasingly 'worse' categories (e.g., 1 great appetite / normal, 10 no appetite at all).
-The fatigue index is calculated from these features, using weights attributed by the coach based on his empirical experience. The resulting fatigue index is between 0 — 100, which was categorized in three classes as seen in Table 1. 
+The data used in this project was collected from the swimming club CAPGE during the season of 2019/2020, where each athlete has several observations corresponding to training days, where each of the features was collected. Not all athletes logged the same number of training days, nor present an equal distribution between low, average and high levels of intense training. The names of the athletes were removed to ensure privacy and confidentiality, keeping only the gender as a variable. The team is comprised by seven athletes, three male and four female. Most of the features are related to feedback from the athletes on different aspects of their lives (i.e. sleep quality, appetite, and rate of perceived exertion after training), while others are measurable (i.e. workload, variation in heart rate before and after training, weight variation). A notable feature to mention is the RPE, that is still deemed as one of the most relevant metrics for workload planning and fatigue assessment. All these attributes are classified between 1 — 10, each value corresponding to increasingly 'worse' categories (e.g., 1 great appetite / normal, 10 no appetite at all).
+The fatigue index is calculated from these features, using weights attributed by the coach based on his empirical experience. The resulting fatigue index is between 0 — 100, which was categorized in four classes as seen in Table 1. 
+
+
+\begin{table}[H]
+\centering
+\caption{Sample Table with Ranges and Classifications}
+\label{classTable}
+\begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Range} & \textbf{Initial Classes} & \textbf{Final Classes} \\ \hline
+    $>$ 90 & Risk    & \multirow{2}{*}{Risk/Caution} \\ \cline{1-2}
+    $>$ 80 & Caution & \\ \hline
+    $\geq$ 40 & Optimal & Optimal \\ \hline
+    $<$ 40  & Low     & Low \\ \hline
+\end{tabular}
+\end{table}
 
 There is a big gap between fatigue classes due to the nature of training and performing high effort workouts in specific times of the training cycle. The dataset was provided in Excel format (per athlete), from which we imported and combined the data as a pandas dataFrame to apply the different models.
 
@@ -284,59 +146,103 @@ There is a big gap between fatigue classes due to the nature of training and per
 
 \subsection{Dataset curation}
 
-The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for Optimal. At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal'. The use of SMOTE in this scenario would provide continuous classes for our features, which wouldn't yield any physical meaning.
-To assess how the different features vary among them and in relation to the target, we computed the correlation matrix as seen in Fig. 22.
-
-From this we could exclude several of the features, which are verified by how the classes are distributed across the scales for each feature. In Fig. 22 we present a good and a bad example of class distribution for a given feature.
-Considering that the weights used in the dataset were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split our dataset. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature.
-EWMA {3, 6}
+The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for Optimal, as seen in Figure. 
 
 \begin{figure}[H]
-\centering
-\includegraphics[width=2.5in]{assets/distribution_FatigInd(0).png}
-\caption{teste grafico}
-\label{teste_grafico}
+    \centering
+    \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(0).png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{histClasses}
+\end{figure}
+
+At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal'. The use of SMOTE in this scenario would provide continuous classes for our features, which wouldn't yield any physical meaning.
+To assess how the different features vary among them and in relation to the target, we computed the correlation matrix as seen in Figure \ref{fig:correlationMatrix}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/correlation_matrix.png}
+    \caption{hgfdgushfg}
+    \label{fig:correlationMatrix}
+\end{figure}
+From this we could exclude several of the features, which are verified by how the classes are distributed across the scales for each feature. Figure illustrates a proper and poor example of class distribution for a given feature.
+\begin{figure}
+    \centering
+    % First subfigure
+    \begin{subfigure}[1]{\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{assets/distribution_pEffort.png}
+        \caption{Perceived effort distribution.}
+        \label{fig:subfig-a}
+    \end{subfigure}
+    
+    % Add some vertical space between the figures if needed
+    \vspace{0.5cm}
+
+    % Second subfigure
+    \begin{subfigure}[2]{\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{assets/distribution_StSpirit.png}
+        \caption{Perceived effort distribution.}
+        \label{fig:subfig-b}
+    \end{subfigure}
+    
+    \caption{Class distributions across various metrics: (a) Perceived effort, (b) Another metric.}
+    \label{fig:main-figure}
+\end{figure}
+
+Considering that the weights used in the dataset were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split our dataset. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature.
+In order to keep the timeseries nature of training, increase and decrease of training intensity, and varying fatigue with training we included exponentially weighted moving averages (EWMA). This way we include memory in our model, and allow to consider the decay in the weights of events further away from any given day. The mathematical expression used to calculate EWMA for each selected feature is,
+\begin{equation*}
+    \text{EWMA}_{\text{today}} = \text{Feature}_{\text{today}} \cdot \lambda_a + (1 - \lambda_a) \cdot \text{EWMA}_{\text{yesterday}}
+\end{equation*}
+where $\lambda_a$ is a value between 0 and 1 that represents the degree of decay, with higher values discounting older observations at a faster rate. The $\lambda_a$ is given by:
+\begin{equation*}
+    \lambda_a = \frac{2}{N + 1}
+\end{equation*} 
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(F_f).png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{histClasses}
 \end{figure}
 
 tentamos o smote mas ele criava variaveis continuas mesmo quanto eram categoricas entre outros problemas e por nao precisarmos de uma grande qnt relativa de obs geradas, ent usou se o metodo de "copiar obervacoes (procurar nome melhor)"
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=2.5in]{assets/distribution_FatigInd(1).png}
-\caption{teste grafico}
-\label{teste_grafico}
-\end{figure}
+ONDE SE EMTE O GRAFICO DAS CLASSES EQUILIBRADAS?
+
+
 
 \subsection{analisa das features}
 
+fazer descricao das feautures realmente usadas ?
+
 ns q temos q standartizar os dados para se tornar mais facil a sua analise, para q esteja tudo na mesma medida bla bla
 
-foi feito uma matriz de correlacao para verificar as variaveis mais correlacionadas
-
-foi feita uma analise bivarida? para tentar compreender padroes que hajam nos dados em relacao a nossa variavel targe, q é a fadiga
+OU PASSAR ISSO TUDO PARA O CLASSIFICATION MODELS?
 
 \section{classifcation models}
 
-para classificar a fadiga, vamos usar varios modelos de machine learning tais como ......, e exprimentar variacoes dos mesmos. bla bla correcoes pesos etc
+para classificar a fadiga, vamos usar varios modelos de machine learning, aplicados através da liguangem de programacao python, pelo sua extensivas livrarias com funcoes dedicadas a este tipo de analise. nomeadamente reg logistica (\texttt{LogisticRegression}), support vector machine (\texttt{SVC}) e arvore de decisao (\texttt{DecisionTreeClassifier}), e exprimentar variacoes dos mesmos, tendando encontrar o que melhor modela os nossos dados, utilizando a funcao de otimizacao de modelos \texttt{RandomizedSearchCV}, com um cross validation de 8 para diminuir o risco de overfitting
 
 uma componente mt importante deste estudo é o avaliar cada modelo, para isso serão usadas metricas tai como ...., para analisar modelo a modelo qual é o melhor para modelas/classificar os vários niveis de fadiga
 
 mostrar algumas formulas e graficos de exemplo etc etc
 
-é importante reforçar tbm q todos os modelos serao treinados com 80\% acho eu e ns q o resto é teste bla bla
-
-\subsection{modelo 1 lalala}
-
-ns q regressao logistica bla bla, paramentros e tudo mais
-
-foi usado a do sklearn ou assim
+para alem disso, importante referir q cada modelo sera treinado com $80\%$ dos dados e bla bla \texttt{train\_test\_split}.
 
 
-\subsubsection{sem termo de castigo ou assim}
+\section{regressao logistica}
+
+AUSHDIUAHIAHFSIH
+
+
+\subsection{sem termo de castigo ou assim}
 
 ns q resultados bla bla
 
-\subsubsection{com termo de castigo ou assim}
+\subsection{com termo de castigo ou assim}
 
 ns q mais resultados
 
@@ -356,12 +262,206 @@ meter:
 
 - cross validation
 
-- AUC (area under the curve)
+\section{Support Vector Machine}
 
-\subsection{modelo 2 lalal}
+para a otimizacao do modelo, foram testadas varias combinacoes de parametros diferentes, nomedamente o Regularization Parameter ($1/\lambda$), o Kernel Coefficient ($\gamma$), o tipo de kernel, o grau máximo caso para o kernel do tipo `poly` (degree) e o valor do termo indepentende (Coef$_0$), podendo-se obsevar então um resumo? destas combinacoes na tabela \ref{parametrosSVM}.
 
-ns q do sklean, funcao tal e coisa ....
+\begin{table}[H]
+\centering
+\caption{SVM Hyperparameter Search Space ?}
+\label{parametrosSVM}
+\begin{tabular}{ll}
+\toprule
+Parameter & Distribution/Values \\
+\midrule
+$1/\lambda$ & Uniform$(0, 100)$ \\ 
+$\gamma$ & \{\text{scale, auto, $0.1$, $0.01$, $0.001$}\} \\ 
+Kernel & \{\text{linear, rbf, poly, sigmoid}\} \\ 
+Degree & \{1, 2, 3\} \\ 
+Coef$_0$ & \text{Uniform}(-5, 5) \\
+\bottomrule
+\end{tabular}
+\end{table}
 
+contudo, ao aplicar o melhor modelo obtido tendo em conta as combinacoes destes pametros, os resultados nao foram satisfatorios, tendo em conta q a classe optimal estava mt má
+
+para isso foi decidido aplicar pesos às classes, fixando o peso de todas as classes com excecao da optimal, sendo este considerado agora como um hyperparemto
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/SVM_OptimalWeight.png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{svm_weight}
+\end{figure}
+
+através da dafiura \ref{svm_weight}, verifica-se que o peso ótimo apra esta classe é $0.8$, quando as restantes classes têm peso 1.
+
+aplicando novamente a otimizacao do modelo SVM , tendo em conta estes pesos, foram obtidos resultados mais satisfatorios
+
+QUAL FOI OS HYPERPAREMTES OBTIDOS
+
+$$Best parameters found:  {'C': np.float64(6.9254306285859935), 'coef0': np.float64(-0.2008674096203551), 'degree': 3, 'gamma': 'auto', 'kernel': 'rbf'}$$
+
+alguns ele n usa, tp o degree é ignorado, o coef0 se calhar tbm, ver melhor isso
+
+\subsection{resultados de treino}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/SVM_LearningCurve.png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{svm_learningcurve}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTrain.png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{svm_cm_train}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Classification Report for Model Evaluation (treino)}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\midrule
+Low/Minimal & 0.84 & 0.89 & 0.86 & 170 \\
+Optimal & 0.81 & 0.54 & 0.65 & 170 \\
+Risk/Caution & 0.67 & 0.85 & 0.75 & 171 \\
+\midrule
+\textbf{Accuracy} &  &  & 0.76 & 511 \\
+\textbf{Macro avg} & 0.77 & 0.76 & 0.75 & 511 \\
+\textbf{Weighted avg} & 0.77 & 0.76 & 0.75 & 511 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\subsection{resultados de teste}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTest.png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{svm_cm_test}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Classification Report for Model Evaluation (teste)}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\midrule
+Low/Minimal & 0.74 & 0.93 & 0.82 & 43 \\
+Optimal & 0.76 & 0.44 & 0.56 & 43 \\
+Risk/Caution & 0.73 & 0.86 & 0.79 & 42 \\
+\midrule
+\textbf{Accuracy} &  &  & 0.74 & 128 \\
+\textbf{Macro avg} & 0.75 & 0.74 & 0.72 & 128 \\
+\textbf{Weighted avg} & 0.75 & 0.74 & 0.72 & 128 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{decision tree model}
+
+os paraemtros a otimizar e varias e bla bla Critério de divisão, Profundidade máxima da árvore, Número mínimo de amostras para dividir um nó e Número mínimo de amostras em um nó folha
+
+\begin{table}[H]
+\centering
+\caption{DTREE Hyperparameter Search Space ?}
+\label{parametrosDTree}
+\begin{tabular}{ll}
+\toprule
+Parameter & Distribution/Values \\
+\midrule
+Split Criterion & \{gini, entropy\} \\ 
+Max Depth & $[2, \dots, 8]$ \\ 
+Min Samples to Split & $[5, \dots, 20]$ \\ 
+Min Samples per Leaf & $[3, 4, \dots, 10]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+QUAL FOI OS HYPERPAREMTES OBTIDOS
+
+$$Best Parameters: {'splitter': 'best', 'min_samples_split': np.int64(11), 'min_samples_leaf': np.int64(7), 'max_depth': np.int64(4), 'criterion': 'entropy'}$$
+
+otimiada a arvore, foi obtida a seguinte estrutua
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/DTREE_Tree.png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{dtree_tree}
+\end{figure}
+
+verifica-se que foram o depht é de 4, as cores representam a classe (lanrnja tal, verde tal, ...)
+
+\subsection{resultados de treino}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/DTREE_LearningCurve.png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{dtree_lcurve}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/DTREE_ConfusionMatrixTrain.png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{dtree_cmtrain}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Classification Report for Model Evaluation (treino)}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\midrule
+Low/Minimal & 0.82 & 0.74 & 0.77 & 170 \\
+Optimal & 0.52 & 0.62 & 0.57 & 170 \\
+Risk/Caution & 0.69 & 0.63 & 0.65 & 171 \\
+\midrule
+\textbf{Accuracy} &  &  & 0.66 & 511 \\
+\textbf{Macro avg} & 0.68 & 0.66 & 0.67 & 511 \\
+\textbf{Weighted avg} & 0.68 & 0.66 & 0.67 & 511 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{resultados de teste}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/DTREE_ConfusionMatrixTest.png}
+    \caption{Histogram of the new classes, once 'Caution' and 'Risk' are combined in one.}
+    \label{dtree_cmtest}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Classification Report for Model Evaluation (teste)}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\midrule
+Low/Minimal & 0.72 & 0.77 & 0.74 & 43 \\
+Optimal & 0.47 & 0.47 & 0.47 & 43 \\
+Risk/Caution & 0.64 & 0.60 & 0.62 & 43 \\
+\midrule
+\textbf{Accuracy} &  &  & 0.61 & 128 \\
+\textbf{Macro avg} & 0.61 & 0.61 & 0.61 & 128 \\
+\textbf{Weighted avg} & 0.61 & 0.61 & 0.61 & 128 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{comparacao dos modelos}
 
@@ -454,7 +554,7 @@ The conclusion goes here.
 \section*{Acknowledgment}
 
 
-The authors would like to thank... ~\cite{Author2024}
+%The authors would like to thank... ~\cite{Author2024}
 
 
 \section{NOTAS}
@@ -481,13 +581,7 @@ para cada observacao tem se variaveis como ... bla bla e bla, contudo, nem todas
 
 as variaveis que irao ser utilizadas no estudo são tal tal, que representa tal, tal tal, ... ns q ns q mais.
 
-https://doi.org/10.1136/bjsports-2016-096589 better way chronic load
-DOI: 10.2478/ijcss-2018-0002 Predictive Modelling of Training Loads and Injury in Australian Football Carey 2018
 
-Williams, S., West, S., Cross, M. J., & Stokes, K. A. (2016). Better way to determine the acute:chronic workload ratio? British Journal of Sports Medicine, 51(3), 209–210. doi:10.1136/bjsports-2016-096589 
-https://onlinelibrary.wiley.com/doi/10.1002/tsm2.181 another review
-
-https://www.researchgate.net/profile/Tim-Gabbett/publication/311860780_Calculating_acute_Chronic_workload_ratios_using_exponentially_weighted_moving_averages_provides_a_more_sensitive_indicator_of_injury_likelihood_than_rolling_averages/links/5e410661299bf1cdb91be835/Calculating-acute-Chronic-workload-ratios-using-exponentially-weighted-moving-averages-provides-a-more-sensitive-indicator-of-injury-likelihood-than-rolling-averages.pdf Murray et al. (2016
 
 
 % trigger a \newpage just before the given reference
@@ -501,7 +595,11 @@ https://www.researchgate.net/profile/Tim-Gabbett/publication/311860780_Calculati
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
+\begin{thebibliography}{99}
+\bibitem{example} A. Author, "Title of the paper," Journal Name, vol. 12, no. 3, pp. 45--67, 2024.
+\end{thebibliography}
 
 \end{document}
+
 
 
