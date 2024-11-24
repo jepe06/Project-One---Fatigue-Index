@@ -1,8 +1,8 @@
 # Fdb version 4
-["bibtex bare_conf2"] 1732439307.05373 "bare_conf2.aux" "bare_conf2.bbl" "bare_conf2" 1732439385.031 0
+["bibtex bare_conf2"] 1732439800.50349 "bare_conf2.aux" "bare_conf2.bbl" "bare_conf2" 1732439800.60619 2
   "./references.bib" 1732392836 235 4017f12ed5b4697571cddfe1eded1698 ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1440712899 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "bare_conf2.aux" 1732439384.81092 2783 9bb29d772d5bd6e79d80fda01d1c7d5e "pdflatex"
+  "bare_conf2.aux" 1732439800.50229 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
   (generated)
   "bare_conf2.bbl"
   "bare_conf2.blg"
@@ -81,8 +81,8 @@
   "assets/correlation_matrix.png" 1732392836 5618776 f84f3369edbac2c4441997dd5c17b48c ""
   "assets/distribution_FatigInd(0).png" 1732392840 474920 4c1bfde84f178f085d73dc0f782a9c99 ""
   "assets/distribution_FatigInd(1).png" 1732392838 282525 4713561145e62dccb274910064ab6256 ""
-  "bare_conf2.aux" 1732439384.81092 2783 9bb29d772d5bd6e79d80fda01d1c7d5e "pdflatex"
-  "bare_conf2.bbl" 1732439307.15699 875 029899f8cae5a02a002a6c630007a1ad "bibtex bare_conf2"
+  "bare_conf2.aux" 1732439800.50229 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
+  "bare_conf2.bbl" 1732439800.60527 0 d41d8cd98f00b204e9800998ecf8427e "bibtex bare_conf2"
   "bare_conf2.tex" 1732439348.48201 26765 667330eec244dbecd0e914cc6e288479 ""
   (generated)
   "bare_conf2.aux"
