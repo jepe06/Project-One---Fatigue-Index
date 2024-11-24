@@ -247,7 +247,7 @@ meter:
 
 \section{Support Vector Machine}
 
-para a otimizacao do modelo, foram testadas varias combinacoes de parametros diferentes, nomedamente o Regularization Parameter ($\lambda$), o Kernel Coefficient ($\gamma$), o tipo de kernel, o grau máximo caso para o kernel do tipo `poly` (degree) e o valor do termo indepentende (Coef$_0$), podendo-se obsevar então um resumo? destas combinacoes na tabela \ref{parametrosSVM}.
+para a otimizacao do modelo, foram testadas varias combinacoes de parametros diferentes, nomedamente o Regularization Parameter ( parameter that controls the penalty for misclassified training examples) ($C$), o Kernel Coefficient ($\gamma$), o tipo de kernel, o grau máximo caso para o kernel do tipo `poly` (degree) e o valor do termo indepentende (Coef$_0$), podendo-se obsevar então um resumo? destas combinacoes na tabela \ref{parametrosSVM}.
 
 \begin{table}[H]
 \centering
@@ -257,7 +257,7 @@ para a otimizacao do modelo, foram testadas varias combinacoes de parametros dif
 \toprule
 Hyperparameter & Possible Values \\
 \midrule
-$1/\lambda$ & Uniform$(0, 100)$ \\ 
+$C$ & Uniform$(0, 100)$ \\ 
 $\gamma$ & \{scale, auto, $0.1$, $0.01$, $0.001$\} \\ 
 Kernel & \{linear, rbf, poly, sigmoid\} \\ 
 Degree & \{1, 2, 3\} \\ 
@@ -283,9 +283,25 @@ aplicando novamente a otimizacao do modelo SVM , tendo em conta estes pesos, for
 
 QUAL FOI OS HYPERPAREMTES OBTIDOS
 
-$$Best parameters found:  {'C': np.float64(6.9254306285859935), 'coef0': np.float64(-0.2008674096203551), 'degree': 3, 'gamma': 'auto', 'kernel': 'rbf'}$$
+Os parametros usados foram ent:
 
-alguns ele n usa, tp o degree é ignorado, o coef0 se calhar tbm, ver melhor isso
+% https://scikit-learn.org/stable/modules/svm.html#svm-kernels
+% slides da prof
+
+- kernel: Radial Basis Function (rbf) (Gaussian kernel) $\exp(-\gamma ||x - x'||^2)$ e pelos slides da prof $\gamma = 1 / \sigma$ 
+
+- gamma: auto ($1 / n_{feautures}$)
+
+- $C \approx 6.93$
+
+- weights (serve para dar a importancia da penalicao: C * weight torna-se a penalizacao): 
+
+    - optimal 0.8
+
+    - low/minimal: 1
+
+    - risk: 1
+
 
 \subsection{resultados de treino}
 
@@ -372,7 +388,24 @@ Min Samples per Leaf & $[3, 4, \dots, 10]$ \\
 
 QUAL FOI OS HYPERPAREMTES OBTIDOS
 
-$$Best Parameters: {'splitter': 'best', 'min_samples_split': np.int64(11), 'min_samples_leaf': np.int64(7), 'max_depth': np.int64(4), 'criterion': 'entropy'}$$
+% https://medium.com/@mohtedibf/indepth-parameter-tuning-for-decision-tree-6753118a03c3
+% https://scikit-learn.org/dev/modules/generated/sklearn.tree.DecisionTreeClassifier.html
+
+os paraemtros usados foram ent
+
+- max depth: 4 (The deeper the tree, the more splits it has and it captures more information about the data)
+
+- min sample split: 11 (When we increase this parameter, the tree becomes more constrained as it has to consider more samples at each node.)
+
+- min samples leaf: 7 (This parameter is similar to min samples splits, however, this describe the minimum number of samples of samples at the leafs, the base of the tree.)
+
+splitter: best (to choose the best split at each node instead of 'random')
+
+criterion: entropy (The function to measure the quality of a split. Shannon information gain)
+
+    - $H(\text{node}) = - \sum_{\text{Class }_j} p(\text{Class}_j | \text{node}) \log p(\text{Class}_j | \text{node})$
+
+
 
 otimiada a arvore, foi obtida a seguinte estrutua
 
