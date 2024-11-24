@@ -11,14 +11,15 @@
 \pagestyle{plain}
 \usepackage{amsmath}
 \usepackage{float}
-%\usepackage{url}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning}%\usepackage{url}
 
 
 \ifCLASSINFOpdf
   \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
   % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
-\else
+%\else
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
   % and their extensions so you won't have to specify these with
   % every instance of \includegraphics
@@ -77,17 +78,81 @@ With this approach, we aim to generalize the models for different athletes/sport
 \section{State of the Art}
 
 Over the past decade there have been significant improvements in the field of ML applied algorithms for sports' related applications. Here we present the most relevant work in fatigue and injury prediction, which is not specifically on the sport we're assessing in our dataset, which lead to additional interpretations from the works analyzed to our own case of study. In general, the problem of class imbalance is seen throughout the literature, and different solutions are proposed, such as data gathering and preprocessing, over sampling and under sampling, with SMOTE (synthetic minority over-sampling technique) being the most commonly used approach for over sampling. As early as 2010, Gabbet and colleagues modeled the risk of injury with a monodimensional approach using logistic regression, based on athletes rate of perceived exertion, showing that even with a monovariate approach to injury prediction useful results could be attained. In recent years, several authors have focused in alternative techniques such as Logistic Regression, Random Forest, Support Vector Machine, or Convolutional Neural Network on Multivariate Timeseries (the references for these papers can be found in the paper "A Narrative Review").
+
 Besides model selection, feature engineering and selection is among the most debated topics. Several authors opt to include GPS data, metabolic consumption, mechanical load, RPE, detailed quantification of workloads, ratio between acute:chronice loads. Despite the multivariate imputation, data analysis often shows strong correlations between them, leading to over fitting problems (usually model independent).
+
 In the work by Carey et al. (2018) different algorithms have been implemented to predict the risk of injury in an Australian football club. The data collection lasted for three seasons, consisting of absolute and relative training load metrics, derived from GPS, accelerometer, and RPE data. The prediction models used were regularized logistic regression, generalized estimating equations, random forests, and support vector machines, with periods of 3, 6, and 21 days (these periods have been studied and verified as adequate for the case of Australian football). The periods served to calculate moving averages and exponentially weighted moving averages (EWMA). The latter allowed to account for the decay in significance of the training load the further it happened from a given day, in accordance with the work from Williams et al. (2016). From the results it was possible to verify that over fitting was very likely due to the multicollinearity between variables, which was confirmed by principal component analysis (PCA). The use of PCA with regularized logistic regression slightly improved the results.
+
 More recent studies have employed ensemble algorithms, in order to take most of the different learning models selected, taking into account the need to balance the classes as is common practice for this type of problems. 
+
 In summary, the integration of machine learning techniques in sports fatigue and injury prediction has evolved from simple monovariate models to complex multivariate and ensemble approaches. Addressing challenges such as class imbalance, feature selection, and multicollinearity remains crucial for developing robust predictive models applicable across different sports contexts.
 
+\section{Methodology}
+The methodology defined for this project consisted of three major steps: assessment and curation of the dataset, feature engineering and selection of features, followed by data normalization; training of the selected machine learning models; finalizing with model evaluation and subsequent training until optimum results were achieved. Figure~\ref{fig:methodology} illustrates the methodology used in this project.
+
+% TikZ styles
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{figure}[h]
+\centering
+\resizebox{\columnwidth}{!}{ % Resize to fit column width
+\begin{tikzpicture}[node distance=1.5cm, font=\footnotesize] % Adjust font size to match document
+
+% Nodes
+\node (start) [startstop] {Raw data};
+\node (curation) [process, below of=start] {Data Assessment \& Curation};
+\node (normalization) [process, below of=curation] {Data Normalization};
+\node (modeling) [process, below of=normalization] {Train Multiple ML Models};
+\node (evaluation) [process, below of=modeling] {Model Evaluation};
+\node (stop) [startstop, below of=evaluation] {Deploy Best Model};
+
+% Arrows
+\draw [arrow] (start) -- (curation);
+\draw [arrow] (curation) -- (normalization);
+\draw [arrow] (normalization) -- (modeling);
+\draw [arrow] (modeling) -- (evaluation);
+\draw [arrow] (evaluation) -- (stop);
+
+% Square forward arrow (evaluation to modeling)
+\draw [arrow] (evaluation.east) -- ++(1.5,0) |- (modeling.east);
+
+\end{tikzpicture}
+}
+\caption{Flowchart of the methodology for data processing and modeling. The evaluation results are used to refine the model training process.}
+\label{fig:methodology}
+\end{figure}
+
+After data normalization for all features (\texttt{StandardScaler}), the data was separated between training and testing data (80/20, respectively), using the (\texttt{train\_test\_split}) function from (\texttt{sklearn}). The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
+The ML models selected for the project were (\texttt{LogisticRegression}), (\texttt{SupportVectorMachine}), and (\texttt{DecisionTreeClassifier}), where the modeling approach and hyperparameters are detailed below. For the given hyperparameters available in each model the function (\texttt{RandomizedSearchCV}) was used with 8-fold cross-validation to minimize the risk of over fitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
+
+The metrics used to assess the different models are presented in Table \ref{evaluationmetrics}, and are consistent with those used in the literature.
+\begin{table}[H]
+\centering
+\caption{Metrics for multiclass classification model evaluation.}
+\label{evaluationmetrics}
+\begin{tabular}{lc}
+\toprule
+\textbf{Measure} & \textbf{Formula} \\
+\midrule
+Precision (per class $i$) & $\dfrac{TP_i}{TP_i + FP_i}$ \\[1em]
+Recall (per class $i$) & $\dfrac{TP_i}{TP_i + FN_i}$ \\[1em]
+F1-score (per class $i$) & $2 \cdot \dfrac{\text{Precision}_i \cdot \text{Recall}_i}{\text{Precision}_i + \text{Recall}_i}$ \\[1em] 
+Accuracy & $\dfrac{\sum_{i=1}^{C} TP_i}{\sum_{i=1}^{C} (TP_i + TN_i + FP_i + FN_i)}$ \\[1em]
+\bottomrule
+\end{tabular}
+\end{table}
+Given the class imbalance associated with the problem at hand, the importance of precision, recall and F1-score per class are especially relevant, along with the confusion matrix, to understand how the model is failing to correctly classify the various observations. The precision is the ratio of true positives for all the positives attributed (the higher, the better). Recall (or sensitivity) gives the ratio of true positives among true positives and false negatives, where lower values indicate a higher number of misidentified true positives. The F1-score provides a balanced assessment of the model, taking a harmonic mean of precision a recall, providing a particularly good way to assess datasets with imbalanced classes, while accuracy provides an overall assessment with the ratio of true positives and true negatives over the total predictions.
+
+The methods and ML models used are consistent with those in the literature, considering the type of features and target in this project. Moreover, during the model refinement stage a reassessment of past steps was carried in order to ensure no gaps in the process. The programming language was Python, and the packages available therein, with notable mention for (\texttt{scikit-learn}).
 
 \section{Dataset Analysis}
 
 \subsection{Data Description}
 
 The data used in this project was collected from the swimming club CAPGE during the season of 2019/2020, where each athlete has several observations corresponding to training days, where each of the features was collected. Not all athletes logged the same number of training days, nor present an equal distribution between low, average and high levels of intense training. The names of the athletes were removed to ensure privacy and confidentiality, keeping only the gender as a variable. The team is comprised by seven athletes, three male and four female. Most of the features are related to feedback from the athletes on different aspects of their lives (i.e. sleep quality, appetite, and rate of perceived exertion after training), while others are measurable (i.e. workload, variation in heart rate before and after training, weight variation). A notable feature to mention is the RPE, that is still deemed as one of the most relevant metrics for workload planning and fatigue assessment. All these attributes are classified between 1 — 10, each value corresponding to increasingly 'worse' categories (e.g., 1 great appetite / normal, 10 no appetite at all).
+
 The fatigue index is calculated from these features, using weights attributed by the coach based on his empirical experience. The resulting fatigue index is between 0 — 100, which was categorized in four classes as seen in Table \ref{classTable}. 
 
 
@@ -95,15 +160,18 @@ The fatigue index is calculated from these features, using weights attributed by
 \centering
 \caption{Classification of fatigue index into categories based on numerical ranges.}
 \label{classTable}
-\begin{tabular}{|c|c|c|}
-    \hline
-    \textbf{Range} & \textbf{Initial Classes} & \textbf{Final Classes} \\ \hline
-    $>$ 90 & Risk    & \multirow{2}{*}{Risk/Caution} \\ \cline{1-2}
-    $>$ 80 & Caution & \\ \hline
-    $\geq$ 40 & Optimal & Optimal \\ \hline
-    $<$ 40  & Low     & Low \\ \hline
+\begin{tabular}{lccc}
+\toprule
+\textbf{Range} & \textbf{Initial Classes} & \textbf{Final Classes} \\
+\midrule
+$\geq  90$ & Risk & \multirow{2}{*}{Risk/Caution} \\
+$\geq  80$ & Caution & \\
+$\geq 40$ & Optimal & Optimal \\
+$< 40$ & Low/Minimal & Low/Minimal \\
+\bottomrule
 \end{tabular}
 \end{table}
+
 
 There is a big gap between fatigue classes due to the nature of training and performing high effort workouts in specific times of the training cycle. The dataset was provided in Excel format (per athlete), from which we imported and combined the data as a pandas dataFrame to apply the different models.
 
@@ -111,7 +179,7 @@ There is a big gap between fatigue classes due to the nature of training and per
 
 \subsection{Dataset curation}
 
-The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for Optimal, as seen in Figure \ref{histClasses}. 
+The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for 'Optimal', as seen in Figure \ref{histClasses}. 
 
 \begin{figure}[H]
     \centering
@@ -120,7 +188,8 @@ The initial assessment evidenced the need for balancing our data. To start, we'v
     \label{histClasses}
 \end{figure}
 
-At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal'. The use of SMOTE in this scenario would provide continuous classes for our features, which wouldn't yield any physical meaning.
+At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal', ending up with 213 observations per class (regardless of gender). The use of SMOTE in this scenario would give continuous classes for our features, which wouldn't yield any physical meaning.
+
 To assess how the different features vary among them and in relation to the target, we computed the correlation matrix as seen in Figure \ref{fig:correlationMatrix}.
 
 \begin{figure}[H]
@@ -130,7 +199,7 @@ To assess how the different features vary among them and in relation to the targ
     \label{fig:correlationMatrix}
 \end{figure}
 
-From this we could exclude several of the features, which are verified by how the classes are distributed across the scales for each feature. Figure \ref{classdist_feat} illustrates a proper and poor example of class distribution for a given feature.
+From it we could exclude several of the features, which are verified by how the classes are distributed across the scales for each feature. Figure \ref{classdist_feat} illustrates a proper and poor example of class distribution for a given feature.
 
 \begin{figure}[H]
     \centering
@@ -154,8 +223,19 @@ From this we could exclude several of the features, which are verified by how th
     \label{classdist_feat}
 \end{figure}
 
-Considering that the weights used in the dataset were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split our dataset. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature.
-In order to keep the timeseries nature of training, increase and decrease of training intensity, and varying fatigue with training we included exponentially weighted moving averages (EWMA). This way we include memory in our model, and allow to consider the decay in the weights of events further away from any given day. The mathematical expression used to calculate EWMA for each selected feature is,
+Considering that the weights used in the coach's original estimation of fatigue were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split it. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature. 
+
+Figure \ref{fatig_Ff} illustrates the periodicity of higher training loads and subsequent lower intensity periods. It is important to refer that once the two higher intensity classes were combined the loss of granularity of how fatigue changes throughout the season is evident.  
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(F_f).png}
+    \caption{Daily fatigue trends for athlete F\_f.}
+    \label{fatig_Ff}
+\end{figure}
+
+In order to keep the time series nature of training, increase and decrease of training intensity, and varying fatigue with training we included exponentially weighted moving averages (EWMA) \cite{Williams17}.
+
+This way memory is introduced in our model, and allow to consider the decay in the weights of events further away from any given day. The mathematical expression used to calculate EWMA for each selected feature is,
 \begin{equation*}
     \text{EWMA}_{\text{today}} = \text{Feature}_{\text{today}} \cdot \lambda_a + (1 - \lambda_a) \cdot \text{EWMA}_{\text{yesterday}}
 \end{equation*}
@@ -164,86 +244,15 @@ where $\lambda_a$ is a value between 0 and 1 that represents the degree of decay
     \lambda_a = \frac{2}{N + 1}
 \end{equation*} 
 
-DPS METE AQUI A REFERENCIA DE ONDE VISTE A FORMULA PFF
+At this point it was possible to select the most relevant features for modeling: (\textit{pEffort}), (\textit{uaI}), (\textit{SleepInd}), (\textit{Sex\_F}), (\textit{pEffort(MA6)}), (\textit{SleepInd(MA6)}), (\textit{uaI(MA6)}), (\textit{Appetite(MA6)}).
 
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(F_f).png}
-    \caption{Daily fatigue trends for athlete F\_f.}
-    \label{fatig_Ff}
-\end{figure}
-
-tentamos o smote mas ele criava variaveis continuas mesmo quanto eram categoricas entre outros problemas e por nao precisarmos de uma grande qnt relativa de obs geradas, ent usou se o metodo de "copiar obervacoes (procurar nome melhor)"
-
-ONDE SE EMTE O GRAFICO DAS CLASSES EQUILIBRADAS?
+\section{classification models}
 
 
+\section{Logistic Regression}
 
-\subsection{analisa das features}
-
-fazer descricao das feautures realmente usadas ?
-
-ns q temos q standartizar os dados para se tornar mais facil a sua analise, para q esteja tudo na mesma medida bla bla
-
-OU PASSAR ISSO TUDO PARA O CLASSIFICATION MODELS?
-
-\section{classifcation models}
-
-para classificar a fadiga, vamos usar varios modelos de machine learning, aplicados através da liguangem de programacao python, pelo sua extensivas livrarias com funcoes dedicadas a este tipo de analise. nomeadamente reg logistica (\texttt{LogisticRegression}), support vector machine (\texttt{SVC}) e arvore de decisao (\texttt{DecisionTreeClassifier}), e exprimentar variacoes dos mesmos, tendando encontrar o que melhor modela os nossos dados, utilizando a funcao de otimizacao de modelos \texttt{RandomizedSearchCV}, com um cross validation de 8 para diminuir o risco de overfitting
-
-uma componente mt importante deste estudo é o avaliar cada modelo, para isso serão usadas metricas tai como ...., para analisar modelo a modelo qual é o melhor para modelas/classificar os vários niveis de fadiga
-
-mostrar algumas formulas e graficos de exemplo etc etc
-
-metricas q vamos usar
-
-
-\begin{table}[H]
-\centering
-\caption{Metrics for multiclass classification model evaluation.}
-\label{evaluationmetrics}
-\begin{tabular}{lc}
-\toprule
-Measure & Formula \\
-\midrule
-Precision (per class $i$) & $\dfrac{TP_i}{TP_i + FP_i}$ \\[1em]
-Recall (per class $i$) & $\dfrac{TP_i}{TP_i + FN_i}$ \\[1em]
-F1-score (per class $i$) & $2 \cdot \dfrac{\text{Precision}_i \cdot \text{Recall}_i}{\text{Precision}_i + \text{Recall}_i}$ \\[1em] 
-Accuracy & $\dfrac{\sum_{i=1}^{C} TP_i}{\sum_{i=1}^{C} (TP_i + TN_i + FP_i + FN_i)}$ \\[1em]
-\bottomrule
-\end{tabular}
-\end{table}
-
-FALTA CONF MATRIX E LEARNING CURVE PELO MENOS
-
-para alem disso, importante referir q cada modelo sera treinado com $80\%$ dos dados e bla bla \texttt{train\_test\_split}.
-
-
-
-
-
-\section{regressao logistica}
-
-AUSHDIUAHIAHFSIH
-
-ns q mais resultados
-
-meter tabelas com resultados e tudo mais, mas so no fim metemos uma geral a comparar tudo
-
-meter:
-
-- matriz de confusao
-
-- precision score
-
-- f1 score
-
-- accuracy score
-
-- recall score
-
-- cross validation
+For the logistic regression model 
 
 \section{Support Vector Machine}
 
@@ -255,7 +264,7 @@ para a otimizacao do modelo, foram testadas varias combinacoes de parametros dif
 \label{parametrosSVM}
 \begin{tabular}{ll}
 \toprule
-Hyperparameter & Possible Values \\
+\textbf{Hyperparameter} & \textbf{Possible Values} \\
 \midrule
 $C$ & Uniform$(0, 100)$ \\ 
 $\gamma$ & \{scale, auto, $0.1$, $0.01$, $0.001$\} \\ 
@@ -376,7 +385,7 @@ os paraemtros a otimizar e varias e bla bla Critério de divisão, Profundidade 
 \label{parametrosDTree}
 \begin{tabular}{ll}
 \toprule
-Hyperparameter & Possible Values \\
+\textbf{Hyperparameter} & \textbf{Possible Values} \\
 \midrule
 Split Criterion & \{gini, entropy\} \\ 
 Max Depth & $[2, \dots, 8]$ \\ 
