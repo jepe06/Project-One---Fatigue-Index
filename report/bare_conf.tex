@@ -95,6 +95,7 @@ More recent studies have employed ensemble algorithms, in order to take most of 
 In summary, the integration of machine learning techniques in sports fatigue and injury prediction has evolved from simple monovariate models to complex multivariate and ensemble approaches. Addressing challenges such as class imbalance, feature selection, and multicollinearity remains crucial for developing robust predictive models applicable across different sports contexts.
 
 \section{Methodology}
+
 The methodology defined for this project consisted of three major steps: assessment and curation of the dataset, feature engineering and selection of features, followed by data normalization; training of the selected machine learning models; finalizing with model evaluation and subsequent training until optimum results were achieved. Figure~\ref{fig:methodology} illustrates the methodology used in this project.
 
 % TikZ styles
@@ -131,8 +132,8 @@ The methodology defined for this project consisted of three major steps: assessm
 \label{fig:methodology}
 \end{figure}
 
-After data normalization for all features (\texttt{StandardScaler}), the data was separated between training and testing data (80/20, respectively), using the (\texttt{train\_test\_split}) function from (\texttt{sklearn}). The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
-The ML models selected for the project were (\texttt{LogisticRegression}), (\texttt{SupportVectorMachine}), and (\texttt{DecisionTreeClassifier}), where the modeling approach and hyperparameters are detailed below. For the given hyperparameters available in each model the function (\texttt{RandomizedSearchCV}) was used with 8-fold cross-validation to minimize the risk of over fitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
+The programming language was Python, and the packages available therein, with notable mention for \texttt{scikit-learn}. After data normalization for all features \texttt{StandardScaler}, the data was separated between training and testing data (80/20, respectively), using the \texttt{train\_test\_split} function from \texttt{sklearn}. The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
+The ML models selected for the project were \texttt{LogisticRegression}, \texttt{SupportVectorMachine}, and \texttt{DecisionTreeClassifier}, where the modeling approach and hyperparameters are detailed below. For the given hyperparameters available in each model the function \texttt{RandomizedSearchCV} was used with 8-fold cross-validation to minimize the risk of over fitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
 
 The metrics used to assess the different models are presented in Table \ref{evaluationmetrics}, and are consistent with those used in the literature.
 \begin{table}[H]
@@ -153,11 +154,11 @@ Accuracy & $\dfrac{\sum_{i=1}^{C} TP_i}{\sum_{i=1}^{C} (TP_i + TN_i + FP_i + FN_
 
 Given the class imbalance associated with the problem at hand, the importance of precision, recall and F1-score per class are especially relevant, along with the confusion matrix, to understand how the model is failing to correctly classify the various observations. The precision is the ratio of true positives for all the positives attributed (the higher, the better). Recall (or sensitivity) gives the ratio of true positives among true positives and false negatives, where lower values indicate a higher number of misidentified true positives. The F1-score provides a balanced assessment of the model, taking a harmonic mean of precision a recall, providing a particularly good way to assess datasets with imbalanced classes, while accuracy provides an overall assessment with the ratio of true positives and true negatives over the total predictions.
 
-%The learning curve shown in the Figure \ref{cf_train_LogReg}, mostra a relação entre o tamanho do conjunto de treinamento e a performance do modelo ajustado, sendo um bom insight para avaliar o comportamento de overfitting ou underfitting. Quando a curva de treinamento continua a melhorar à medida que o tamanho do conjunto de treinamento aumenta, mas a curva de validação se estabiliza ou piora, isso pode indicar que o modelo está começando a se ajustar demasiado aos dados de treinamento (overfitting). Por outro lado, se tanto a curva de treinamento quanto a de validação apresentam desempenho fraco e convergem para valores baixos, isso sugere que o modelo não está aprendendo de forma eficaz, e pode ser uma indicação de underfitting
+The learning curve was used for all models, to highlight the relation between the size of the training dataset and the performance of the adjusted model, providing a good insight into the quality of the fitting. In the case of increasing accuracy of the training curve while the validation curve remains constant or decreases below the training curve, is a clear sign of over fitting. In the case that both curves converge, but to low values (below 0.6) is a sign of under fitting and poor learning from the model.
 
-% FALTA FALAR DAS MATRIZES DE CONFUSAO E DAS LEARNING CURVE
+The confusion matrix was used to assess the performance in estimating each class during training and testing, giving a clear idea how the model is trying to predict the classes, helping to better interpret the class weights attributed.
 
-The methods and ML models used are consistent with those in the literature, considering the type of features and target in this project. Moreover, during the model refinement stage a reassessment of past steps was carried in order to ensure no gaps in the process. The programming language was Python, and the packages available therein, with notable mention for (\texttt{scikit-learn}).
+The methods and ML models used are consistent with those in the literature, considering the type of features and target in this project. Moreover, during the model refinement stage a reassessment of past steps was carried in order to ensure no gaps in the process. 
 
 \section{Dataset Analysis}
 
@@ -256,7 +257,7 @@ where $\lambda_a$ is a value between 0 and 1 that represents the degree of decay
     \lambda_a = \frac{2}{N + 1}
 \end{equation*} 
 
-At this point it was possible to select the most relevant features for modeling: (\textit{pEffort}), (\textit{uaI}), (\textit{SleepInd}), (\textit{Sex\_F}), (\textit{pEffort(MA6)}), (\textit{SleepInd(MA6)}), (\textit{uaI(MA6)}), (\textit{Appetite(MA6)}).
+At this point it was possible to select the most relevant features for modeling: \textit{pEffort}, \textit{uaI}, \textit{SleepInd}, \textit{Sex\_F}, \textit{pEffort(MA6)}, \textit{SleepInd(MA6)}, \textit{uaI(MA6)}, \textit{Appetite(MA6)}.
 
 %\newpage
 \section{Classification Models}
@@ -276,7 +277,7 @@ The logistic regression model was developed by setting different ranges for the 
 
 Since the highest accuracy was achieved with class weights of 0.64 for 'Low/Minimal' and 0.97 for 'Risk/Caution', these values were selected, while the original weight for the 'Optimal' class was retained. These weight values were applied consistently across both the training and test datasets. For model optimization, the remaining hyperparameters were set to $C \approx 2.13$, the cost function was $L1$ (Lasso regularization) and the solver used was $SAGA$ (Stochastic Average Gradient Augmented).
 
-% Poderá ser útil comentar este solver, e que na verdade até pode não ser o mais indicado para o problema que estamos a resolver, mas foi o sugerido (tipicamente é indicado para grandes datasets, e que tenham valores em falta e assim).
+% Poderá ser útil comentar este solver, e que na verdade até pode não ser o mais indicado para o problema que estamos a resolver, mas foi o sugerido (tipicamente é indicado para grandes datasets, e que tenham valores em falta e assim). -> a eq. que tinha visto não era a aplicada ao logreg, e parece-me viável incluir no documento para discussão.
 
 The learning curve shown in Figure \ref{cf_train_LogReg} illustrates the relationship between the training set size and the performance of the adjusted model, providing valuable insight to assess the model's behavior in terms of overfitting or underfitting. In this case, the learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of over fitting.
 
@@ -339,9 +340,9 @@ Risk/Caution & 0.71 & 0.76 & 0.74 & 42 \\
 \end{tabular}
 \end{table}
 
-Tendo em conta as matrizes de confusão relativamente aos dados de treino (Fig. \ref{cf_train_LogReg}) e de teste (fig. \ref{cm_Test_LogReg}), estas permitem-nos perceber how well the model predicts the true labels compared to the actual labels. Neste caso, possível verificar algumas semelhanças entre as duas, nomeadamente o melhor desempenho na classificação das classes extremas ('Low/Minimal' e 'Risk/Caution') face à classe 'Optimal', apesar dos pesos dados, (mas sempre é melhor do q era antes no modelo sem os pesos).
+Considering the confusion matrices of the training (Fig.~\ref{cf_train_LogReg}) and test datasets (Fig.~\ref{cm_Test_LogReg}), it is possible to learn how well the model attributes true and false positives, and how they are distributed. For this particular model it is visible how similar they are, and how much better the prediction performance is for the classes in the extremities ('Low/Minimal' and 'Risk/Caution'), regardless of the weight attributed to the 'Optimal' class (even though a marginal improvement was observed compared to the initial weightless model).
 
-Quanto aos classifciation report, estes pertitem-nos comparar o desempenho dos dados de treino (table \ref{crTrainLogReg}) e de teste (table \ref{crTestLogREg}), de modo a ter insights sobre a possiblidade de haver ou não overfitting. Neste caso, ambos os class report apresentam resultados bastante semelhantes, pelo que hão levanta suspeitas sobre overfitting. para alem disso, tambem se verificam melhores resultados para as classes extremas e piores para o 'Optimal', o q já seria de esperar tendo em conta as matrizes de confusao.
+The classification report provides a more straight forward comparison between the training (Table~\ref{crTrainLogReg}) and the test datasets (Table~\ref{crTestLogREg}), while showing class specific the performance metrics, further confirming the interpretation of the confusion matrix. Both classification reports present similar values, which is a good indicator that the model is properly fitted. As previously mentioned, the performance metrics are worse for 'Optimal' when compared to the remaining classes.
 
 
 \section{Support Vector Machine}
@@ -365,7 +366,7 @@ Coef$_0$ & $[-5, 5]$ \\
 \end{tabular}
 \end{table}
 
-As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. É importante referir que estes pesos oq fazem é aumentar a penalização para classificacoes incorretas, nomedamente: $C_{class} \leftarrow C \times w_{class}$ \cite{svm24}.
+As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. The weight being smaller than $1$ is penalizing the class, making it less likely  importante referir que estes pesos oq fazem é aumentar a penalização para classificacoes incorretas, nomedamente: $C_{class} \leftarrow C \times w_{class}$ \cite{svm24}.
 
 \begin{figure}[H]
     \centering
@@ -690,11 +691,9 @@ Discussão dos resultados:
 
 -> Há coerência entre métricas (F1-score Test vs Train está à mesma distância quase sempre)
 
--> Confusion matrix destaca SVM, em que apenas sofre na atribuição da classe real do 'Optimal', mas tende a pender mais na fronteira Optimal/Risk
 
 -> Temos algumas zonas em branco ao longo do documento, temos de ver como resolver (não sei se será mais texto em alguma zona, mas gosto pouco de adicionar palha)
 
--> Movi o que tinhas nos modelos aqui para baixo para ver como começava a ficar distribuído
 
 -> Novelty and contributions (3) Compare your solution with the works of other authors (published references) , try to propose a better solution, e.g. improve the performance of the ML model in solving the problem you work with.
 
@@ -722,10 +721,6 @@ os valores da fadiga foram convertidos para categoricos, pq e mais interessante 
 de seguida agruparam-se os dados todos num novo ficheiro excel, para posterior analise atraves do python, de forma mais facilitata
 
 tem se entao dados diarios, para X atletas, durante ns q tempo, ao longo da epoca tal, totalizando x observacoes (linhas)
-
-para cada observacao tem se variaveis como ... bla bla e bla, contudo, nem todas serao usadas, devido a insights dados pelo treinador aka expert
-
-as variaveis que irao ser utilizadas no estudo são tal tal, que representa tal, tal tal, ... ns q ns q mais.
 
 \cite{Williams17} better way chronic load
 
