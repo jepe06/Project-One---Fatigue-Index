@@ -61,7 +61,7 @@ joaopcardoso@ua.pt}}
 \begin{abstract}
 temos que arranjar refs para ir metendo por ai
 \end{abstract}
-
+Não esquecer de definir abreviaturas na primeira ocorrência e usá-las daí em diante.
 
 \IEEEpeerreviewmaketitle
 
@@ -98,7 +98,7 @@ The methodology defined for this project consisted of three major steps: assessm
 \begin{figure}[h]
 \centering
 \resizebox{\columnwidth}{!}{ % Resize to fit column width
-\begin{tikzpicture}[node distance=1.5cm, font=\footnotesize] % Adjust font size to match document
+\begin{tikzpicture}[node distance=1.5cm, font=\scriptsize] % Adjust font size to match document
 
 % Nodes
 \node (start) [startstop] {Raw data};
@@ -199,7 +199,7 @@ To assess how the different features vary among them and in relation to the targ
     \label{fig:correlationMatrix}
 \end{figure}
 
-From it we could exclude several of the features, which are verified by how the classes are distributed across the scales for each feature. Figure \ref{classdist_feat} illustrates a proper and poor example of class distribution for a given feature.
+From the corr matrix it was possible to exclude several of the features, which was verified by how the classes are distributed across the scales for each feature. Figure \ref{classdist_feat} illustrates a proper and poor example of class distribution for the given features.
 
 \begin{figure}[H]
     \centering
@@ -246,17 +246,90 @@ where $\lambda_a$ is a value between 0 and 1 that represents the degree of decay
 
 At this point it was possible to select the most relevant features for modeling: (\textit{pEffort}), (\textit{uaI}), (\textit{SleepInd}), (\textit{Sex\_F}), (\textit{pEffort(MA6)}), (\textit{SleepInd(MA6)}), (\textit{uaI(MA6)}), (\textit{Appetite(MA6)}).
 
+\newpage
+\section{Classification Models}
 
-\section{classification models}
-
+In this section the results for the three machine learning models are presented and detailed in equal fashion, to facilitity the discussion and interpretation in the next section. As was mentioned in the methodology, the modeling approach was the same for all, and here the training dataset results are presented first, followed by the test dataset results.
 
 \section{Logistic Regression}
 
-For the logistic regression model 
+The logistic regression model was developed by setting different ranges for the hyperparameters, with $C$ varying between $0.01$ and $300$, and allowing the selection of different cost functions ($L1$, $L2$, or none). In the end the best cost function to use was $L1$. Given the class imbalance we opted to determine the class weights for 'Risk/Caution' and 'Low/Minimal', ranging between $0.1$ and $2$ for both cases. The resulting estimation of highest accuracy can be seen in Figure~\ref{logregWt}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/LOGR_class_weights.png}
+    \caption{Effect of the 'Risk/Caution' and 'Low/Minimal' classes weight on LogReg model accuracy.}
+    \label{logregWt}
+\end{figure}
+
+From the figure above the weights selected were 0.64 and 0.97 for 'Low/Minimal' and 'Risk/Caution' respectively. These values were used throughout the training and test data onward.
+
+The learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of over fitting.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/LOGR_lercurve.png}
+    \caption{LogReg model performance using learning curve representation across varying training data sizes.}
+    \label{lcLogReg}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/LOGR_confmatTrain.png}
+    \caption{Confusion matrix for the training data of LogReg model.}
+    \label{lcLogReg}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Classification report for LogReg model performance evaluation on training data.}
+\label{crTrainLogReg}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\midrule
+Low/Minimal & 0.79 & 0.64 & 0.71 & 170 \\
+Optimal & 0.53 & 0.54 & 0.53 & 170 \\
+Risk/Caution & 0.61 & 0.72 & 0.66 & 171 \\
+\midrule
+\textbf{Accuracy} &  &  & 0.63 & 511 \\
+\textbf{Macro avg} & 0.64 & 0.63 & 0.63 & 511 \\
+\textbf{Weighted avg} & 0.64 & 0.63 & 0.63 & 511 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/LOGR_confmatTest.png}
+    \caption{Confusion matrix for the test data of LogReg model.}
+    \label{lcLogReg}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Classification report for LogReg model performance evaluation on test data.}
+\label{crTestLogREg}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
+\midrule
+Low/Minimal & 0.72 & 0.65 & 0.68 & 43 \\
+Optimal & 0.52 & 0.52 & 0.53 & 43 \\
+Risk/Caution & 0.71 & 0.76 & 0.74 & 42 \\
+\midrule
+\textbf{Accuracy} &  &  & 0.65 & 128 \\
+\textbf{Macro avg} & 0.65 & 0.65 & 0.65 & 128 \\
+\textbf{Weighted avg} & 0.65 & 0.65 & 0.65 & 128 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
 
 \section{Support Vector Machine}
 
-para a otimizacao do modelo, foram testadas varias combinacoes de parametros diferentes, nomedamente o Regularization Parameter ( parameter that controls the penalty for misclassified training examples) ($C$), o Kernel Coefficient ($\gamma$), o tipo de kernel, o grau máximo caso para o kernel do tipo `poly` (degree) e o valor do termo indepentende (Coef$_0$), podendo-se obsevar então um resumo? destas combinacoes na tabela \ref{parametrosSVM}.
+Given the increased complexity compared to LogReg, the support vector machine (SVM) model allows for manipulation of a larger number of hyperparameters, which consequently lead to longer computation times to achieve the best model. The hyperparameters used were Regularization Parameter (parameter that controls the penalty for misclassified training examples, i.e., cost function) ($C$),the Kernel Coefficient ($\gamma$), the kernel to be used, the highest degree possible (for a $poly$ kernel), and the value of the independent term (Coef$_0$), which controls the flexibility of the decision boundary. The ranges of possible values can be assessed in Table \ref{parametrosSVM}.
 
 \begin{table}[H]
 \centering
@@ -275,9 +348,7 @@ Coef$_0$ & Uniform(-5, 5) \\
 \end{tabular}
 \end{table}
 
-contudo, ao aplicar o melhor modelo obtido tendo em conta as combinacoes destes pametros, os resultados nao foram satisfatorios, tendo em conta q a classe optimal estava mt má
-
-para isso foi decidido aplicar pesos às classes, fixando o peso de todas as classes com excecao da optimal, sendo este considerado agora como um hyperparemto
+As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. In Figure~\ref{svm_weight}
 
 \begin{figure}[H]
     \centering
@@ -488,7 +559,7 @@ Risk/Caution & 0.64 & 0.60 & 0.62 & 43 \\
 \end{tabular}
 \end{table}
 
-\section{comparacao dos modelos}
+\section{comparacao dos modelos E resultados}
 
 comparar aqui todos os resultados e isso
 
@@ -502,9 +573,53 @@ acuracaia, learning curves, etc , etc
 
 - cross validation
 
-\section{restulados}
-
 observa se q o melhor é tal e tal, mas aquele fez isto e ns q
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/box_precision.png}
+    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
+    \label{box_precision}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/box_recall.png}
+    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
+    \label{box_recall}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/box_accuracy.png}
+    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
+    \label{box_accuracy}
+\end{figure}
+
+lalal pca
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/pca_dtree.png}
+    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
+    \label{pca_dtree}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/pca_reglog.png}
+    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
+    \label{pca_reglog}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/pca_svm.png}
+    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
+    \label{pca_reglog}
+\end{figure}
+
+
 
 
 \section{Conclusion}
