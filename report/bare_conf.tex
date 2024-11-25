@@ -246,7 +246,7 @@ where $\lambda_a$ is a value between 0 and 1 that represents the degree of decay
 
 At this point it was possible to select the most relevant features for modeling: (\textit{pEffort}), (\textit{uaI}), (\textit{SleepInd}), (\textit{Sex\_F}), (\textit{pEffort(MA6)}), (\textit{SleepInd(MA6)}), (\textit{uaI(MA6)}), (\textit{Appetite(MA6)}).
 
-\newpage
+%\newpage
 \section{Classification Models}
 
 In this section the results for the three machine learning models are presented and detailed in equal fashion, to facilitity the discussion and interpretation in the next section. As was mentioned in the methodology, the modeling approach was the same for all, and here the training dataset results are presented first, followed by the test dataset results.
@@ -262,7 +262,8 @@ The logistic regression model was developed by setting different ranges for the 
     \label{logregWt}
 \end{figure}
 
-From the figure above the weights selected were 0.64 and 0.97 for 'Low/Minimal' and 'Risk/Caution' respectively. These values were used throughout the training and test data onward.
+From the figure above the weights selected were 0.64 and 0.97 for 'Low/Minimal' and 'Risk/Caution' respectively. These values were used throughout the training and test data onward. The remaining hyperparameters were set at $C$ 2.13, cost function $L1$ and the solver $SAGA$ (Stochastic Average Gradient Augmented).
+% Poderá ser útil comentar este solver, e que na verdade até pode não ser o mais indicado para o problema que estamos a resolver, mas foi o sugerido (tipicamente é indicado para grandes datasets, e que tenham valores em falta e assim).
 
 The learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of over fitting.
 
@@ -348,7 +349,9 @@ Coef$_0$ & Uniform(-5, 5) \\
 \end{tabular}
 \end{table}
 
-As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. In Figure~\ref{svm_weight}
+As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. The weight for the 'Optimal' class that retrieved the highest accuracy was estimated as shown in Figure~\ref{svm_weight}. The remaining classes kept the initially attributed unitary weight.
+The best parameters found were $C$ 6.93 $Coef_0$ -0.20, $degree$ 3, $\gamma$ auto, and $Kernel$ RBF (Radial Basis Function).
+
 
 \begin{figure}[H]
     \centering
@@ -357,51 +360,25 @@ As in the case for LogReg, an ideal class weight was estimated, however here onl
     \label{svm_weight}
 \end{figure}
 
-através da dafiura \ref{svm_weight}, verifica-se que o peso ótimo apra esta classe é $0.8$, quando as restantes classes têm peso 1.
-
-aplicando novamente a otimizacao do modelo SVM , tendo em conta estes pesos, foram obtidos resultados mais satisfatorios
-
-QUAL FOI OS HYPERPAREMTES OBTIDOS
-
-Os parametros usados foram ent:
-
-% https://scikit-learn.org/stable/modules/svm.html#svm-kernels
-% slides da prof
-
-- kernel: Radial Basis Function (rbf) (Gaussian kernel) $\exp(-\gamma ||x - x'||^2)$ e pelos slides da prof $\gamma = 1 / \sigma$ 
-
-- gamma: auto ($1 / n_{feautures}$)
-
-- $C \approx 6.93$
-
-- weights (serve para dar a importancia da penalicao: C * weight torna-se a penalizacao): 
-
-    - optimal 0.8
-
-    - low/minimal: 1
-
-    - risk: 1
-
-
-\subsection{resultados de treino}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_LearningCurve.png}
-    \caption{Analysis of SVM model performance using learning curve representation across varying training data sizes.}
+    \caption{SVM model performance using learning curve representation across varying training data sizes.}
     \label{svm_learningcurve}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTrain.png}
-    \caption{Evaluation of SVM model performance on training data performance via confusion matrix.}
+    \caption{Confusion matrix for the training data of LogReg model}
     \label{svm_cm_train}
 \end{figure}
 
 \begin{table}[H]
 \centering
 \caption{Classification report for SVM model performance evaluation on training data.}
+\label{crTrainSVM}
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
@@ -418,18 +395,18 @@ Risk/Caution & 0.67 & 0.85 & 0.75 & 171 \\
 \end{table}
 
 
-\subsection{resultados de teste}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTest.png}
-    \caption{Evaluation of SVM model performance on test data performance via confusion matrix.}
+    \caption{Confusion matrix for the test data of SVM model}
     \label{svm_cm_test}
 \end{figure}
 
 \begin{table}[H]
 \centering
 \caption{Classification report for SVM model performance evaluation on test data.}
+\label{crTestSVM}
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Class} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{Support} \\
@@ -448,7 +425,8 @@ Risk/Caution & 0.73 & 0.86 & 0.79 & 42 \\
 
 \section{decision tree model}
 
-os paraemtros a otimizar e varias e bla bla Critério de divisão, Profundidade máxima da árvore, Número mínimo de amostras para dividir um nó e Número mínimo de amostras em um nó folha
+The decision tree model was developed considering the hyperparameters available and setting ranges for the possible values to be estimated. The ranges were selected taking in consideration the need to minimize the risk of over fitting. The split criteria are among the most commonly used, and the remaining ranges considered for the hyperparameters are presented in Table~\ref{parametrosDTree}.
+
 
 \begin{table}[H]
 \centering
@@ -466,28 +444,15 @@ Min Samples per Leaf & $[3, 4, \dots, 10]$ \\
 \end{tabular}
 \end{table}
 
-QUAL FOI OS HYPERPAREMTES OBTIDOS
+The split criterion selected was $entropy$, $min_samples_split$ 11, $min_samples_leaf$ 7, and the $max_depth$ 4.
 
-% https://medium.com/@mohtedibf/indepth-parameter-tuning-for-decision-tree-6753118a03c3
-% https://scikit-learn.org/dev/modules/generated/sklearn.tree.DecisionTreeClassifier.html
 
-os paraemtros usados foram ent
-
-- max depth: 4 (The deeper the tree, the more splits it has and it captures more information about the data)
-
-- min sample split: 11 (When we increase this parameter, the tree becomes more constrained as it has to consider more samples at each node.)
-
-- min samples leaf: 7 (This parameter is similar to min samples splits, however, this describe the minimum number of samples of samples at the leafs, the base of the tree.)
-
-splitter: best (to choose the best split at each node instead of 'random')
-
-criterion: entropy (The function to measure the quality of a split. Shannon information gain)
+Considering the entropy of a node (given by the equation below), the goal is to maximize the information gain by assessing each node, with the objective to make them more homogeneous. 
 
     - $H(\text{node}) = - \sum_{\text{Class }_j} p(\text{Class}_j | \text{node}) \log p(\text{Class}_j | \text{node})$
 
 
-
-otimiada a arvore, foi obtida a seguinte estrutua
+The optimized DTree resulted in the structure as seen in Figure~\ref{dtree_tree}.
 
 \begin{figure}[H]
     \centering
@@ -496,9 +461,7 @@ otimiada a arvore, foi obtida a seguinte estrutua
     \label{dtree_tree}
 \end{figure}
 
-verifica-se que foram o depht é de 4, as cores representam a classe (lanrnja tal, verde tal, ...)
-
-\subsection{resultados de treino}
+The decision paths are characterized by the certainty in each node, highlighted by the color saturation for each of the classes ('Low/Minimal', 'Optimal', 'Risk/Caution'). The diminished proportion of end nodes with higher color saturation for 'Optimal' when comparing with the other classes is noteworthy, and consistent with the observations for the remaining models.
 
 \begin{figure}[H]
     \centering
@@ -634,6 +597,77 @@ The authors would like to thank... professora petia e treinador e organizacao do
 
 
 \section{NOTAS}
+
+Discussão dos resultados:
+-\> Importante considerar os kernels selecionados, e o que isso pode representar dado o tamanho reduzido do nosso dataset
+
+-> Há coerência entre métricas (F1-score Test vs Train está à mesma distância quase sempre)
+
+-> Confusion matrix destaca SVM, em que apenas sofre na atribuição da classe real do 'Optimal', mas tende a pender mais na fronteira Optimal/Risk
+
+-> Boxplots, comparação entre modelos tendo em vista a disparidade de performance entre classes (particularmente para LogReg e DTree)
+
+-> Facto de o nosso dataset ter dados repetidos, faz com que regra geral haja uma maior variabilidade em termos de scores (já que o dataset de teste poderá ter uma maior fração de valores que já foram avaliados no dataset de treino)
+
+-> Mais do que tudo, plot das classes sobre os clusters com PCA mostra quão difícil é agregar os pontos com true optimal
+
+-> Fronteiras complexas, particularmente no caso da DTree, indicando necessidade de aumento de dimensionalidade para encontrar fronteiras de separação (incorrendo o risco de over fitting)
+
+-> Temos algumas zonas em branco ao longo do documento, temos de ver como resolver (não sei se será mais texto em alguma zona, mas gosto pouco de adicionar palha)
+
+-> Movi o que tinhas nos modelos aqui para baixo para ver como começava a ficar distribuído
+
+-> Novelty and contributions (3) Compare your solution with the works of other authors (published references) , try to propose a better solution, e.g. improve the performance of the ML model in solving the problem you work with.
+
+SVM
+
+aplicando novamente a otimizacao do modelo SVM , tendo em conta estes pesos, foram obtidos resultados mais satisfatorios
+
+Não introduzi os parâmetros como tabela, porque varia de modelo para modelo e achei que não fosse ficar tão bem. Queres indicar as expressões para todos os kernel ou só discutir brevemente? É que se não começamos a ter pano para mangas, particularmente só com o SAGA....
+
+Nesta parte não introduziria mais texto, deixava de maneira mais simples e ilustrativa como no caso do LogReg
+
+
+QUAL FOI OS HYPERPAREMTES OBTIDOS
+
+Os parametros usados foram ent:
+
+%https://scikit-learn.org/stable/modules/svm.html#svm-kernels
+slides da prof
+
+- kernel: Radial Basis Function (rbf) (Gaussian kernel) $\exp(-\gamma ||x - x'||^2)$ e pelos slides da prof $\gamma = 1 / \sigma$ 
+
+- gamma: auto ($1 / n_{feautures}$)
+
+- $C \approx 6.93$
+
+- weights (serve para dar a importancia da penalicao: C * weight torna-se a penalizacao): 
+
+   - optimal 0.8
+
+   - low/minimal: 1
+
+   - risk: 1
+
+DTREE
+
+QUAL FOI OS HYPERPAREMTES OBTIDOS
+
+% https://medium.com/@mohtedibf/indepth-parameter-tuning-for-decision-tree-6753118a03c3
+% https://scikit-learn.org/dev/modules/generated/sklearn.tree.DecisionTreeClassifier.html
+
+os paraemtros usados foram ent
+
+- max depth: 4 (The deeper the tree, the more splits it has and it captures more information about the data)
+
+- min sample split: 11 (When we increase this parameter, the tree becomes more constrained as it has to consider more samples at each node.)
+
+- min samples leaf: 7 (This parameter is similar to min samples splits, however, this describe the minimum number of samples of samples at the leafs, the base of the tree.)
+
+splitter: best (to choose the best split at each node instead of 'random')
+
+criterion: entropy (The function to measure the quality of a split. Shannon information gain)
+
 
 Considerar usar dataset com informação combinada de atletas para reter carácter temporal (progressão da época, aumento de cargas e combinação com features que tenham referência temporal [carga de treino do dia anterior]
 
