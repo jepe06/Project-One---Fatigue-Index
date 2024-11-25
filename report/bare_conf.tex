@@ -350,7 +350,7 @@ Coef$_0$ & Uniform(-5, 5) \\
 \end{table}
 
 As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. The weight for the 'Optimal' class that retrieved the highest accuracy was estimated as shown in Figure~\ref{svm_weight}. The remaining classes kept the initially attributed unitary weight.
-The best parameters found were $C$ 6.93 $Coef_0$ -0.20, $degree$ 3, $\gamma$ auto, and $Kernel$ RBF (Radial Basis Function).
+The best parameters found were $C$ 6.93, $\gamma$ auto = $1/n_{features}$, and $Kernel$ RBF (Radial Basis Function).
 
 
 \begin{figure}[H]
@@ -371,7 +371,7 @@ The best parameters found were $C$ 6.93 $Coef_0$ -0.20, $degree$ 3, $\gamma$ aut
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTrain.png}
-    \caption{Confusion matrix for the training data of LogReg model}
+    \caption{Confusion matrix for the training data of SVM model}
     \label{svm_cm_train}
 \end{figure}
 
@@ -444,7 +444,7 @@ Min Samples per Leaf & $[3, 4, \dots, 10]$ \\
 \end{tabular}
 \end{table}
 
-The split criterion selected was $entropy$, $min_samples_split$ 11, $min_samples_leaf$ 7, and the $max_depth$ 4.
+The split criterion selected was $entropy$, $min\_samples\_split$ 11, $min\_samples\_leaf$ 7, and the $max\_depth$ 4.
 
 
 Considering the entropy of a node (given by the equation below), the goal is to maximize the information gain by assessing each node, with the objective to make them more homogeneous. 
@@ -522,70 +522,108 @@ Risk/Caution & 0.64 & 0.60 & 0.62 & 43 \\
 \end{tabular}
 \end{table}
 
-\section{comparacao dos modelos E resultados}
+\section{analise de resultados e comp de modelos}
 
-comparar aqui todos os resultados e isso
+\subsection{metricas ou resultados idk}
 
-acuracaia, learning curves, etc , etc
-
-- learning curves
-
-- scalability 
-
-- performance 
-
-- cross validation
-
-observa se q o melhor é tal e tal, mas aquele fez isto e ns q
+para a comparção dos resultados de cada modelo, em vista a escolher aquele que com maior capacidade de classificação dado o contexto, foram criados box plots para analisar algumas das metricas de desempenho:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{assets/box_precision.png}
-    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
-    \label{box_precision}
+    \begin{subfigure}[1]{\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{assets/box_precision.png}
+        \caption{Precision scores across 8-fold cross-validation.}
+        \label{box_precision}
+    \end{subfigure}
+    
+    \vspace{0.5cm}
+
+    \begin{subfigure}[1]{\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{assets/box_recall.png}
+        \caption{Recall scores across 8-fold cross-validation.}
+        \label{box_recall}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    \begin{subfigure}[1]{\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{assets/box_f1score.png}
+        \caption{F1-Scores across 8-fold cross-validation.}
+        \label{box_f1score}
+    \end{subfigure}
+    
+    \caption{Boxplots showing the distribution of (a) precision, (b) recall and (c) f1-scores across 8-fold cross-validation for the different classes and models.}
+    \label{box_plots1}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{assets/box_recall.png}
-    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
-    \label{box_recall}
-\end{figure}
+atraves da analise dos resultados do precision, recall e f1-score, é possivel observar alguns padrões. nomeadamente:
+
+- o modelo SVM é o que tem sempre melhores resultaods, destancando-se pela positiva em todas as métricas;
+
+- a classe Optimal é destacada pelos seus maus resultados, revelando dificuldades na sua identificação e justificando a atribuiação dos pesos na otimizacao dos modelos.
+
+- o modelo decision tree parece apresentar uma variância significativa nos seus resultados across all metrics, o que pode indicar que é um modelo sensível aos dados utilizados tanto no treino como no teste
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/box_accuracy.png}
-    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
+    \caption{Boxplots showing the distribution of accuracy scores across 8-fold cross-validation for different models.}
     \label{box_accuracy}
 \end{figure}
 
-lalal pca
+de forma mais direta, através do accuracy, verifica-se mais uma vês o destaque do desemepnho do modelo SVM quando comparado aos restantes, pelo que será o melhor modelo obtido.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{assets/pca_dtree.png}
-    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
-    \label{pca_dtree}
-\end{figure}
+\subsection{representao no espaço?}
+
+em vista a auferir as razoes por detras de algumas conclusoes a partir dos resultados expressos acima, decidiu-se representar the decision boundaries for each model on principal component axes, tal como as obsservacoes e respetivas classificacoes reais. é importante notar que the decision boundaries são uma aproximação, uma vez que foi aplicado o PCA retendo apenas as duas primeiras direções, pelo que alguma da variação foi perdidade na criação dos decision boundaries, sendo perdido algum desempenho do modelo na visualização gráfica.
+
+atraves da analise das seguintes figuras, pode-se verificar entao no fundo uma aproximacao do decision bondarie no espaço das componentes pricipains, revelando que categoriza as observacacoes mais a esquerda como low/minimal, as do meio como optimal, e as mais a direita como risk/caution (NS SE SE META ISSO, QUERIA FAZER UMA INTERPRETACAO MAIS GERAL DE TODOS IDK, OQ ACHAS?)
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/pca_reglog.png}
-    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
+    \caption{Approximation of decision boundaries for logistic regression on principal component axes, showing true and predicted classes.}
     \label{pca_reglog}
 \end{figure}
+
+No caso da análise da Regressão Logística, observa-se uma maior precisão na classificação da classe Low/Minimal, o que também é confirmado pelo boxplot correspondente, que mostra uma mediana mais alta para essa classe em comparação com as outras. Isso indica que o modelo apresenta um desempenho relativamente consistente e confiável ao classificar instâncias dessa classe. 
+
+Quanto às restantes classes, Optimal e Risk/Caution, estas não parecem ter resultados tão precisos, não havendo uma separação mais significativa entre as classes, indicando que o modelo tem dificuldade em distinguir claramente entre essas classes, especialmente quando se observa a distribuição das previsões e as misclassifications no gráfico.
+
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/pca_svm.png}
-    \caption{CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION CAPTION}
-    \label{pca_reglog}
+    \caption{Approximation of SVM decision boundaries on principal component axes, showing true and predicted classes.}
+    \label{pca_svm}
 \end{figure}
 
+Através da análise da figura \ref{pca_svm}, é possível observar claramente o comportamento do kernel RBF no SVM, evidenciado pela delimitação mais precisa das fronteiras de decisão entre as classes. Esta delimitacao, e atendendo a classificacao real de cada observacao, leve a querer que haja uma melhor precisão na classificação das diferentes classes, capturando melhor as complexidades dos dados, o que também foi confimrado pelos resultados da figura \ref{box_precision}.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/pca_dtree.png}
+    \caption{Approximation of decision boundaries for decision tree on principal component axes, showing true and predicted classes.}
+    \label{pca_dtree}
+\end{figure}
 
+por ultimo, a decision tree apresenta decision boundaries mais complexos, o que se pode dever as suas decisões discretas, poeque ao contrário dos outros modelos, que tentam ajustar uma superfície contínua para separar as classes, o decision tree divide o espaço de características de forma hierárquica e discreta, poeque em cada nó da árvore acontece uma divisao baseadas em condições binárias
+
+embora a dtree seja um modelo poderoso para capturar relações não-lineares, a sua representação gráfica neste contexto mostra que enfrenta dificuldades para separar claramente as observações entre as classes, com exceção da classe "Risk/Caution", que apresenta um comportamento mais favorável.
+
+AUMENTO DIMENSIONALIDADE E OVERFITING ?
+
+sobre todos: 
+
+Estas análises gráficas ajudam a perceber a complexidade do problema e a dificuldade dos modelos em conseguir uma separação eficiente entre as classes. A sobreposição, especialmente da classe Optimal, destaca a necessidade de considerar ajustes nos modelos, transformações adicionais nos dados ou até modelos mais robustos que possam capturar melhor as relações subjacentes entre as classes e melhorar a precisão da classificação. (CONCLUSAO OU AQUI?)
 
 \section{Conclusion}
+
+SVM apresenta um desempenho superior, com maior consistência e precisão em relação às outras abordagens analisadas.
 
 The conclusion goes here.
 
@@ -609,10 +647,6 @@ Discussão dos resultados:
 
 -> Facto de o nosso dataset ter dados repetidos, faz com que regra geral haja uma maior variabilidade em termos de scores (já que o dataset de teste poderá ter uma maior fração de valores que já foram avaliados no dataset de treino)
 
--> Mais do que tudo, plot das classes sobre os clusters com PCA mostra quão difícil é agregar os pontos com true optimal
-
--> Fronteiras complexas, particularmente no caso da DTree, indicando necessidade de aumento de dimensionalidade para encontrar fronteiras de separação (incorrendo o risco de over fitting)
-
 -> Temos algumas zonas em branco ao longo do documento, temos de ver como resolver (não sei se será mais texto em alguma zona, mas gosto pouco de adicionar palha)
 
 -> Movi o que tinhas nos modelos aqui para baixo para ver como começava a ficar distribuído
@@ -627,8 +661,6 @@ Não introduzi os parâmetros como tabela, porque varia de modelo para modelo e 
 
 Nesta parte não introduziria mais texto, deixava de maneira mais simples e ilustrativa como no caso do LogReg
 
-
-QUAL FOI OS HYPERPAREMTES OBTIDOS
 
 Os parametros usados foram ent:
 
