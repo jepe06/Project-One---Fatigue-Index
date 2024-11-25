@@ -59,15 +59,15 @@ joaopcardoso@ua.pt}}
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
-temos que arranjar refs para ir metendo por ai
+Improving performance of elite athletes is the ultimate goal of any sports coach. For proper planning and continued improvement, a good balance between workload and rest is crucial. There are several metrics used to assess the impact of the workload that athletes are subject of, with the rate of perceived exertion being amongst the most relevant throughout decades of research in the field. 
+For this project the authors used data from the 2019/2020 season from the local swimming club CAPGE, provided by Head Coach Daniel Tavares, in order to develop machine learning models for fatigue prediction. The data consisted of athlete's feedback and training load, of which a set of features was selected and average over different periods. The models used were logistic regression, support vector machine, and decision tree. Overall the models performed decently, with support vector machine standing out as the best performing. 
+The model developed was documented and shared in Excel format for practical application, and will be followed up with further data collection.
 \end{abstract}
-Não esquecer de definir abreviaturas na primeira ocorrência e usá-las daí em diante.
-
 
 \begin{quote}
 \small
 \noindent
-\textbf{Keywords:} Your, Keywords, Go, Here
+\textbf{Keywords:} swimming, fatigue prediction, LogReg, SVM, DTree
 \end{quote}
 
 \IEEEpeerreviewmaketitle
@@ -76,7 +76,7 @@ Não esquecer de definir abreviaturas na primeira ocorrência e usá-las daí em
 \section{Introduction}
 The evolution in performance of high level athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved, through careful tailoring of the training regimen. One of the most relevant metrics since the dawn of structure training in sports is the feedback from the athlete, commonly described as the rate of perceived exertion (RPE). This single metric comprises the athletes analysis and intuition of the effort that was carried and how ready they feel for another bout of training. In recent years, more and more sports coaches have relied heavily on collected data to better assess, plan and adjust the training plans of their athletes in a systematic way. This allows for a fine balance between intense workouts, that generate stronger stimuli for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the table. 
 
-In the scope of the first project for Foundations of Machine Learning, we decided to partner with the local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to treat the data (kindly shared by Sr Coach Daniel Tavares) for estimating the fatigue of several athletes. The data was curated and prepared to implement and fit several machine learning algorithms to estimate fatigue after workout.
+In the scope of the first project for Foundations of Machine Learning, we decided to partner with the local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to treat the data (kindly shared by Head Coach Daniel Tavares) for estimating the fatigue of several athletes. The data was curated and prepared to implement and fit several machine learning algorithms to estimate fatigue after workout.
 
 With this approach, we aim to generalize the models for different athletes/sports, and make it available to the local club for implementation and further testing. 
 
@@ -86,9 +86,9 @@ With this approach, we aim to generalize the models for different athletes/sport
 
 Over the past decade there have been significant improvements in the field of ML applied algorithms for sports' related applications. Here we present the most relevant work in fatigue and injury prediction, which is not specifically on the sport we're assessing in our dataset, which lead to additional interpretations from the works analyzed to our own case of study. In general, the problem of class imbalance is seen throughout the literature, and different solutions are proposed, such as data gathering and preprocessing, over sampling and under sampling, with SMOTE (synthetic minority over-sampling technique) being the most commonly used approach for over sampling. As early as 2010, Gabbet and colleagues modeled the risk of injury with a monodimensional approach using logistic regression, based on athletes rate of perceived exertion, showing that even with a monovariate approach to injury prediction useful results could be attained. In recent years, several authors have focused in alternative techniques such as Logistic Regression, Random Forest, Support Vector Machine, or Convolutional Neural Network on Multivariate Timeseries (the references for these papers can be found in the paper "A Narrative Review").
 
-Besides model selection, feature engineering and selection is among the most debated topics. Several authors opt to include GPS data, metabolic consumption, mechanical load, RPE, detailed quantification of workloads, ratio between acute:chronice loads. Despite the multivariate imputation, data analysis often shows strong correlations between them, leading to over fitting problems (usually model independent).
+Besides model selection, feature engineering and selection is among the most debated topics. Several authors opt to include GPS data, metabolic consumption, mechanical load, RPE, detailed quantification of workloads, ratio between acute:chronice loads. Despite the multivariate imputation, data analysis often shows strong correlations between them, leading to overfitting problems (usually model independent).
 
-In the work by Carey et al. (2018) different algorithms have been implemented to predict the risk of injury in an Australian football club. The data collection lasted for three seasons, consisting of absolute and relative training load metrics, derived from GPS, accelerometer, and RPE data. The prediction models used were regularized logistic regression, generalized estimating equations, random forests, and support vector machines, with periods of 3, 6, and 21 days (these periods have been studied and verified as adequate for the case of Australian football). The periods served to calculate moving averages and exponentially weighted moving averages (EWMA). The latter allowed to account for the decay in significance of the training load the further it happened from a given day, in accordance with the work from Williams et al. (2016). From the results it was possible to verify that over fitting was very likely due to the multicollinearity between variables, which was confirmed by principal component analysis (PCA). The use of PCA with regularized logistic regression slightly improved the results.
+In the work by Carey et al. (2018) different algorithms have been implemented to predict the risk of injury in an Australian football club. The data collection lasted for three seasons, consisting of absolute and relative training load metrics, derived from GPS, accelerometer, and RPE data. The prediction models used were regularized logistic regression, generalized estimating equations, random forests, and support vector machines, with periods of 3, 6, and 21 days (these periods have been studied and verified as adequate for the case of Australian football). The periods served to calculate moving averages and exponentially weighted moving averages (EWMA). The latter allowed to account for the decay in significance of the training load the further it happened from a given day, in accordance with the work from Williams et al. (2016). From the results it was possible to verify that overfitting was very likely due to the multicollinearity between variables, which was confirmed by principal component analysis (PCA). The use of PCA with regularized logistic regression slightly improved the results.
 
 More recent studies have employed ensemble algorithms, in order to take most of the different learning models selected, taking into account the need to balance the classes as is common practice for this type of problems. 
 
@@ -132,10 +132,11 @@ The methodology defined for this project consisted of three major steps: assessm
 \label{fig:methodology}
 \end{figure}
 
-The programming language was Python, and the packages available therein, with notable mention for \texttt{scikit-learn}. After data normalization for all features \texttt{StandardScaler}, the data was separated between training and testing data (80/20, respectively), using the \texttt{train\_test\_split} function from \texttt{sklearn}. The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
-The ML models selected for the project were \texttt{LogisticRegression}, \texttt{SupportVectorMachine}, and \texttt{DecisionTreeClassifier}, where the modeling approach and hyperparameters are detailed below. For the given hyperparameters available in each model the function \texttt{RandomizedSearchCV} was used with 8-fold cross-validation to minimize the risk of over fitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
+The programming language used was Python, and the packages available therein, with notable mention for \texttt{scikit-learn}. After data normalization for all features \texttt{StandardScaler}, the data was separated between training and testing data (80/20, respectively), using the \texttt{train\_test\_split} function from \texttt{sklearn}. The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
+The ML models selected for the project were \texttt{LogisticRegression}, \texttt{SupportVectorMachine}, and \texttt{DecisionTreeClassifier}, where the modeling approach and hyperparameters are detailed below. For the given hyperparameters available in each model the function \texttt{RandomizedSearchCV} was used with 8-fold cross-validation to minimize the risk of overfitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
 
 The metrics used to assess the different models are presented in Table \ref{evaluationmetrics}, and are consistent with those used in the literature.
+
 \begin{table}[H]
 \centering
 \caption{Metrics for multiclass classification model evaluation.}
@@ -154,7 +155,7 @@ Accuracy & $\dfrac{\sum_{i=1}^{C} TP_i}{\sum_{i=1}^{C} (TP_i + TN_i + FP_i + FN_
 
 Given the class imbalance associated with the problem at hand, the importance of precision, recall and F1-score per class are especially relevant, along with the confusion matrix, to understand how the model is failing to correctly classify the various observations. The precision is the ratio of true positives for all the positives attributed (the higher, the better). Recall (or sensitivity) gives the ratio of true positives among true positives and false negatives, where lower values indicate a higher number of misidentified true positives. The F1-score provides a balanced assessment of the model, taking a harmonic mean of precision a recall, providing a particularly good way to assess datasets with imbalanced classes, while accuracy provides an overall assessment with the ratio of true positives and true negatives over the total predictions.
 
-The learning curve was used for all models, to highlight the relation between the size of the training dataset and the performance of the adjusted model, providing a good insight into the quality of the fitting. In the case of increasing accuracy of the training curve while the validation curve remains constant or decreases below the training curve, is a clear sign of over fitting. In the case that both curves converge, but to low values (below 0.6) is a sign of under fitting and poor learning from the model.
+The learning curve was used for all models, to highlight the relation between the size of the training dataset and the performance of the adjusted model, providing a good insight into the quality of the fitting. In the case of increasing accuracy of the training curve while the validation curve remains constant or decreases below the training curve, is a clear sign of overfitting. In the case that both curves converge, but to low values (below 0.6) is a sign of under fitting and poor learning from the model.
 
 The confusion matrix was used to assess the performance in estimating each class during training and testing, giving a clear idea how the model is trying to predict the classes, helping to better interpret the class weights attributed.
 
@@ -214,6 +215,8 @@ To assess how the different features vary among them and in relation to the targ
 
 From the corr matrix it was possible to exclude several of the features, which was verified by how the classes are distributed across the scales for each feature. Figure \ref{classdist_feat} illustrates a proper and poor example of class distribution for the given features.
 
+Considering that the weights used in the coach's original estimation of fatigue were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split it. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature. 
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}[1]{\linewidth}
@@ -235,8 +238,6 @@ From the corr matrix it was possible to exclude several of the features, which w
     \caption{Class distributions across different metrics: (a) perceived effort, (b) state spirit.}
     \label{classdist_feat}
 \end{figure}
-
-Considering that the weights used in the coach's original estimation of fatigue were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split it. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature. 
 
 Figure \ref{fatig_Ff} illustrates the periodicity of higher training loads and subsequent lower intensity periods. It is important to refer that once the two higher intensity classes were combined the loss of granularity of how fatigue changes throughout the season is evident.  
 \begin{figure}[H]
@@ -262,7 +263,7 @@ At this point it was possible to select the most relevant features for modeling:
 %\newpage
 \section{Classification Models}
 
-In this section the results for the three machine learning models are presented and detailed in equal fashion, to facilitity the discussion and interpretation in the next section. As was mentioned in the methodology, the modeling approach was the same for all, and here the training dataset results are presented first, followed by the test dataset results.
+In this section the results for the three machine learning models are presented and detailed in equal fashion, to ease the discussion and interpretation in the next section. As was mentioned in the methodology, the modeling approach was the same for all, and here the training dataset results are presented first, followed by the test dataset results.
 
 \section{Logistic Regression}
 
@@ -273,27 +274,32 @@ The logistic regression model was developed by setting different ranges for the 
     \includegraphics[width=1\linewidth]{assets/LOGR_class_weights.png}
     \caption{Effect of the 'Risk/Caution' and 'Low/Minimal' classes weight on LogReg model accuracy.}
     \label{logregWt}
-\end{figure}
+\end{figure} %class weights
 
-Since the highest accuracy was achieved with class weights of 0.64 for 'Low/Minimal' and 0.97 for 'Risk/Caution', these values were selected, while the original weight for the 'Optimal' class was retained. These weight values were applied consistently across both the training and test datasets. For model optimization, the remaining hyperparameters were set to $C \approx 2.13$, the cost function was $L1$ (Lasso regularization) and the solver used was $SAGA$ (Stochastic Average Gradient Augmented).
+Since the highest accuracy was achieved with class weights of 0.64 for 'Low/Minimal' and 0.97 for 'Risk/Caution', these values were selected, while the original weight for the 'Optimal' class was retained. These weight values were applied consistently across both the training and test datasets. For model optimization, the remaining hyperparameters were set to $C \approx 2.13$, the cost function was $L1$ (Lasso regularization) and the solver used was SAGA (Stochastic Average Gradient Augmented). Despite the fact that it is most commonly used for large datasets, it was the best performing kernel of those available in the initial assessment, with the advantage that it allowed for regularization. The equation for the solver is given by,
+\begin{equation}
+\underset{w}{\text{min}} \, \frac{1}{n} \sum_{i=1}^{n} \log\left(1 + \exp\left(-y_i X_i^\top w\right)\right) + \lambda R(w)
+\end{equation} % SAGA solver
 
-% Poderá ser útil comentar este solver, e que na verdade até pode não ser o mais indicado para o problema que estamos a resolver, mas foi o sugerido (tipicamente é indicado para grandes datasets, e que tenham valores em falta e assim). -> a eq. que tinha visto não era a aplicada ao logreg, e parece-me viável incluir no documento para discussão.
-
-The learning curve shown in Figure \ref{cf_train_LogReg} illustrates the relationship between the training set size and the performance of the adjusted model, providing valuable insight to assess the model's behavior in terms of overfitting or underfitting. In this case, the learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of over fitting.
+The learning curve shown in Figure \ref{lcLogReg} illustrates the relationship between the training set size and the performance of the adjusted model, providing valuable insight to assess the model's behavior in terms of overfitting or underfitting. In this case, the learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of overfitting.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/LOGR_lercurve.png}
     \caption{LogReg model performance using learning curve representation across varying training data sizes.}
     \label{lcLogReg}
-\end{figure}
+\end{figure} %lc 
+
+Considering the confusion matrices of the training (Fig.~\ref{cf_train_LogReg}) and test datasets (Fig.~\ref{cm_Test_LogReg}), it is possible to learn how well the model attributes true and false positives, and how they are distributed. For this particular model it is visible how similar they are, and how much better the prediction performance is for the classes in the extremities ('Low/Minimal' and 'Risk/Caution'), regardless of the weight attributed to the 'Optimal' class (even though a marginal improvement was observed compared to the initial weightless model).
+
+The classification report provides a more straight forward comparison between the training (Table~\ref{crTrainLogReg}) and the test datasets (Table~\ref{crTestLogREg}), while showing class specific the performance metrics, further confirming the interpretation of the confusion matrix. Both classification reports present similar values, which is a good indicator that the model is properly fitted. As previously mentioned, the performance metrics are worse for 'Optimal' when compared to the remaining classes.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/LOGR_confmatTrain.png}
     \caption{Confusion matrix for the training data of LogReg model.}
     \label{cf_train_LogReg}
-\end{figure}
+\end{figure} %cm Train
 
 \begin{table}[H]
 \centering
@@ -312,14 +318,14 @@ Risk/Caution & 0.61 & 0.72 & 0.66 & 171 \\
 \textbf{Weighted avg} & 0.64 & 0.63 & 0.63 & 511 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table} %cr Train
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/LOGR_confmatTest.png}
     \caption{Confusion matrix for the test data of LogReg model.}
     \label{cm_Test_LogReg}
-\end{figure}
+\end{figure} %cm Test
 
 \begin{table}[H]
 \centering
@@ -338,12 +344,7 @@ Risk/Caution & 0.71 & 0.76 & 0.74 & 42 \\
 \textbf{Weighted avg} & 0.65 & 0.65 & 0.65 & 128 \\
 \bottomrule
 \end{tabular}
-\end{table}
-
-Considering the confusion matrices of the training (Fig.~\ref{cf_train_LogReg}) and test datasets (Fig.~\ref{cm_Test_LogReg}), it is possible to learn how well the model attributes true and false positives, and how they are distributed. For this particular model it is visible how similar they are, and how much better the prediction performance is for the classes in the extremities ('Low/Minimal' and 'Risk/Caution'), regardless of the weight attributed to the 'Optimal' class (even though a marginal improvement was observed compared to the initial weightless model).
-
-The classification report provides a more straight forward comparison between the training (Table~\ref{crTrainLogReg}) and the test datasets (Table~\ref{crTestLogREg}), while showing class specific the performance metrics, further confirming the interpretation of the confusion matrix. Both classification reports present similar values, which is a good indicator that the model is properly fitted. As previously mentioned, the performance metrics are worse for 'Optimal' when compared to the remaining classes.
-
+\end{table} %cr Test
 
 \section{Support Vector Machine}
 
@@ -364,36 +365,44 @@ Degree & \{1, 2, 3\} \\
 Coef$_0$ & $[-5, 5]$ \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table} %hyperparameters
 
-As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. The weight being smaller than $1$ is penalizing the class, making it less likely  importante referir que estes pesos oq fazem é aumentar a penalização para classificacoes incorretas, nomedamente: $C_{class} \leftarrow C \times w_{class}$ \cite{svm24}.
+As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. The weight being smaller than $1$ is penalizing the class, making it more likely to decide for one of the other classes when close to the decision boundary. The resulting class is then defined by,
+
+$C_{class} \leftarrow C \times w_{class}$ \cite{svm24}.
+
+The weight for the 'Optimal' class that retrieved the highest accuracy was estimated as shown in Figure~\ref{svm_weight} ($w_{Optimal}=0.8$). 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_OptimalWeight.png}
     \caption{Effect of the 'Optimal' class weight on SVM model accuracy.}
     \label{svm_weight}
-\end{figure}
+\end{figure} %class weight
 
-The weight for the 'Optimal' class that retrieved the highest accuracy was estimated as shown in Figure~\ref{svm_weight} ($w_{Optimal}=0.8$). The remaining classes kept the initially attributed unitary weight. The best parameters found, for this weights, were $C$ 6.93, $\gamma$ auto ($1/n_{features}$), and kernel RBF (Radial Basis Function).
+The remaining classes kept the initially attributed unitary weight. The best parameters found, for this weights, were $C$ 6.93, $\gamma$ auto ($1/n_{features}$), and kernel RBF (Radial Basis Function).
 
-$$\text{RBF kernel: } \exp(-\gamma ||x - x'||^2)$$
+$$\text{RBF kernel: } \exp(-\gamma ||x - x'||^2)$$ %RBF
+
+In this case, the learning curves  for both the training and cross-validation sets (Fig. \ref{svm_learningcurve}) converge, with no signs of overfitting. However, it could be beneficial to expand the training dataset further, as the cross-validation score continues to improve. This suggests that the model might still benefit from more data, which could enhance its ability to generalize better.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_LearningCurve.png}
     \caption{SVM model performance using learning curve representation across varying training data sizes.}
     \label{svm_learningcurve}
-\end{figure}
+\end{figure} % lc
 
-In this case, the learning curves  for both the training and cross-validation sets (Fig. \ref{svm_learningcurve}) converge, with no signs of overfitting. However, it could be beneficial to expand the training dataset further, as the cross-validation score continues to improve. This suggests that the model might still benefit from more data, which could enhance its ability to generalize better.
+The confusion matrices for both training (Table~\ref{svm_cm_train}) and  testing datasets (Table~\ref{svm_cm_test}) show a good performance in the classification of all classes, especially for those in the extremities (as already verified in the previous model).
+
+The classification reports of the training (Table~\ref{crTrainSVM}) and testing datasets (Table~\ref{crTestSVM}) show consistent results among them. However, it is noteworthy the low value of Recall for the 'Optimal' class in both cases, indicating several misclassification occurrences (observations that should be 'Optimal' but were classified as one of the other classes). 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTrain.png}
     \caption{Confusion matrix for the training data of SVM model}
     \label{svm_cm_train}
-\end{figure}
+\end{figure} %cm Train
 
 \begin{table}[H]
 \centering
@@ -412,14 +421,14 @@ Risk/Caution & 0.67 & 0.85 & 0.75 & 171 \\
 \textbf{Weighted avg} & 0.77 & 0.76 & 0.75 & 511 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table} %cr Train
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/SVM_ConfusionMatrixTest.png}
     \caption{Confusion matrix for the test data of SVM model}
     \label{svm_cm_test}
-\end{figure}
+\end{figure} %cm Test
 
 \begin{table}[H]
 \centering
@@ -438,17 +447,11 @@ Risk/Caution & 0.73 & 0.86 & 0.79 & 42 \\
 \textbf{Weighted avg} & 0.75 & 0.74 & 0.72 & 128 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table} %cr Test
 
+\section{Decision Tree Model}
 
-atendendo as matrizes de cofnusao de treino e de teste (figures \ref{svm_cm_train} and \ref{svm_cm_test}, respectively), verifica-se um bom desempenho na idenfiticacao de todas as classes, principalemente das extremas ('Low/Minimal' and 'Risk/Caution'), tando nos dados de teste como de treino.
-
-quanto aos classification report dos dados de treino e de teste (Tables \ref{crTrainSVM} and \ref{crTestSVM}, respectively), são possiveis verificar resultados consistentes entre ambos os reports. Oberva-se no entando um mua recall para a classe 'Optimal', indicando many missclassification fot this class.
-
-
-\section{decision tree model}
-
-The decision tree model was developed considering the hyperparameters available and setting ranges for the possible values to be estimated \cite{dtree17}. The ranges were selected taking in consideration the need to minimize the risk of over fitting. The split criteria are among the most commonly used, and the remaining ranges considered for the hyperparameters are presented in Table~\ref{parametrosDTree}.
+The decision tree model was developed considering the hyperparameters available and setting ranges for the possible values to be estimated \cite{dtree17}. The ranges were selected taking in consideration the need to minimize the risk of overfitting. The max depth illustrates how deep the tree goes, and can be a sign of overfitting if it 'grows' too long. The min sample split constrains the tree in the number of splits allowed, as it requires more samples at each child node. A similar hyperparameter is min sample per leaf, meaning the minimum number of samples at any end node (making them more relevant). The split criterion evaluates the quality of a split when building the decision tree. The hyperparameters and ranges selected are presented in Table~\ref{parametrosDTree}.
 
 \begin{table}[H]
 \centering
@@ -464,25 +467,11 @@ Min Samples to Split & $[5, 6, \dots, 20]$ \\
 Min Samples per Leaf & $[3, 4, \dots, 10]$ \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table} %hyperparameters
 
-The max tree depth selected was 4, minimium samples to split 11, minimium samples per leaf 7, and the split criterion entropy ($H$)
+The max tree depth selected was 4, minimum samples to split 11, minimum samples per leaf 7, and the split criterion entropy ($H$) is given by,
 
 $$H(\text{node}) = - \sum_{\text{Class }_j} p(\text{Class}_j | \text{node}) \log p(\text{Class}_j | \text{node})$$
-
-%%%%%%%%%%
-% https://scikit-learn.org/dev/modules/generated/sklearn.tree.DecisionTreeClassifier.html
-
-%max depth: (The deeper the tree, the more splits it has and it captures more information about the data)
-
-%min sample split: (When we increase this parameter, the tree becomes more constrained as it has to consider more samples at each node.)
-
-%min samples leaf: (This parameter is similar to min samples splits, however, this describe the minimum number of samples of samples at the leafs, the base of the tree.)
-
-%splitter: best (to choose the best split at each node instead of 'random')
-
-%criterion: (The function to measure the quality of a split. Shannon information gain)
-%%%%%%%%%%
 
 The optimized DTree resulted in the structure as seen in Figure~\ref{dtree_tree}.
 
@@ -491,27 +480,29 @@ The optimized DTree resulted in the structure as seen in Figure~\ref{dtree_tree}
     \includegraphics[width=1\linewidth]{assets/DTREE_Tree.png}
     \caption{Visualization of the decision tree model after optimization using randomized search.}
     \label{dtree_tree}
-\end{figure}
+\end{figure} %dtree fig
 
 The decision paths are characterized by the certainty in each node, highlighted by the color saturation for each of the classes ('Low/Minimal', 'Optimal', 'Risk/Caution'). The diminished proportion of end nodes with higher color saturation for 'Optimal' when comparing with the other classes is noteworthy, and consistent with the observations for the remaining models.
+
+The learning curves were assessed from Fig.~\ref{dtree_lcurve}, which shows a significant improvement up until a training set size of 250, but with there's no significant gain with increasing set sizes, with the learning curves even diverging at 450 samples.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/DTREE_LearningCurve.png}
     \caption{Analysis of decision tree model performance using learning curve representation across varying training data sizes.}
     \label{dtree_lcurve}
-\end{figure}
+\end{figure} %lc
 
-Ao analisar as learning curves {Fig. \ref{dtree_lcurve}}, for both the training and cross-validation sets, é possivel verificar que até ao training size de 250, o modelo beneficia significatvemente do aumento dos dados, sendo que após este training size, he cross-validation score stabilized paralelamente ao training socre, revelando convergencia, sem sinais de overfitting.
+From the confusion matrices for training (Figure~\ref{dtree_cmtrain}) and testing datasets (Figura~\ref{dtree_cmtest}) it is visible that the model had some difficulty between the 'Optimal' and 'Risk/Caution' classes, but with a satisfying prediction performance for 'Low/Minimal'.
 
-%sera q cale a pena dizer q no fim ela começa a descer pelo q poderia ser ovefitting ?
+The classification reports for both training (Table~\ref{cr_dtree_train}) and testing datasets (Table~\ref{cr_dtree_test}) are well aligned with the interpretation of the confusion matrices. Furthermore, the performance metrics are consistent between datasets, with no indication of potential overfitting.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/DTREE_ConfusionMatrixTrain.png}
     \caption{Evaluation of decision tree model performance on training data performance via confusion matrix.}
     \label{dtree_cmtrain}
-\end{figure}
+\end{figure} %cm Train
 
 \begin{table}[H]
 \centering
@@ -530,16 +521,14 @@ Risk/Caution & 0.69 & 0.63 & 0.65 & 171 \\
 \textbf{Weighted avg} & 0.68 & 0.66 & 0.67 & 511 \\
 \bottomrule
 \end{tabular}
-\end{table}
-
-\subsection{resultados de teste}
+\end{table} %cr Train
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/DTREE_ConfusionMatrixTest.png}
     \caption{Evaluation of decision tree model performance on test data performance via confusion matrix.}
     \label{dtree_cmtest}
-\end{figure}
+\end{figure} %cm Test
 
 \begin{table}[H]
 \centering
@@ -558,11 +547,7 @@ Risk/Caution & 0.64 & 0.60 & 0.62 & 43 \\
 \textbf{Weighted avg} & 0.61 & 0.61 & 0.61 & 128 \\
 \bottomrule
 \end{tabular}
-\end{table}
-
-Tendo em conta as matrizes de confusao relativamente aos daods de treino e de teste (figures \ref{dtree_cmtrain} and \ref{dtree_cmtest}, respectively), é possivel verificar uma pequena confusão do modelo na classificacao das classes 'Optimal' and 'Risk/Caution', mas uma classficiacao bastante satisfcatoria na classificacao da classe 'Low/Optimal'.
-
-Quanto ao metricas de avalicao do modelo apresetnadas nos classificaions reports, presenteded in the tables \ref{cr_dtree_train} and \ref{cr_dtree_test}, nota-se que de facto as métricas relativas à classe 'Low/Minimal' correspondem às expetativas criadas pelas matrizes de confução. Para além disso, a nível global, tanto os resultados de teste como os de treino são semelhantes, não levantando suspeitras sobre overffintg, o que é satisfatório.
+\end{table} %cr Test
 
 
 
@@ -570,7 +555,8 @@ Quanto ao metricas de avalicao do modelo apresetnadas nos classificaions reports
 
 \subsection{metricas ou resultados idk}
 
-Para comparar o desempenho dos diferentes modelos e selecionar aquele com maior capacidade de classificação dentro do contexto, foram gerados box plots para analisar várias métricas de desempenho. O processo de validação cruzada foi realizado utilizando 8 folds no conjunto de dados. Em cada iteração, os modelos foram treinados com 7 folds e testados no fold restante. As métricas de desempenho (precision, recall, f1-score e accuracy) foram calculadas para cada iteração e, posteriormente, usadas para avaliar o desempenho global de cada modelo. Para cada modelo, foram aplicados os hiperparâmetros ótimos definidos anteriormente.
+In order to clearly visualize and compare the different models, the data collected was represented using box plots, as depicted in Figure~\ref{box_precision}, Figure~\ref{box_recall}, and Figure~\ref{box_f1score}.
+The results were obtained from 8-fold cross-validation for the whole dataset in each of the models. In each iteration the models were training in 7 folds and tested with the eighth. The performance metrics were determined for each iteration and used afterwards to evaluate the global performance of each model. Each model used the optimized hyperparameters shared above.
 
 \begin{figure}[H]
     \centering
@@ -601,7 +587,7 @@ Para comparar o desempenho dos diferentes modelos e selecionar aquele com maior 
     
     \caption{Boxplots showing the distribution of (a) precision, (b) recall and (c) f1-scores across 8-fold cross-validation for the different classes and models.}
     \label{box_plots1}
-\end{figure}
+\end{figure} %precision, recall, f1
 
 
 Boxplots, comparação entre modelos tendo em vista a disparidade de performance entre classes (particularmente para LogReg e DTree)
