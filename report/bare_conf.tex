@@ -134,8 +134,8 @@ The methodology for this project consisted of three major steps: assessment and 
 \label{fig:methodology}
 \end{figure}
 
-The programming language used was Python, and the packages available therein, with notable mention for \texttt{scikit-learn} \cite{scikit-learn}. After data normalization for all features \texttt{StandardScaler}, the data was separated between training and testing data (80/20, respectively), using the \texttt{train\_test\_split} function from \texttt{sklearn}. The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
-The ML models selected for the project were Logistic Regression (LogReg), Support Vector Machine (SVM), and Decision Tree Classifier (DTree), where the modeling approach and hyperparameters are detailed below. For the given hyperparameters available in each model the function \texttt{RandomizedSearchCV} was used with 8-fold cross-validation to minimize the risk of overfitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
+The programming language used was Python, and the packages available therein, with notable mention for \texttt{scikit-learn} \cite{scikit-learn}. After data normalization for all features (using \texttt{StandardScaler}), the data was separated between training and testing data (80/20, respectively), using the \texttt{train\_test\_split} function from \texttt{sklearn}. The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
+The ML models selected for the project were Logistic Regression (LogReg), Support Vector Machine (SVM), and Decision Tree Classifier (DTree), where the modeling approach and hyperparameters are detailed throughout. For the given hyperparameters available in each model the function \texttt{RandomizedSearchCV} was used, to optimize the model, with 8-fold cross-validation, to minimize the risk of overfitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
 
 The metrics used to assess the different models are presented in Table \ref{evaluationmetrics}, and are consistent with those used in the literature.
 
@@ -672,6 +672,9 @@ Finally, the model will be implemented at the local club, and further work is pl
 
 The authors would like to thank Professor Petia Georgieva for the support and fruitful discussions, the Head Coach Daniel Tavares and CAPGE for the data and encouragement in developing this project.
 
+\section*{Work Load}
+
+Both authors contributed equally to the project.
 
 \section{NOTAS}
 
