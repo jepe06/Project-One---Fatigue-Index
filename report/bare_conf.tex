@@ -36,17 +36,17 @@
 \begin{document}
 
 
-\title{Applying ML Models to Assess Fatigue and Prevent Injury in High Performance Swimming Athletes}
+\title{Applying Machine Learning Models to Assess Fatigue and Prevent Injury in High Performance Swimming Athletes}
 
 % use a multiple column layout for up to three different
 % affiliations
-\author{\IEEEauthorblockN{Hugo Veríssimo}
+\author{\IEEEauthorblockN{\\ Hugo Veríssimo}
 \IEEEauthorblockA{Foundations of Machine Learning 24/25\\
 University of Aveiro\\
 Aveiro, Portugal\\
 hugoverissimo@ua.pt}
 \and
-\IEEEauthorblockN{João Cardoso}
+\IEEEauthorblockN{\\ João Cardoso}
 \IEEEauthorblockA{Foundations of Machine Learning 24/25\\
 University of Aveiro\\
 Aveiro, Portugal\\
@@ -76,7 +76,7 @@ The model developed was documented and shared in Excel format for practical appl
 
 
 \section{Introduction}
-The evolution in performance of high level athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved, through careful tailoring of the training regimen. One of the most relevant metrics since the beginning of structured training in sports is the feedback from the athlete, commonly described as the rate of perceived exertion (RPE). This single metric comprises the athletes analysis and intuition of the effort that was carried and how ready they feel for the next session of training. In recent years, more and more sports coaches have relied heavily on collected data to better assess, plan and adjust the training plans of their athletes in a systematic way. This allows for a fine balance between intense workouts, that generate stronger stimuli for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the table \cite{Zatsiorsky2019}. 
+The evolution in performance of high level athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved, through careful tailoring of the training regimen. One of the most relevant metrics since the beginning of structured training in sports is the feedback from the athlete, commonly described as the rate of perceived exertion (RPE). This single metric comprises the athletes analysis and intuition of the effort that was carried and how ready they feel for the next session of training. In recent years, more and more sports coaches have relied heavily on collected data to better assess, plan and adjust the training plans of their athletes in a systematic way. This allows for a fine balance between intense workouts, that generate stronger stimuli for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the Table \cite{Zatsiorsky2019}. 
 
 In the scope of the first project for Foundations of Machine Learning, the authors decided to partner with a local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to process the data (kindly shared by Head Coach Daniel Tavares), to develop a general machine learning (ML) model for estimating the fatigue in swimming athletes. The data was curated and prepared to be fit through different machine learning algorithms to estimate fatigue after workout.
 
@@ -98,38 +98,11 @@ In summary, the integration of machine learning techniques in sports fatigue and
 
 \section{Methodology}
 
-The methodology for this project consisted of three major steps: assessment and curation of the dataset, feature engineering and selection of features, followed by data normalization; training of the selected machine learning models; finalizing with model evaluation and subsequent training until optimum results were achieved. Figure~\ref{fig:methodology} illustrates the methodology used in this project.
-
-% TikZ styles
-\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=red!30]
-\tikzstyle{process} = [rectangle, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
-\tikzstyle{arrow} = [thick,->,>=stealth]
+The methodology for this project consisted of three major steps: assessment and curation of the dataset, feature engineering and selection of features, followed by data normalization; training of the selected machine learning models; finalizing with model evaluation and subsequent training until optimum results were achieved. Fig.~\ref{fig:methodology} illustrates the methodology used in this project.
 
 \begin{figure}[h]
 \centering
-\resizebox{0.75\columnwidth}{!}{ % Resize to fit column width
-\begin{tikzpicture}[node distance=1.5cm, font=\scriptsize] % Adjust font size to match document
-
-% Nodes
-\node (start) [startstop] {Raw data};
-\node (curation) [process, below of=start] {Data Assessment \& Curation};
-\node (normalization) [process, below of=curation] {Data Normalization};
-\node (modeling) [process, below of=normalization] {Train Multiple ML Models};
-\node (evaluation) [process, below of=modeling] {Model Evaluation};
-\node (stop) [startstop, below of=evaluation] {Deploy Best Model};
-
-% Arrows
-\draw [arrow] (start) -- (curation);
-\draw [arrow] (curation) -- (normalization);
-\draw [arrow] (normalization) -- (modeling);
-\draw [arrow] (modeling) -- (evaluation);
-\draw [arrow] (evaluation) -- (stop);
-
-% Square forward arrow (evaluation to modeling)
-\draw [arrow] (evaluation.east) -- ++(1.5,0) |- (modeling.east);
-
-\end{tikzpicture}
-}
+\includegraphics[width=0.72\linewidth]{output2.png}
 \caption{Flowchart of the methodology for data processing and modeling. The evaluation results are used to refine the model training process.}
 \label{fig:methodology}
 \end{figure}
@@ -195,7 +168,7 @@ There is a big gap between fatigue classes due to the nature of training and per
 
 \subsection{Dataset curation}
 
-The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for 'Optimal', as seen in Figure \ref{histClasses}. 
+The initial assessment evidenced the need for balancing our data. To start, we've reduced the number of classes, by combining the two higher risk classes ('Caution' and 'Risk'). With this, the number of observations was closer between 'Low/Minimal' and 'Risk/Caution', leaving us with an excess of observations for 'Optimal', as seen in Fig. \ref{histClasses}. 
 
 \begin{figure}[H]
     \centering
@@ -206,7 +179,7 @@ The initial assessment evidenced the need for balancing our data. To start, we'v
 
 At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal', ending up with 213 observations per class (regardless of gender). The use of SMOTE in this scenario would give continuous classes for our ordinal features, which wouldn't yield any physical meaning.
 
-To assess how the different features vary among them and in relation to the target, we computed the correlation matrix as seen in Figure \ref{fig:correlationMatrix}.
+To assess how the different features vary among them and in relation to the target, we computed the correlation matrix as seen in Fig. \ref{fig:correlationMatrix}.
 
 \begin{figure}[H]
     \centering
@@ -215,7 +188,7 @@ To assess how the different features vary among them and in relation to the targ
     \label{fig:correlationMatrix}
 \end{figure} % correlation matrix
 
-From the correlation matrix it was possible to exclude several of the features, which was verified by how the classes are distributed across the scales for each feature. Figures \ref{distpEffort} and \ref{distStSpirit} illustrate a proper and poor example of class distribution for the given features respectively.
+From the correlation matrix it was possible to exclude several of the features, which was verified by how the classes are distributed across the scales for each feature. Fig. \ref{distpEffort} and \ref{distStSpirit} illustrate a proper and poor example of class distribution for the given features respectively.
 
 Considering that the weights used in the coach's original estimation of fatigue were identical regardless of sex, the authors performed some simple models in order to decide if it would be necessary to split it. It could be verified that gender didn't have a significant impact in model performance, so we opted to use it as a feature. 
 
@@ -233,7 +206,7 @@ Considering that the weights used in the coach's original estimation of fatigue 
     \label{distStSpirit}
 \end{figure} % correlation matrix
 
-Figure \ref{fatig_Ff} illustrates the periodicity of higher training loads and subsequent lower intensity periods. It is important to refer that once the two higher intensity classes were combined the loss of granularity of how fatigue changes throughout the season is evident.  
+Fig. \ref{fatig_Ff} illustrates the periodicity of higher training loads and subsequent lower intensity periods. It is important to refer that once the two higher intensity classes were combined the loss of granularity of how fatigue changes throughout the season is evident.  
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(F_f).png}
@@ -243,7 +216,7 @@ Figure \ref{fatig_Ff} illustrates the periodicity of higher training loads and s
 
 In order to keep the time series nature of training, increase and decrease of training intensity, and varying fatigue with training, a exponentially weighted moving averages (EWMA) was included \cite{Williams17}.
 
-This way, memory is introduced in the models, allowing consideration of the decay in the weights of events further away from any given day. The mathematical expression used to calculate EWMA for each selected feature is,
+This way memory is introduced in the models, allowing consideration of the decay in the weights of events further away from any given day. The mathematical expression used to calculate EWMA for each selected feature is,
 \begin{equation*}
     \text{EWMA}_{\text{today}} = \text{Feature}_{\text{today}} \cdot \lambda_a + (1 - \lambda_a) \cdot \text{EWMA}_{\text{yesterday}}
 \end{equation*}
@@ -252,7 +225,29 @@ where $\lambda_a$ is a value between 0 and 1 that represents the degree of decay
     \lambda_a = \frac{2}{N + 1}
 \end{equation*} 
 
-At this point it was possible to select the most relevant features for modeling: \textit{pEffort}, \textit{uaI}, \textit{SleepInd}, \textit{Sex\_F}, \textit{pEffort(MA6)}, \textit{SleepInd(MA6)}, \textit{uaI(MA6)}, \textit{Appetite(MA6)}.
+Where $N$ is the time decay constant, with a 1 week and 4 week workload representing the acute and chronic workloads, respectively \cite{Murray16}.
+
+At this point, it was possible to select the most relevant features for the ML models, which are shown in Table \ref{features_selection}.
+
+\begin{table}[H]
+\centering
+\caption{Feature descriptions}
+\label{features_selection}
+\begin{tabular}{ll}
+\toprule
+\textbf{Feature} & \textbf{Description} \\
+\midrule
+\textit{Sex\_F} & Athlete's gender.  \\
+\textit{pEffort} & Perceived effort from the workout. \\
+\textit{uaI} & Intensity from each workout. \\
+\textit{SleepInd} & Index based on quality of sleep and time in bed. \\
+\textit{Appetite(MA6)} & Appetite measure, averaged with EWMA(6). \\
+\textit{pEffort(MA6)} & \textit{pEffort} averaged with EWMA(6). \\
+\textit{uaI(MA6)} & \textit{uaI} averaged with EWMA(6). \\
+\textit{SleepInd(MA6)} & \textit{SleepInd} averaged with EWMA(6). \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 
 \section{Classification Models}
@@ -277,11 +272,11 @@ Regularization & \{$L1$, $L2$, none\} \\
 \end{tabular}
 \end{table} %hyperparameters
 
-Due to the suboptimal performance of the 'Optimal' class in terms of precision, it was also decided to adjust the class weights for 'Risk/Caution' and 'Low/Minimal' within a range of 0.1 to 2. The resulting model with the highest accuracy is illustrated in Figure~\ref{logregWt}.
+Due to the suboptimal performance of the 'Optimal' class in terms of precision, it was also decided to adjust the class weights for 'Risk/Caution' and 'Low/Minimal' within a range of 0.1 to 2. The resulting model with the highest accuracy is illustrated in Fig.~\ref{logregWt}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{assets/LOGR_class_weights.png}
+    \includegraphics[width=.9\linewidth]{assets/LOGR_class_weights.png}
     \caption{Effect of the 'Risk/Caution' and 'Low/Minimal' classes weight on LogReg model accuracy.}
     \label{logregWt}
 \end{figure} %class weights
@@ -291,7 +286,7 @@ Since the highest accuracy was achieved with class weights of 0.64 for 'Low/Mini
 \underset{\theta}{\text{min}} \, \frac{1}{N} \sum_{i=1}^{N} \log\left(1 + \exp\left(-y_i \theta^\top x_i\right)\right) + \frac{1}{C} R(\theta)
 \end{equation*} % SAGA solver
 
-The learning curve shown in Figure \ref{lcLogReg} illustrates the relationship between the training set size and the performance of the adjusted model, providing valuable insight to assess the model's behavior in terms of overfitting or underfitting. In this case, the learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of overfitting.
+The learning curve shown in Fig. \ref{lcLogReg} illustrates the relationship between the training set size and the performance of the adjusted model, providing valuable insight to assess the model's behavior in terms of overfitting or underfitting. In this case, the learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of overfitting.
 
 \begin{figure}[H]
     \centering
@@ -377,11 +372,11 @@ Coef$_0$ & $[-5, 5]$ \\
 \end{tabular}
 \end{table} %hyperparameters
 
-As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. The weight being smaller than $1$ is penalizing the class, making it more likely to decide for one of the other classes when close to the decision boundary. The resulting regularization is then defined by,
+As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage. The weight being smaller is penalizing the class, making it more likely to decide for one of the other classes when close to the decision boundary. The resulting regularization parameter is then defined by \cite{svm24},
 
-$C_{class} \leftarrow C \times w_{class}$ \cite{svm24}.
+$$C_{class} \leftarrow C \times w_{class}$$
 
-The weight for the 'Optimal' class that retrieved the highest accuracy was estimated as shown in Figure~\ref{svm_weight} ($w_{Optimal}=0.8$). 
+The weight for the 'Optimal' class that retrieved the highest accuracy was estimated as shown in Fig.~\ref{svm_weight} ($w_{Optimal}=0.8$). 
 
 \begin{figure}[H]
     \centering
@@ -483,7 +478,7 @@ The maximum tree depth selected was 4, minimum samples to split 11, minimum samp
 
 $$H(\text{node}) = - \sum_{\text{Class }_j} p(\text{Class}_j | \text{node}) \log p(\text{Class}_j | \text{node})$$
 
-The optimized DTree resulted in the structure as seen in Figure~\ref{dtree_tree}.
+The optimized DTree resulted in the structure as seen in Fig.~\ref{dtree_tree}.
 
 \begin{figure}[H]
     \centering
@@ -494,7 +489,7 @@ The optimized DTree resulted in the structure as seen in Figure~\ref{dtree_tree}
 
 The decision paths are characterized by the certainty in each node, highlighted by the color saturation for each of the classes ('Low/Minimal', 'Optimal', 'Risk/Caution'). The diminished proportion of end nodes with higher color saturation for 'Optimal' when comparing with the other classes is noteworthy, and consistent with the observations for the remaining models.
 
-The learning curves were assessed from Figure~\ref{dtree_lcurve}, which shows a significant improvement up until a training set size of 250, but with there's no significant gain with increasing set sizes, with the learning curves even slightly diverging at 450 samples.
+The learning curves were assessed from Fig.~\ref{dtree_lcurve}, which shows a significant improvement up until a training set size of 250, but with there's no significant gain with increasing set sizes, with the learning curves even slightly diverging at 450 samples.
 
 \begin{figure}[H]
     \centering
@@ -565,7 +560,7 @@ Risk/Caution & 0.64 & 0.60 & 0.62 & 43 \\
 
 \subsection{Performance Metrics}
 
-In order to clearly visualize and compare the different models, the results collected were represented using box plots, as depicted in Figure~\ref{box_plots1}.
+In order to clearly visualize and compare the different models, the results collected were represented using box plots, as depicted in Fig.~\ref{box_plots1}.
 The results were obtained from 8-fold cross-validation for the whole dataset in each of the models. In each iteration the models were trained on 7 folds and tested on the eighth. The performance metrics were determined for each iteration and used afterwards to evaluate the global performance of each model. Each model used the optimized hyperparameters described earlier.
 
 \begin{figure}[H]
@@ -603,7 +598,7 @@ The SVM model stands out with the best performance metrics for all the classes, 
 
 The two other models show particularly low values when assessing the sensitivity score, indicating a challenging performance to accurately classify any of the classes (i.e., with a substantial amount of false negatives). The decision tree model fares particularly bad in this aspect, with a spread of possible recall scores from $0.5$ to $0.80$, and 50 \% of the values ranging from $0.55$ to $0.65$ for the high stakes class 'Risk/Caution'. However, for the 'Optimal' class none of the models performs adequately: 50 \% of the sensitivity scores for LogReg range from $0.48$ to $0.57$, showing that for a good part of the trained models would miss more than 50 \% of the true positives, performing worse than guessing at random; SVM and DTree are closer to each other, with the DTree performing slightly better for this class.
 
-For an overall comparison, albeit not ideal,  accuracy scores were computed in the previously described conditions. Both LogReg and DTree perform worse than SVM by more than 10 \% for the models' median accuracy, as in Figure~\ref{box_accuracy}. 
+For an overall comparison, albeit not ideal,  accuracy scores were computed in the previously described conditions. Both LogReg and DTree perform worse than SVM by more than 10 \% for the models' median accuracy, as in Fig.~\ref{box_accuracy}. 
 
 \begin{figure}[H]
     \centering
@@ -618,7 +613,7 @@ Nonetheless it is important to keep in mind that accuracy is not the best perfor
 
 In order to provide a visual representation of the decision boundaries between the classes, principal component analysis (PCA) was performed for each model on the test dataset. The predicted and real classifications were plotted along the two principal components, each explaining 42.3\% and 26.3\% of the total variance. It is worth reminding that the decision boundaries are an approximation, given that once PCA was applied and only the first two PC were used, roughly 31.4\% of the dataset's variance was lost, meaning that these visualizations are not an accurate representation of the model's performance, but rather a rough estimation.
 
-From the Figures~\ref{pca_reglog} to \ref{pca_dtree} it is possible to observe the approximation to what the actual decision boundaries are in the space of the principal components. The decision regions are distributed by colors, for LogReg going from 'Low/Minimal' on the left, 'Optimal' center, and 'Risk/Caution' on the right. For SVM and DTree the decision boundaries are more complex, occupying more than one contiguous region.
+From the Fig.~\ref{pca_reglog} to \ref{pca_dtree} it is possible to observe the approximation to what the actual decision boundaries are in the space of the principal components. The decision regions are distributed by colors, for LogReg going from 'Low/Minimal' on the left, 'Optimal' center, and 'Risk/Caution' on the right. For SVM and DTree the decision boundaries are more complex, occupying more than one contiguous region.
 
 \begin{figure}[H]
     \centering
@@ -631,7 +626,7 @@ For the LogReg model, the 'Low/Minimal' class shows high precision with several 
 
 For the remaining classes it seems to be hit or miss for any given point. There's a clear challenge in distinguishing clearly how several of the observations should be classified. 
 
-From the class mapping for the SVM model (Fig.~\ref{pca_svm}) the use of the RBF solver is evident with more complex boundaries, and non-contiguous class regions. These regions might indicate some overfitting, given that no observations fall in these regions (but again it is important that this representation does not correspond to the space of features used during the fitting). These decision boundaries provide a more accurate classification, although the region of 'Risk/Caution' shows several observations that should be 'Optimal', evidencing how difficult it is to create a proper decision boundary that would not be an overfitting.
+From the class mapping for the SVM model (Fig.~\ref{pca_svm}) the use of the RBF solver is evident with more complex decision boundaries. These regions provide a more accurate classification, although the region of 'Risk/Caution' shows several observations that should be 'Optimal', evidencing how difficult it is to create a proper decision boundary that would not be an overfitting.
 
 \begin{figure}[H]
     \centering
@@ -669,20 +664,13 @@ Finally, the model will be implemented at the local club, and further work is pl
 
 \section*{Acknowledgment}
 
+The authors would like to thank Professor Petia Georgieva for her support, fruitful discussions, and for her invaluable slides, which greatly aided in the completion of this project.
 
-The authors would like to thank Professor Petia Georgieva for the support and fruitful discussions, the Head Coach Daniel Tavares and CAPGE for the data and encouragement in developing this project.
+Special thanks are also given to Head Coach Daniel Tavares and CAPGE for providing the data and for their encouragement in developing this project.
 
 \section*{Work Load}
 
 Both authors contributed equally to the project.
-
-\section{NOTAS}
-
-tem se entao dados diarios, para X atletas, durante ns q tempo, ao longo da epoca tal, totalizando x observacoes (linhas)
-
-\cite{Seow20} another review (Prediction models for musculoskeletal injuries in professional sporting activities: A systematic review)
-
-\cite{Murray16} Murray et al. (2016
 
 
 % trigger a \newpage just before the given reference
