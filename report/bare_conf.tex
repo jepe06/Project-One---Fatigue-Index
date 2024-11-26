@@ -102,7 +102,7 @@ The methodology for this project consisted of three major steps: assessment and 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.72\linewidth]{output2.png}
+\includegraphics[width=0.72\linewidth]{assets/fluxog.png}
 \caption{Flowchart of the methodology for data processing and modeling. The evaluation results are used to refine the model training process.}
 \label{fig:methodology}
 \end{figure}
@@ -195,24 +195,42 @@ Considering that the weights used in the coach's original estimation of fatigue 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/distribution_pEffort.png}
-    \caption{Correlation matrix for all possible features considered for the models.}
+    \caption{Class distributions across perceived effort.}
     \label{distpEffort}
-\end{figure} % correlation matrix
+\end{figure} % not correlation matrix
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/distribution_StSpirit.png}
-    \caption{Correlation matrix for all possible features considered for the models.}
+    \caption{Class distributions across state spirit.}
     \label{distStSpirit}
-\end{figure} % correlation matrix
+\end{figure} % not correlation matrix
 
-Fig. \ref{fatig_Ff} illustrates the periodicity of higher training loads and subsequent lower intensity periods. It is important to refer that once the two higher intensity classes were combined the loss of granularity of how fatigue changes throughout the season is evident.  
+
+Fig. \ref{fadig_ts} illustrates the periodicity of higher training loads and subsequent lower intensity periods. It is important to refer that once the two higher intensity classes were combined the loss of granularity of how fatigue changes throughout the season is evident.  
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(F_f).png}
-    \caption{Daily fatigue trends for athlete F\_f.}
-    \label{fatig_Ff}
-\end{figure} % fatigue periodicity
+    \begin{subfigure}[1]{\linewidth}
+        \centering
+        \includegraphics[width=0.91\linewidth]{assets/distribution_FatigInd(F_f).png}
+        \caption{ }
+        \label{fat_ff}
+    \end{subfigure}
+    
+    \vspace{0.27cm}
+
+    \begin{subfigure}[1]{\linewidth}
+        \centering
+        \includegraphics[width=0.91\linewidth]{assets/distribution_FatigInd(F_m).png}
+        \caption{ }
+        \label{fat_fm}
+    \end{subfigure}
+    
+    \caption{Daily fatigue trends for athletes (a) F\_f and (b) F\_m.}
+    \label{fadig_ts}
+\end{figure} %precision, recall, f1
+
 
 In order to keep the time series nature of training, increase and decrease of training intensity, and varying fatigue with training, a exponentially weighted moving averages (EWMA) was included \cite{Williams17}.
 
@@ -350,6 +368,8 @@ Risk/Caution & 0.71 & 0.76 & 0.74 & 42 \\
 \bottomrule
 \end{tabular}
 \end{table} %cr Test
+
+$\ $
 
 \section{Support Vector Machine}
 
@@ -502,7 +522,7 @@ From the confusion matrices for training (Fig.~\ref{dtree_cmtrain}) and testing 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{assets/DTREE_ConfusionMatrixTrain.png}
+    \includegraphics[width=.995\linewidth]{assets/DTREE_ConfusionMatrixTrain.png}
     \caption{Evaluation of decision tree model performance on training data performance via confusion matrix.}
     \label{dtree_cmtrain}
 \end{figure} %cm Train
@@ -530,7 +550,7 @@ The classification reports for both training (Table~\ref{cr_dtree_train}) and te
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{assets/DTREE_ConfusionMatrixTest.png}
+    \includegraphics[width=.995\linewidth]{assets/DTREE_ConfusionMatrixTest.png}
     \caption{Evaluation of decision tree model performance on test data performance via confusion matrix.}
     \label{dtree_cmtest}
 \end{figure} %cm Test
@@ -567,7 +587,7 @@ The results were obtained from 8-fold cross-validation for the whole dataset in 
     \centering
     \begin{subfigure}[1]{\linewidth}
         \centering
-        \includegraphics[width=0.91\linewidth]{assets/box_precision.png}
+        \includegraphics[width=.95\linewidth]{assets/box_precision.png}
         \caption{ }
         \label{box_precision}
     \end{subfigure}
@@ -576,16 +596,18 @@ The results were obtained from 8-fold cross-validation for the whole dataset in 
 
     \begin{subfigure}[1]{\linewidth}
         \centering
-        \includegraphics[width=0.91\linewidth]{assets/box_recall.png}
+        \includegraphics[width=.95\linewidth]{assets/box_recall.png}
         \caption{ }
         \label{box_recall}
     \end{subfigure}
-
+\end{figure}
+\begin{figure}[H]
+    \ContinuedFloat
     \vspace{0.05cm}
 
     \begin{subfigure}[1]{\linewidth}
         \centering
-        \includegraphics[width=0.91\linewidth]{assets/box_f1score.png}
+        \includegraphics[width=0.95\linewidth]{assets/box_f1score.png}
         \caption{ }
         \label{box_f1score}
     \end{subfigure}
@@ -596,9 +618,9 @@ The results were obtained from 8-fold cross-validation for the whole dataset in 
 
 The SVM model stands out with the best performance metrics for all the classes, but the analysis does not end there. The range of scores is not consistently good for any of the models (for some metrics it is narrow with few outliers, most of the times is rather wide). This is a result of the small size of the dataset, where better performing models might be seeing repeated observations from the training to the test dataset, given that the minority class had to have its observations over sampled by duplicating at random some of its observations. For these cases there might be some positive bias, but further analysis of the models would be necessary to confirm to which extent is it happening. The median F1-score for SVM is 0.84 for 'Low/Minimal' class, 0.77 for 'Risk/Caution' with a wider distribution of values, and 0.66 for 'Optimal' with an even wider range. 
 
-The two other models show particularly low values when assessing the sensitivity score, indicating a challenging performance to accurately classify any of the classes (i.e., with a substantial amount of false negatives). The decision tree model fares particularly bad in this aspect, with a spread of possible recall scores from $0.5$ to $0.80$, and 50 \% of the values ranging from $0.55$ to $0.65$ for the high stakes class 'Risk/Caution'. However, for the 'Optimal' class none of the models performs adequately: 50 \% of the sensitivity scores for LogReg range from $0.48$ to $0.57$, showing that for a good part of the trained models would miss more than 50 \% of the true positives, performing worse than guessing at random; SVM and DTree are closer to each other, with the DTree performing slightly better for this class.
+The two other models show particularly low values when assessing the sensitivity score, indicating a challenging performance to accurately classify any of the classes (i.e., with a substantial amount of false negatives). The decision tree model fares particularly bad in this aspect, with a spread of possible recall scores from $0.5$ to $0.80$, and 50\% of the values ranging from $0.55$ to $0.65$ for the high stakes class 'Risk/Caution'. However, for the 'Optimal' class none of the models performs adequately: 50\% of the sensitivity scores for LogReg range from $0.48$ to $0.57$, showing that for a good part of the trained models would miss more than 50\% of the true positives, performing worse than guessing at random; SVM and DTree are closer to each other, with the DTree performing slightly better for this class.
 
-For an overall comparison, albeit not ideal,  accuracy scores were computed in the previously described conditions. Both LogReg and DTree perform worse than SVM by more than 10 \% for the models' median accuracy, as in Fig.~\ref{box_accuracy}. 
+For an overall comparison, albeit not ideal,  accuracy scores were computed in the previously described conditions. Both LogReg and DTree perform worse than SVM by more than 10\% for the models' median accuracy, as in Fig.~\ref{box_accuracy}. 
 
 \begin{figure}[H]
     \centering
