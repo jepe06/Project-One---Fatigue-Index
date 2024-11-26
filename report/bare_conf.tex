@@ -36,7 +36,7 @@
 \begin{document}
 
 
-\title{Applying ML to assess fatigue and prevent injury\\in high performance swimming athletes}
+\title{Applying ML Models to Assess Fatigue and Prevent Injury in High Performance Swimming Athletes}
 
 % use a multiple column layout for up to three different
 % affiliations
@@ -69,7 +69,7 @@ The model developed was documented and shared in Excel format for practical appl
 \begin{quote}
 \small
 \noindent
-\textbf{Keywords:} swimming, fatigue prediction, LogReg, SVM, DTree
+\textbf{Keywords:} swimming, fatigue prediction, logistic regression, support vector machine, decision tree
 \end{quote}
 
 \IEEEpeerreviewmaketitle
@@ -78,7 +78,7 @@ The model developed was documented and shared in Excel format for practical appl
 \section{Introduction}
 The evolution in performance of high level athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved, through careful tailoring of the training regimen. One of the most relevant metrics since the beginning of structured training in sports is the feedback from the athlete, commonly described as the rate of perceived exertion (RPE). This single metric comprises the athletes analysis and intuition of the effort that was carried and how ready they feel for the next session of training. In recent years, more and more sports coaches have relied heavily on collected data to better assess, plan and adjust the training plans of their athletes in a systematic way. This allows for a fine balance between intense workouts, that generate stronger stimuli for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the table \cite{Zatsiorsky2019}. 
 
-In the scope of the first project for Foundations of Machine Learning, the authors decided to partner with a local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to process the data (kindly shared by Head Coach Daniel Tavares), to develop a general machine learning model for estimating the fatigue in swimming athletes. The data was curated and prepared to be fit through different machine learning algorithms to estimate fatigue after workout.
+In the scope of the first project for Foundations of Machine Learning, the authors decided to partner with a local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to process the data (kindly shared by Head Coach Daniel Tavares), to develop a general machine learning (ML) model for estimating the fatigue in swimming athletes. The data was curated and prepared to be fit through different machine learning algorithms to estimate fatigue after workout.
 
 With this approach, the goal is to generalize the models for different athletes/sports, and make it available to the local club for implementation and further testing. 
 
@@ -204,7 +204,7 @@ The initial assessment evidenced the need for balancing our data. To start, we'v
     \label{histClasses}
 \end{figure} %bar plot classes
 
-At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal', ending up with 213 observations per class (regardless of gender). The use of SMOTE in this scenario would give continuous classes for our features, which wouldn't yield any physical meaning.
+At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal', ending up with 213 observations per class (regardless of gender). The use of SMOTE in this scenario would give continuous classes for our ordinal features, which wouldn't yield any physical meaning.
 
 To assess how the different features vary among them and in relation to the target, we computed the correlation matrix as seen in Figure \ref{fig:correlationMatrix}.
 
@@ -215,9 +215,9 @@ To assess how the different features vary among them and in relation to the targ
     \label{fig:correlationMatrix}
 \end{figure} % correlation matrix
 
-From the correlation matrix it was possible to exclude several of the features, which was verified by how the classes are distributed across the scales for each feature. Figure \ref{distpEffort} and \ref{distStSpirit}illustrate a proper and poor example of class distribution for the given features respectively.
+From the correlation matrix it was possible to exclude several of the features, which was verified by how the classes are distributed across the scales for each feature. Figures \ref{distpEffort} and \ref{distStSpirit} illustrate a proper and poor example of class distribution for the given features respectively.
 
-Considering that the weights used in the coach's original estimation of fatigue were identical regardless of sex, the authors performed some simple models in order to decide if it would be necessary to split it. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature. 
+Considering that the weights used in the coach's original estimation of fatigue were identical regardless of sex, the authors performed some simple models in order to decide if it would be necessary to split it. It could be verified that gender didn't have a significant impact in model performance, so we opted to use it as a feature. 
 
 \begin{figure}[H]
     \centering
@@ -241,9 +241,9 @@ Figure \ref{fatig_Ff} illustrates the periodicity of higher training loads and s
     \label{fatig_Ff}
 \end{figure} % fatigue periodicity
 
-In order to keep the time series nature of training, increase and decrease of training intensity, and varying fatigue with training we included exponentially weighted moving averages (EWMA) \cite{Williams17}.
+In order to keep the time series nature of training, increase and decrease of training intensity, and varying fatigue with training, a exponentially weighted moving averages (EWMA) was included \cite{Williams17}.
 
-This way memory is introduced in our model, and allow to consider the decay in the weights of events further away from any given day. The mathematical expression used to calculate EWMA for each selected feature is,
+This way, memory is introduced in the models, allowing consideration of the decay in the weights of events further away from any given day. The mathematical expression used to calculate EWMA for each selected feature is,
 \begin{equation*}
     \text{EWMA}_{\text{today}} = \text{Feature}_{\text{today}} \cdot \lambda_a + (1 - \lambda_a) \cdot \text{EWMA}_{\text{yesterday}}
 \end{equation*}
@@ -254,14 +254,30 @@ where $\lambda_a$ is a value between 0 and 1 that represents the degree of decay
 
 At this point it was possible to select the most relevant features for modeling: \textit{pEffort}, \textit{uaI}, \textit{SleepInd}, \textit{Sex\_F}, \textit{pEffort(MA6)}, \textit{SleepInd(MA6)}, \textit{uaI(MA6)}, \textit{Appetite(MA6)}.
 
-%\newpage
+
 \section{Classification Models}
 
-In this section the results for the three machine learning models are presented and detailed in equal fashion, to ease the discussion and interpretation in the next section. As was mentioned in the methodology, the modeling approach was the same for all, and here the training dataset results are presented first, followed by the test dataset results.
+In the following sections, \ref{logreg_section} to \ref{dtree_section}, the results for the three machine learning models are presented and detailed in equal fashion, to ease the discussion and interpretation in the section \ref{discussion_sec}. As was mentioned in the methodology, the modeling approach was the same for all, and here the training dataset results are presented first, followed by the test dataset results.
 
-\section{Logistic Regression}
+\section{Logistic Regression} \label{logreg_section}
 
-The logistic regression model was developed by setting different ranges for the hyperparameters, with $C$, the inverse of the regularization parameter, varying between $0.01$ and $300$, and allowing the selection of different cost functions ($L1$, $L2$, or none). Due to the suboptimal performance of the 'Optimal' class in terms of precision, we also decided to adjust the class weights for 'Risk/Caution' and 'Low/Minimal' within a range of 0.1 to 2. The resulting model with the highest accuracy is illustrated in Figure~\ref{logregWt}.
+The logistic regression model was developed by exploring different ranges for the hyperparameters, including $C$, the inverse of the regularization parameter, and allowing for the selection of various regularization methods, as can be assessed in Table \ref{parametrosLogReg}.
+
+\begin{table}[H]
+\centering
+\caption{Logistic regression model hyperparameters search space.}
+\label{parametrosLogReg}
+\begin{tabular}{ll}
+\toprule
+\textbf{Hyperparameter} & \textbf{Possible Values} \\
+\midrule
+$C$ & $[0.01, 300]$ \\ 
+Regularization & \{$L1$, $L2$, none\} \\
+\bottomrule
+\end{tabular}
+\end{table} %hyperparameters
+
+Due to the suboptimal performance of the 'Optimal' class in terms of precision, it was also decided to adjust the class weights for 'Risk/Caution' and 'Low/Minimal' within a range of 0.1 to 2. The resulting model with the highest accuracy is illustrated in Figure~\ref{logregWt}.
 
 \begin{figure}[H]
     \centering
@@ -270,9 +286,9 @@ The logistic regression model was developed by setting different ranges for the 
     \label{logregWt}
 \end{figure} %class weights
 
-Since the highest accuracy was achieved with class weights of 0.64 for 'Low/Minimal' and 0.97 for 'Risk/Caution', these values were selected, while the original weight for the 'Optimal' class was retained. These weight values were applied consistently across both the training and test datasets. For model optimization, the remaining hyperparameters were set to $C \approx 2.13$, the cost function was $L1$ (Lasso regularization) and the solver used was SAGA (Stochastic Average Gradient Augmented). Despite the fact that it is most commonly used for large datasets, it was the best performing kernel of those available in the initial assessment, with the advantage that it allowed for regularization. The equation for the solver is given by,
+Since the highest accuracy was achieved with class weights of 0.64 for 'Low/Minimal' and 0.97 for 'Risk/Caution', these values were selected, while the original weight for the 'Optimal' class was retained ($w_{optimal} = 1$). For model optimization, the remaining hyperparameters were set to $C \approx 2.13$, the cost function was $L1$ (Lasso regularization) and the solver used was SAGA (Stochastic Average Gradient Augmented). Despite the fact that it is most commonly used for large datasets, it was the best performing kernel of those available in the initial assessment, with the advantage that it allowed for regularization. The equation for the solver is given by,
 \begin{equation*}
-\underset{w}{\text{min}} \, \frac{1}{n} \sum_{i=1}^{n} \log\left(1 + \exp\left(-y_i X_i^\top w\right)\right) + \lambda R(w)
+\underset{\theta}{\text{min}} \, \frac{1}{N} \sum_{i=1}^{N} \log\left(1 + \exp\left(-y_i \theta^\top x_i\right)\right) + \frac{1}{C} R(\theta)
 \end{equation*} % SAGA solver
 
 The learning curve shown in Figure \ref{lcLogReg} illustrates the relationship between the training set size and the performance of the adjusted model, providing valuable insight to assess the model's behavior in terms of overfitting or underfitting. In this case, the learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of overfitting.
@@ -342,7 +358,7 @@ Risk/Caution & 0.71 & 0.76 & 0.74 & 42 \\
 
 \section{Support Vector Machine}
 
-Given the increased complexity compared to LogReg, the support vector machine (SVM) model allows for manipulation of a larger number of hyperparameters, which consequently lead to longer computation times to achieve the best model. The hyperparameters used were Regularization Parameter (parameter that controls the penalty for misclassified training examples, i.e., cost function) ($C$), the Kernel Coefficient ($\gamma$), the kernel to be used, the highest degree possible (for a $poly$ kernel), and the value of the independent term (Coef$_0$), which controls the flexibility of the decision boundary \cite{svm24}. The ranges of possible values can be assessed in Table \ref{parametrosSVM}.
+Given the increased complexity compared to LogReg, the support vector machine (SVM) model allows for manipulation of a larger number of hyperparameters, which consequently lead to longer computation times to achieve the best model. The hyperparameters used were Regularization Parameter (parameter that controls the penalty for misclassified training examples, i.e., cost function) ($C$), the Kernel Coefficient ($\gamma$), the kernel to be used, the highest degree possible (for a $poly$ kernel), and the value of the independent term (Coef$_0$), which controls the flexibility of the decision boundary for the $poly$ and $sigmoid$ kernels \cite{svm24}. The ranges of possible values can be assessed in Table \ref{parametrosSVM}.
 
 \begin{table}[H]
 \centering
@@ -361,7 +377,7 @@ Coef$_0$ & $[-5, 5]$ \\
 \end{tabular}
 \end{table} %hyperparameters
 
-As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. The weight being smaller than $1$ is penalizing the class, making it more likely to decide for one of the other classes when close to the decision boundary. The resulting class is then defined by,
+As in the case for LogReg, an ideal class weight was estimated, however here only for 'Optimal' class, as it was the worst predicted class even at a training stage, with an equal split between 'Low/Minimal' and 'Risk/Caution'. The weight being smaller than $1$ is penalizing the class, making it more likely to decide for one of the other classes when close to the decision boundary. The resulting regularization is then defined by,
 
 $C_{class} \leftarrow C \times w_{class}$ \cite{svm24}.
 
@@ -387,7 +403,7 @@ In this case, the learning curves  for both the training and cross-validation se
     \label{svm_learningcurve}
 \end{figure} % learning curve
 
-The confusion matrices for both training (Table~\ref{svm_cm_train}) and  testing datasets (Table~\ref{svm_cm_test}) show a good performance in the classification of all classes, especially for those in the extremities (as already verified in the previous model).
+The confusion matrices for both training (Fig.~\ref{svm_cm_train}) and testing datasets (Fig.~\ref{svm_cm_test}) show a good performance in the classification of all classes, especially for those in the extremities (as already verified in the previous model).
 
 The classification reports of the training (Table~\ref{crTrainSVM}) and testing datasets (Table~\ref{crTestSVM}) show consistent results among them. However, it is noteworthy the low value of Recall for the 'Optimal' class in both cases, indicating several misclassification occurrences (observations that should be 'Optimal' but were classified as one of the other classes). 
 
@@ -443,9 +459,9 @@ Risk/Caution & 0.73 & 0.86 & 0.79 & 42 \\
 \end{tabular}
 \end{table} %cr Test
 
-\section{Decision Tree Model}
+\section{Decision Tree} \label{dtree_section}
 
-The decision tree model was developed considering the hyperparameters available and setting ranges for the possible values to be estimated \cite{dtree17}. The ranges were selected taking in consideration the need to minimize the risk of overfitting. The max depth illustrates how deep the tree goes, and can be a sign of overfitting if it 'grows' too long. The min sample split constrains the tree in the number of splits allowed, as it requires more samples at each child node. A similar hyperparameter is min sample per leaf, meaning the minimum number of samples at any end node (making them more relevant). The split criterion evaluates the quality of a split when building the decision tree. The hyperparameters and ranges selected are presented in Table~\ref{parametrosDTree}.
+The decision tree model was developed considering the hyperparameters available and setting ranges for the possible values to be estimated \cite{dtree17}. The ranges were selected taking in consideration the need to minimize the risk of overfitting. The maximum depth illustrates how deep the tree goes, and can be a sign of overfitting if it 'grows' too long. The minimum sample split constrains the tree in the number of splits allowed, as it requires more samples at each child node. A similar hyperparameter is minimum sample per leaf, meaning the minimum number of samples at any end node (making them more relevant). The split criterion evaluates the quality of a split when building the decision tree. The hyperparameters and ranges selected are presented in Table~\ref{parametrosDTree}.
 
 \begin{table}[H]
 \centering
@@ -463,7 +479,7 @@ Min Samples per Leaf & $[3, 4, \dots, 10]$ \\
 \end{tabular}
 \end{table} %hyperparameters
 
-The max tree depth selected was 4, minimum samples to split 11, minimum samples per leaf 7, and the split criterion entropy ($H$) is given by,
+The maximum tree depth selected was 4, minimum samples to split 11, minimum samples per leaf 7, and the split criterion entropy ($H$), given by
 
 $$H(\text{node}) = - \sum_{\text{Class }_j} p(\text{Class}_j | \text{node}) \log p(\text{Class}_j | \text{node})$$
 
@@ -478,7 +494,7 @@ The optimized DTree resulted in the structure as seen in Figure~\ref{dtree_tree}
 
 The decision paths are characterized by the certainty in each node, highlighted by the color saturation for each of the classes ('Low/Minimal', 'Optimal', 'Risk/Caution'). The diminished proportion of end nodes with higher color saturation for 'Optimal' when comparing with the other classes is noteworthy, and consistent with the observations for the remaining models.
 
-The learning curves were assessed from Fig.~\ref{dtree_lcurve}, which shows a significant improvement up until a training set size of 250, but with there's no significant gain with increasing set sizes, with the learning curves even diverging at 450 samples.
+The learning curves were assessed from Figure~\ref{dtree_lcurve}, which shows a significant improvement up until a training set size of 250, but with there's no significant gain with increasing set sizes, with the learning curves even slightly diverging at 450 samples.
 
 \begin{figure}[H]
     \centering
@@ -487,7 +503,7 @@ The learning curves were assessed from Fig.~\ref{dtree_lcurve}, which shows a si
     \label{dtree_lcurve}
 \end{figure} %learning curve
 
-From the confusion matrices for training (Figure~\ref{dtree_cmtrain}) and testing datasets (Figura~\ref{dtree_cmtest}) it is visible that the model had some difficulty between the 'Optimal' and 'Risk/Caution' classes, but with a satisfying prediction performance for 'Low/Minimal'.
+From the confusion matrices for training (Fig.~\ref{dtree_cmtrain}) and testing datasets (Fig.~\ref{dtree_cmtest}) it is visible that the model had some difficulty between the 'Optimal' and 'Risk/Caution' classes, but with a satisfying prediction performance for 'Low/Minimal'.
 
 \begin{figure}[H]
     \centering
@@ -545,12 +561,12 @@ Risk/Caution & 0.64 & 0.60 & 0.62 & 43 \\
 
 
 
-\section{Discussion}
+\section{Discussion} \label{discussion_sec}
 
-\subsection{Performance metrics}
+\subsection{Performance Metrics}
 
-In order to clearly visualize and compare the different models, the data collected was represented using box plots, as depicted in Figure~\ref{box_precision}, Figure~\ref{box_recall}, and Figure~\ref{box_f1score}.
-The results were obtained from 8-fold cross-validation for the whole dataset in each of the models. In each iteration the models were training in 7 folds and tested with the eighth. The performance metrics were determined for each iteration and used afterwards to evaluate the global performance of each model. Each model used the optimized hyperparameters shared above.
+In order to clearly visualize and compare the different models, the results collected were represented using box plots, as depicted in Figure~\ref{box_plots1}.
+The results were obtained from 8-fold cross-validation for the whole dataset in each of the models. In each iteration the models were trained on 7 folds and tested on the eighth. The performance metrics were determined for each iteration and used afterwards to evaluate the global performance of each model. Each model used the optimized hyperparameters described earlier.
 
 \begin{figure}[H]
     \centering
@@ -587,10 +603,7 @@ The SVM model stands out with the best performance metrics for all the classes, 
 
 The two other models show particularly low values when assessing the sensitivity score, indicating a challenging performance to accurately classify any of the classes (i.e., with a substantial amount of false negatives). The decision tree model fares particularly bad in this aspect, with a spread of possible recall scores from $0.5$ to $0.80$, and 50 \% of the values ranging from $0.55$ to $0.65$ for the high stakes class 'Risk/Caution'. However, for the 'Optimal' class none of the models performs adequately: 50 \% of the sensitivity scores for LogReg range from $0.48$ to $0.57$, showing that for a good part of the trained models would miss more than 50 \% of the true positives, performing worse than guessing at random; SVM and DTree are closer to each other, with the DTree performing slightly better for this class.
 
-%- o modelo decision tree parece apresentar uma variância significativa nos seus resultados across all metrics, o que pode indicar que é um modelo sensível aos dados utilizados tanto no treino como no teste
-% não acrescentei esta parte porque entre o DTree e o LogReg não vejo assim uma grande diferença
-
-For an overall comparison, albeit not ideal,  accuracy scores were computed in the previously described conditions. Both LogReg and DTree perform worse than SVM by more than 10 \% for the models' median accuracy, as in in Figure~\ref{box_accuracy}. 
+For an overall comparison, albeit not ideal,  accuracy scores were computed in the previously described conditions. Both LogReg and DTree perform worse than SVM by more than 10 \% for the models' median accuracy, as in Figure~\ref{box_accuracy}. 
 
 \begin{figure}[H]
     \centering
@@ -603,9 +616,9 @@ Nonetheless it is important to keep in mind that accuracy is not the best perfor
 
 \subsection{Decision Boundaries}
 
-In order to provide a visual representation of the decision boundaries between the classes, principal component analysis (PCA) was performed for each model on the test dataset. The predicted and real classifications were plotted along the two principal components, each explaining 42.3 \% and 26.3\%. It is worth reminding that the decision boundaries are an approximation, given that once PCA was applied and only the first two PC were used, roughly 31.5 \% of the dataset's variance was lost, meaning that these visualizations are not an accurate representation of the model's performance, but rather a rough estimation.
+In order to provide a visual representation of the decision boundaries between the classes, principal component analysis (PCA) was performed for each model on the test dataset. The predicted and real classifications were plotted along the two principal components, each explaining 42.3\% and 26.3\% of the total variance. It is worth reminding that the decision boundaries are an approximation, given that once PCA was applied and only the first two PC were used, roughly 31.4\% of the dataset's variance was lost, meaning that these visualizations are not an accurate representation of the model's performance, but rather a rough estimation.
 
-From the Figure~\ref{pca_reglog} to \ref{pca_dtree} it is possible to observe the approximation to what the actual decision boundaries are in the space of the principal components. The decision regions are distributed by colors, for LogReg going from 'Low/Minimal' on the left, 'Optimal' center, and 'Risk/Caution' on the right. For SVM and DTree the decision boundaries are more complex, occupying more than one contiguous region.
+From the Figures~\ref{pca_reglog} to \ref{pca_dtree} it is possible to observe the approximation to what the actual decision boundaries are in the space of the principal components. The decision regions are distributed by colors, for LogReg going from 'Low/Minimal' on the left, 'Optimal' center, and 'Risk/Caution' on the right. For SVM and DTree the decision boundaries are more complex, occupying more than one contiguous region.
 
 \begin{figure}[H]
     \centering
@@ -614,11 +627,11 @@ From the Figure~\ref{pca_reglog} to \ref{pca_dtree} it is possible to observe th
     \label{pca_reglog}
 \end{figure} % pca logreg
 
-For LogReg the 'Low/Minimal' shows high precision with several of the true classes correctly placed in the specific region (consistent with the previous analysis and the box plot). The median was highest relative to the other classes, showing a consistent performance and reliable in classifying this class.
+For the LogReg model, the 'Low/Minimal' class shows high precision with several of the true classes correctly placed in the specific region (consistent with the previous analysis and the box plot).
 
 For the remaining classes it seems to be hit or miss for any given point. There's a clear challenge in distinguishing clearly how several of the observations should be classified. 
 
-From the class mapping for the SVM model (Figure~\ref{pca_svm} the use of the RBF solver is evident with more complex boundaries, and non-contiguous class regions. These regions might indicate some overfitting, given that no observations fall in these regions (but again it is important that this representation does not correspond to the space of features used during the fitting). These decision boundaries provide a more accurate classification, although the region of 'Risk/Caution' shows several observations that should be 'Optimal', evidencing how difficult it is to create a proper decision boundary that would not be an overfitting.
+From the class mapping for the SVM model (Fig.~\ref{pca_svm}) the use of the RBF solver is evident with more complex boundaries, and non-contiguous class regions. These regions might indicate some overfitting, given that no observations fall in these regions (but again it is important that this representation does not correspond to the space of features used during the fitting). These decision boundaries provide a more accurate classification, although the region of 'Risk/Caution' shows several observations that should be 'Optimal', evidencing how difficult it is to create a proper decision boundary that would not be an overfitting.
 
 \begin{figure}[H]
     \centering
@@ -634,17 +647,13 @@ From the class mapping for the SVM model (Figure~\ref{pca_svm} the use of the RB
     \label{pca_dtree}
 \end{figure} % pca dtree
 
-Lastly the DTree displays even more complex decision boundaries, trying to account for the observations that populate the 'Risk/Caution' region. This might be a result of DTree's nature, due to its discrete decisions. Unlike the previous models that need to adjust a continuous surface to separate classes, DTree splits the characteristic space in a hierarchical and discrete fashion given the binary nature of the tree's nodes.
+Lastly the DTree model (Fig. \ref{pca_dtree}) displays even more complex decision boundaries, trying to account for the observations that populate the 'Risk/Caution' region. This might be a result of DTree's nature, due to its discrete decisions. Unlike the previous models that need to adjust a continuous surface to separate classes, DTree splits the characteristic space in a hierarchical and discrete fashion given the binary nature of the tree's nodes.
 
 Even though DTree is a powerful ML model to capture non-linear relations, its' graphical interpretation in this context shows the hardships faced to clearly separate observations between classes.
 
-
-%AUMENTO DIMENSIONALIDADE E OVERFITING ?
-% Não sei bem o que querias dizer com isto
-
 The graphical representations of the models allow to better perceive the complexity behind the problem and the challenges the models face in obtaining an efficient separation between classes. The overlap of classes, especially 'Optimal', shows the need to consider further adjustments to the models, different features for the raw data, or even more robust models that can better capture the relations inherent to the classes.
 
-\subsection{Literature benchmark}
+\subsection{Literature Benchmark}
 
 In the literature the vast majority of work is dedicated to predicting injury. This scenario is strikingly different from the case in study, due to its binary nature (meaning reduced complexity and the tendency to prefer metrics as the area under the curve, AUC, rather than the ones used in this project). Moreover, the studies found while writing the \textit{State of the Art} were related to contact sports (e.g., football, soccer). Nonetheless, the methodology and feature selection is somewhat comparable, despite a clear focus on relying on measurable data (i.e., GPS tracking, smart watches for sleep monitoring, among others). It is also noteworthy that the datasets available in the studies cited are considerably larger, consisting of several athletes (two to three times more than for this project's dataset) and spanning over at least two to three seasons. 
 
@@ -658,7 +667,6 @@ The objective of this project was to employ different machine learning models to
 
 Finally, the model will be implemented at the local club, and further work is planned, to improve data collection and feature selection.
 
-% use section* for acknowledgment
 \section*{Acknowledgment}
 
 
@@ -667,50 +675,11 @@ The authors would like to thank Professor Petia Georgieva for the support and fr
 
 \section{NOTAS}
 
-Discussão dos resultados:
--\> Importante considerar os kernels selecionados, e o que isso pode representar dado o tamanho reduzido do nosso dataset
-
--> Há coerência entre métricas (F1-score Test vs Train está à mesma distância quase sempre)
-
-
--> Temos algumas zonas em branco ao longo do documento, temos de ver como resolver (não sei se será mais texto em alguma zona, mas gosto pouco de adicionar palha)
-
-
--> Novelty and contributions (3) Compare your solution with the works of other authors (published references) , try to propose a better solution, e.g. improve the performance of the ML model in solving the problem you work with.
-
-SVM
-
-Não introduzi os parâmetros como tabela, porque varia de modelo para modelo e achei que não fosse ficar tão bem. Queres indicar as expressões para todos os kernel ou só discutir brevemente? É que se não começamos a ter pano para mangas, particularmente só com o SAGA....
-
-Nesta parte não introduziria mais texto, deixava de maneira mais simples e ilustrativa como no caso do LogReg
-
-
-Considerar usar dataset com informação combinada de atletas para reter carácter temporal (progressão da época, aumento de cargas e combinação com features que tenham referência temporal [carga de treino do dia anterior]
-
-Modelos sugeridos: Random Forest / SVM
-
-temos com objetivo generalizar para que qq treinador possa ter nocao do comporamento e do estado dos seus atletas, podendo ajustar os seus treinos e cargas físicas consoante as medidas de fadigas.
-
-para alem disso tbm se quer ver quais as metricas mais importantes relacionadas coma a fadiga
-
-De acordo com a conversa com a professora é importante perceber como é que se deve definir a memória da nossa t-SNE, e a importância que isso tem no período da fadiga.
-
-ns q dados fornecidos por um treinador de natacao, tivemos de organizar os dados em folhas de excel, visto estarem por linhas e com graficos e formulas de acordo com o treinador, bla bla, teve-se fazer oq? sabes melhor q eu pq foste tu q fizeste
-
-os valores da fadiga foram convertidos para categoricos, pq e mais interessante classificar a fadiga, tendo em conta intervalos dados pelo treinador, do q numero que tornam mais dificl a interpretacao dos mesmos
-
-de seguida agruparam-se os dados todos num novo ficheiro excel, para posterior analise atraves do python, de forma mais facilitata
-
 tem se entao dados diarios, para X atletas, durante ns q tempo, ao longo da epoca tal, totalizando x observacoes (linhas)
-
-\cite{Williams17} better way chronic load
-
-\cite{Carey_2018} Predictive Modelling of Training Loads and Injury in Australian Football Carey 2018
 
 \cite{Seow20} another review (Prediction models for musculoskeletal injuries in professional sporting activities: A systematic review)
 
 \cite{Murray16} Murray et al. (2016
-
 
 
 % trigger a \newpage just before the given reference
