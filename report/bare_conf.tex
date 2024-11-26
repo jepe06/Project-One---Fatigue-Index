@@ -13,6 +13,7 @@
 \usepackage{float}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows, positioning}%\usepackage{url}
+\usepackage{placeins}
 
 
 \ifCLASSINFOpdf
@@ -56,6 +57,7 @@ joaopcardoso@ua.pt}}
 \maketitle
 \thispagestyle{plain}
 
+
 % As a general rule, do not put math, special symbols or citations
 % in the abstract
 \begin{abstract}
@@ -74,29 +76,29 @@ The model developed was documented and shared in Excel format for practical appl
 
 
 \section{Introduction}
-The evolution in performance of high level athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved, through careful tailoring of the training regimen. One of the most relevant metrics since the dawn of structure training in sports is the feedback from the athlete, commonly described as the rate of perceived exertion (RPE). This single metric comprises the athletes analysis and intuition of the effort that was carried and how ready they feel for another bout of training. In recent years, more and more sports coaches have relied heavily on collected data to better assess, plan and adjust the training plans of their athletes in a systematic way. This allows for a fine balance between intense workouts, that generate stronger stimuli for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the table. 
+The evolution in performance of high level athletes is highly dependent on their skill, motivation, and discipline. With the support of a knowledgeable coach, the evolution can be substantially improved, through careful tailoring of the training regimen. One of the most relevant metrics since the beginning of structured training in sports is the feedback from the athlete, commonly described as the rate of perceived exertion (RPE). This single metric comprises the athletes analysis and intuition of the effort that was carried and how ready they feel for the next session of training. In recent years, more and more sports coaches have relied heavily on collected data to better assess, plan and adjust the training plans of their athletes in a systematic way. This allows for a fine balance between intense workouts, that generate stronger stimuli for muscle development and sport specific skills, taking the balance between effort and fatigue as the crucial ratio to respect. Too high effort, may lead to injury, too low and some gains may be left on the table \cite{Zatsiorsky2019}. 
 
-In the scope of the first project for Foundations of Machine Learning, we decided to partner with the local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to treat the data (kindly shared by Head Coach Daniel Tavares) for estimating the fatigue of several athletes. The data was curated and prepared to implement and fit several machine learning algorithms to estimate fatigue after workout.
+In the scope of the first project for Foundations of Machine Learning, the authors decided to partner with a local sports club CAPGE (Clube Associação de Pais da Gafanha da Encarnação) to process the data (kindly shared by Head Coach Daniel Tavares), to develop a general machine learning model for estimating the fatigue in swimming athletes. The data was curated and prepared to be fit through different machine learning algorithms to estimate fatigue after workout.
 
-With this approach, we aim to generalize the models for different athletes/sports, and make it available to the local club for implementation and further testing. 
+With this approach, the goal is to generalize the models for different athletes/sports, and make it available to the local club for implementation and further testing. 
 
 
 
 \section{State of the Art}
 
-Over the past decade there have been significant improvements in the field of ML applied algorithms for sports' related applications. Here we present the most relevant work in fatigue and injury prediction, which is not specifically on the sport we're assessing in our dataset, which lead to additional interpretations from the works analyzed to our own case of study. In general, the problem of class imbalance is seen throughout the literature, and different solutions are proposed, such as data gathering and preprocessing, over sampling and under sampling, with SMOTE (synthetic minority over-sampling technique) being the most commonly used approach for over sampling. As early as 2010, Gabbet and colleagues modeled the risk of injury with a monodimensional approach using logistic regression, based on athletes rate of perceived exertion, showing that even with a monovariate approach to injury prediction useful results could be attained. In recent years, several authors have focused in alternative techniques such as Logistic Regression, Random Forest, Support Vector Machine, or Convolutional Neural Network on Multivariate Timeseries (the references for these papers can be found in the paper "A Narrative Review").
+Over the past decade there have been significant improvements in the field of ML applied algorithms for sports' related applications. The most relevant work in fatigue and injury prediction is briefly discussed in the present section, which is not specifically on the sport assessed in this project, which lead to additional interpretations from the works analyzed to our own case of study. In general, the problem of class imbalance is seen throughout the literature, and different solutions are proposed, such as data gathering and preprocessing, over sampling and under sampling, with SMOTE (synthetic minority over-sampling technique) being the most commonly used approach for over sampling \cite{Rossi2022}. As early as 2010, Gabbet and colleagues modeled the risk of injury with a monodimensional approach using logistic regression, based on athletes rate of perceived exertion, showing that even with a monovariate approach to injury prediction useful results could be attained \cite{Gabbett2010}. In recent years, several authors have focused in alternative techniques such as Logistic Regression \cite{murray2017calculating}, Random Forest \cite{Vallance2020}, Support Vector Machine \cite{Carey_2018}, or Convolutional Neural Network on Multivariate Timeseries \cite{pappalardo2019explainable}.
 
-Besides model selection, feature engineering and selection is among the most debated topics. Several authors opt to include GPS data, metabolic consumption, mechanical load, RPE, detailed quantification of workloads, ratio between acute:chronice loads. Despite the multivariate imputation, data analysis often shows strong correlations between them, leading to overfitting problems (usually model independent).
+Besides model selection, feature engineering and selection is among the most debated topics. Several authors opt to include GPS data, metabolic consumption, mechanical load, RPE, detailed quantification of workloads, ratio between acute:chronice loads. Despite the multivariate imputation, data analysis often shows strong correlations between them, leading to overfitting problems (usually model independent) \cite{Rossi2022}.
 
-In the work by Carey et al. (2018) different algorithms have been implemented to predict the risk of injury in an Australian football club. The data collection lasted for three seasons, consisting of absolute and relative training load metrics, derived from GPS, accelerometer, and RPE data. The prediction models used were regularized logistic regression, generalized estimating equations, random forests, and support vector machines, with periods of 3, 6, and 21 days (these periods have been studied and verified as adequate for the case of Australian football). The periods served to calculate moving averages and exponentially weighted moving averages (EWMA). The latter allowed to account for the decay in significance of the training load the further it happened from a given day, in accordance with the work from Williams et al. (2016). From the results it was possible to verify that overfitting was very likely due to the multicollinearity between variables, which was confirmed by principal component analysis (PCA). The use of PCA with regularized logistic regression slightly improved the results.
+In the work by Carey et al. (2018) different algorithms have been implemented to predict the risk of injury in an Australian football club. The data collection lasted for three seasons, consisting of absolute and relative training load metrics, derived from GPS, accelerometer, and RPE data. The prediction models used were regularized logistic regression, generalized estimating equations, random forests, and support vector machines, with periods of 3, 6, and 21 days (these periods have been studied and verified as adequate for the case of Australian football). The periods served to calculate moving averages and exponentially weighted moving averages (EWMA). The latter allowed to account for the decay in significance of the training load the further it happened from a given day, in accordance with the work from Williams et al. (2016). From the results it was possible to verify that overfitting was very likely due to the multicollinearity between variables, which was confirmed by principal component analysis (PCA). The use of PCA with regularized logistic regression slightly improved the results \cite{Carey_2018}.
 
-More recent studies have employed ensemble algorithms, in order to take most of the different learning models selected, taking into account the need to balance the classes as is common practice for this type of problems. 
+More recent studies have employed ensemble algorithms, in order to take most of the different learning models selected, taking into account the need to balance the classes as is common practice for this type of problems \cite{lopez2018preventive}. 
 
 In summary, the integration of machine learning techniques in sports fatigue and injury prediction has evolved from simple monovariate models to complex multivariate and ensemble approaches. Addressing challenges such as class imbalance, feature selection, and multicollinearity remains crucial for developing robust predictive models applicable across different sports contexts.
 
 \section{Methodology}
 
-The methodology defined for this project consisted of three major steps: assessment and curation of the dataset, feature engineering and selection of features, followed by data normalization; training of the selected machine learning models; finalizing with model evaluation and subsequent training until optimum results were achieved. Figure~\ref{fig:methodology} illustrates the methodology used in this project.
+The methodology for this project consisted of three major steps: assessment and curation of the dataset, feature engineering and selection of features, followed by data normalization; training of the selected machine learning models; finalizing with model evaluation and subsequent training until optimum results were achieved. Figure~\ref{fig:methodology} illustrates the methodology used in this project.
 
 % TikZ styles
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=2.5cm, minimum height=1cm, text centered, draw=black, fill=red!30]
@@ -105,7 +107,7 @@ The methodology defined for this project consisted of three major steps: assessm
 
 \begin{figure}[h]
 \centering
-\resizebox{\columnwidth}{!}{ % Resize to fit column width
+\resizebox{0.75\columnwidth}{!}{ % Resize to fit column width
 \begin{tikzpicture}[node distance=1.5cm, font=\scriptsize] % Adjust font size to match document
 
 % Nodes
@@ -132,8 +134,8 @@ The methodology defined for this project consisted of three major steps: assessm
 \label{fig:methodology}
 \end{figure}
 
-The programming language used was Python, and the packages available therein, with notable mention for \texttt{scikit-learn}. After data normalization for all features \texttt{StandardScaler}, the data was separated between training and testing data (80/20, respectively), using the \texttt{train\_test\_split} function from \texttt{sklearn}. The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
-The ML models selected for the project were \texttt{LogisticRegression}, \texttt{SupportVectorMachine}, and \texttt{DecisionTreeClassifier}, where the modeling approach and hyperparameters are detailed below. For the given hyperparameters available in each model the function \texttt{RandomizedSearchCV} was used with 8-fold cross-validation to minimize the risk of overfitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
+The programming language used was Python, and the packages available therein, with notable mention for \texttt{scikit-learn} \cite{scikit-learn}. After data normalization for all features \texttt{StandardScaler}, the data was separated between training and testing data (80/20, respectively), using the \texttt{train\_test\_split} function from \texttt{sklearn}. The seeds for randomization were kept consistent across models, to ensure reproducibility, and avoid biases towards any model. 
+The ML models selected for the project were Logistic Regression (LogReg), Support Vector Machine (SVM), and Decision Tree Classifier (DTree), where the modeling approach and hyperparameters are detailed below. For the given hyperparameters available in each model the function \texttt{RandomizedSearchCV} was used with 8-fold cross-validation to minimize the risk of overfitting (the selected 8-fold CV was consistent throughout all the relevant stages, class weight estimation, training). 
 
 The metrics used to assess the different models are presented in Table \ref{evaluationmetrics}, and are consistent with those used in the literature.
 
@@ -200,7 +202,7 @@ The initial assessment evidenced the need for balancing our data. To start, we'v
     \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(0).png}
     \caption{Bar plot of the new classes, once 'Caution' and 'Risk' are combined into one.}
     \label{histClasses}
-\end{figure}
+\end{figure} %bar plot classes
 
 At this stage, we opted to under sample our dataset to the number of observations of 'Risk/Caution', and over sample the observations in 'Low/Minimal', by imputing random samples from the pool of observations of 'Low/Minimal', ending up with 213 observations per class (regardless of gender). The use of SMOTE in this scenario would give continuous classes for our features, which wouldn't yield any physical meaning.
 
@@ -211,33 +213,25 @@ To assess how the different features vary among them and in relation to the targ
     \includegraphics[width=1\linewidth]{assets/correlation_matrix.png}
     \caption{Correlation matrix for all possible features considered for the models.}
     \label{fig:correlationMatrix}
-\end{figure}
+\end{figure} % correlation matrix
 
-From the corr matrix it was possible to exclude several of the features, which was verified by how the classes are distributed across the scales for each feature. Figure \ref{classdist_feat} illustrates a proper and poor example of class distribution for the given features.
+From the correlation matrix it was possible to exclude several of the features, which was verified by how the classes are distributed across the scales for each feature. Figure \ref{distpEffort} and \ref{distStSpirit}illustrate a proper and poor example of class distribution for the given features respectively.
 
-Considering that the weights used in the coach's original estimation of fatigue were identical regardless of sex, we performed some simple models in order to decide if it would be necessary to split it. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature. 
+Considering that the weights used in the coach's original estimation of fatigue were identical regardless of sex, the authors performed some simple models in order to decide if it would be necessary to split it. We could verify that gender didn't have a significant impact in model performance, so we opted to use it as a feature. 
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[1]{\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{assets/distribution_pEffort.png}
-        \caption{Distribution of perceived effort across classes.}
-        \label{fig:subfig-a}
-    \end{subfigure}
-    
-    \vspace{0.5cm}
+    \includegraphics[width=1\linewidth]{assets/distribution_pEffort.png}
+    \caption{Correlation matrix for all possible features considered for the models.}
+    \label{distpEffort}
+\end{figure} % correlation matrix
 
-    \begin{subfigure}[2]{\linewidth}
-        \centering
-        \includegraphics[width=\linewidth]{assets/distribution_StSpirit.png}
-        \caption{Distribution of state spirit across classes.}
-        \label{fig:subfig-b}
-    \end{subfigure}
-    
-    \caption{Class distributions across different metrics: (a) perceived effort, (b) state spirit.}
-    \label{classdist_feat}
-\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{assets/distribution_StSpirit.png}
+    \caption{Correlation matrix for all possible features considered for the models.}
+    \label{distStSpirit}
+\end{figure} % correlation matrix
 
 Figure \ref{fatig_Ff} illustrates the periodicity of higher training loads and subsequent lower intensity periods. It is important to refer that once the two higher intensity classes were combined the loss of granularity of how fatigue changes throughout the season is evident.  
 \begin{figure}[H]
@@ -245,7 +239,7 @@ Figure \ref{fatig_Ff} illustrates the periodicity of higher training loads and s
     \includegraphics[width=1\linewidth]{assets/distribution_FatigInd(F_f).png}
     \caption{Daily fatigue trends for athlete F\_f.}
     \label{fatig_Ff}
-\end{figure}
+\end{figure} % fatigue periodicity
 
 In order to keep the time series nature of training, increase and decrease of training intensity, and varying fatigue with training we included exponentially weighted moving averages (EWMA) \cite{Williams17}.
 
@@ -277,9 +271,9 @@ The logistic regression model was developed by setting different ranges for the 
 \end{figure} %class weights
 
 Since the highest accuracy was achieved with class weights of 0.64 for 'Low/Minimal' and 0.97 for 'Risk/Caution', these values were selected, while the original weight for the 'Optimal' class was retained. These weight values were applied consistently across both the training and test datasets. For model optimization, the remaining hyperparameters were set to $C \approx 2.13$, the cost function was $L1$ (Lasso regularization) and the solver used was SAGA (Stochastic Average Gradient Augmented). Despite the fact that it is most commonly used for large datasets, it was the best performing kernel of those available in the initial assessment, with the advantage that it allowed for regularization. The equation for the solver is given by,
-\begin{equation}
+\begin{equation*}
 \underset{w}{\text{min}} \, \frac{1}{n} \sum_{i=1}^{n} \log\left(1 + \exp\left(-y_i X_i^\top w\right)\right) + \lambda R(w)
-\end{equation} % SAGA solver
+\end{equation*} % SAGA solver
 
 The learning curve shown in Figure \ref{lcLogReg} illustrates the relationship between the training set size and the performance of the adjusted model, providing valuable insight to assess the model's behavior in terms of overfitting or underfitting. In this case, the learning curves from the training and the cross-validation converge after the largest training set size of 450, with no signs of overfitting.
 
@@ -391,7 +385,7 @@ In this case, the learning curves  for both the training and cross-validation se
     \includegraphics[width=1\linewidth]{assets/SVM_LearningCurve.png}
     \caption{SVM model performance using learning curve representation across varying training data sizes.}
     \label{svm_learningcurve}
-\end{figure} % lc
+\end{figure} % learning curve
 
 The confusion matrices for both training (Table~\ref{svm_cm_train}) and  testing datasets (Table~\ref{svm_cm_test}) show a good performance in the classification of all classes, especially for those in the extremities (as already verified in the previous model).
 
@@ -491,11 +485,9 @@ The learning curves were assessed from Fig.~\ref{dtree_lcurve}, which shows a si
     \includegraphics[width=1\linewidth]{assets/DTREE_LearningCurve.png}
     \caption{Analysis of decision tree model performance using learning curve representation across varying training data sizes.}
     \label{dtree_lcurve}
-\end{figure} %lc
+\end{figure} %learning curve
 
 From the confusion matrices for training (Figure~\ref{dtree_cmtrain}) and testing datasets (Figura~\ref{dtree_cmtest}) it is visible that the model had some difficulty between the 'Optimal' and 'Risk/Caution' classes, but with a satisfying prediction performance for 'Low/Minimal'.
-
-The classification reports for both training (Table~\ref{cr_dtree_train}) and testing datasets (Table~\ref{cr_dtree_test}) are well aligned with the interpretation of the confusion matrices. Furthermore, the performance metrics are consistent between datasets, with no indication of potential overfitting.
 
 \begin{figure}[H]
     \centering
@@ -522,6 +514,8 @@ Risk/Caution & 0.69 & 0.63 & 0.65 & 171 \\
 \bottomrule
 \end{tabular}
 \end{table} %cr Train
+
+The classification reports for both training (Table~\ref{cr_dtree_train}) and testing datasets (Table~\ref{cr_dtree_test}) are well aligned with the interpretation of the confusion matrices. Furthermore, the performance metrics are consistent between datasets, with no indication of potential overfitting.
 
 \begin{figure}[H]
     \centering
@@ -551,9 +545,9 @@ Risk/Caution & 0.64 & 0.60 & 0.62 & 43 \\
 
 
 
-\section{analise de resultados e comp de modelos}
+\section{Discussion}
 
-\subsection{metricas ou resultados idk}
+\subsection{Performance metrics}
 
 In order to clearly visualize and compare the different models, the data collected was represented using box plots, as depicted in Figure~\ref{box_precision}, Figure~\ref{box_recall}, and Figure~\ref{box_f1score}.
 The results were obtained from 8-fold cross-validation for the whole dataset in each of the models. In each iteration the models were training in 7 folds and tested with the eighth. The performance metrics were determined for each iteration and used afterwards to evaluate the global performance of each model. Each model used the optimized hyperparameters shared above.
@@ -562,112 +556,113 @@ The results were obtained from 8-fold cross-validation for the whole dataset in 
     \centering
     \begin{subfigure}[1]{\linewidth}
         \centering
-        \includegraphics[width=1\linewidth]{assets/box_precision.png}
-        \caption{Precision scores across 8-fold cross-validation.}
+        \includegraphics[width=0.91\linewidth]{assets/box_precision.png}
+        \caption{ }
         \label{box_precision}
     \end{subfigure}
     
-    \vspace{0.5cm}
+    \vspace{0.05cm}
 
     \begin{subfigure}[1]{\linewidth}
         \centering
-        \includegraphics[width=1\linewidth]{assets/box_recall.png}
-        \caption{Recall scores across 8-fold cross-validation.}
+        \includegraphics[width=0.91\linewidth]{assets/box_recall.png}
+        \caption{ }
         \label{box_recall}
     \end{subfigure}
 
-    \vspace{0.5cm}
+    \vspace{0.05cm}
 
     \begin{subfigure}[1]{\linewidth}
         \centering
-        \includegraphics[width=1\linewidth]{assets/box_f1score.png}
-        \caption{F1-Scores across 8-fold cross-validation.}
+        \includegraphics[width=0.91\linewidth]{assets/box_f1score.png}
+        \caption{ }
         \label{box_f1score}
     \end{subfigure}
     
-    \caption{Boxplots showing the distribution of (a) precision, (b) recall and (c) f1-scores across 8-fold cross-validation for the different classes and models.}
+    \caption{Boxplots showing the distribution of (a) precision, (b) recall and (c) F1-scores across 8-fold cross-validation for the different classes and models.}
     \label{box_plots1}
 \end{figure} %precision, recall, f1
 
+The SVM model stands out with the best performance metrics for all the classes, but the analysis does not end there. The range of scores is not consistently good for any of the models (for some metrics it is narrow with few outliers, most of the times is rather wide). This is a result of the small size of the dataset, where better performing models might be seeing repeated observations from the training to the test dataset, given that the minority class had to have its observations over sampled by duplicating at random some of its observations. For these cases there might be some positive bias, but further analysis of the models would be necessary to confirm to which extent is it happening. The median F1-score for SVM is 0.84 for 'Low/Minimal' class, 0.77 for 'Risk/Caution' with a wider distribution of values, and 0.66 for 'Optimal' with an even wider range. 
 
-Boxplots, comparação entre modelos tendo em vista a disparidade de performance entre classes (particularmente para LogReg e DTree)
+The two other models show particularly low values when assessing the sensitivity score, indicating a challenging performance to accurately classify any of the classes (i.e., with a substantial amount of false negatives). The decision tree model fares particularly bad in this aspect, with a spread of possible recall scores from $0.5$ to $0.80$, and 50 \% of the values ranging from $0.55$ to $0.65$ for the high stakes class 'Risk/Caution'. However, for the 'Optimal' class none of the models performs adequately: 50 \% of the sensitivity scores for LogReg range from $0.48$ to $0.57$, showing that for a good part of the trained models would miss more than 50 \% of the true positives, performing worse than guessing at random; SVM and DTree are closer to each other, with the DTree performing slightly better for this class.
 
-atraves da analise dos resultados do precision, recall e f1-score, é possivel observar alguns padrões. nomeadamente:
+%- o modelo decision tree parece apresentar uma variância significativa nos seus resultados across all metrics, o que pode indicar que é um modelo sensível aos dados utilizados tanto no treino como no teste
+% não acrescentei esta parte porque entre o DTree e o LogReg não vejo assim uma grande diferença
 
-- o modelo SVM é o que tem sempre melhores resultaods, destancando-se pela positiva em todas as métricas;
-
-- a classe Optimal é destacada pelos seus maus resultados, revelando dificuldades na sua identificação e justificando a atribuiação dos pesos na otimizacao dos modelos.
-
-- o modelo decision tree parece apresentar uma variância significativa nos seus resultados across all metrics, o que pode indicar que é um modelo sensível aos dados utilizados tanto no treino como no teste
-
-é importante referir que estas variacoes na variacao se deve ao facto de fazer 8-folds, e nao termos muitos dados, acaba por haver um desvio padrao maior nos resultados, por serem menos dados a ser testados
-
-para alem disso , Facto de o nosso dataset ter dados repetidos para a class low/minmal, apesar de uma quantidade pouco significativa ($12.5\%$), pode ocorrer ele ser treinado em dados q também irá testar, podendo haver um enviesamento positivo nas suas metricas.
+For an overall comparison, albeit not ideal,  accuracy scores were computed in the previously described conditions. Both LogReg and DTree perform worse than SVM by more than 10 \% for the models' median accuracy, as in in Figure~\ref{box_accuracy}. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/box_accuracy.png}
     \caption{Boxplots showing the distribution of accuracy scores across 8-fold cross-validation for different models.}
     \label{box_accuracy}
-\end{figure}
+\end{figure} % accuracy
 
-de forma mais direta, através do accuracy, verifica-se mais uma vês o destaque do desemepnho do modelo SVM quando comparado aos restantes, pelo que será o melhor modelo obtido.
+Nonetheless it is important to keep in mind that accuracy is not the best performance metric for our case for several reasons: class importance, where the misclassification of 'Risk/Caution' class is not penalized (given that it is the most important class to predict accurately); no insight on class performance; random guessing cannot be assessed with no class specific performance.
 
-\subsection{representao no espaço?}
+\subsection{Decision Boundaries}
 
-em vista a auferir as razoes por detras de algumas conclusoes a partir dos resultados expressos acima, decidiu-se representar the decision boundaries for each model on principal component axes, tal como os dados de teste e respetivas classificacoes reais. é importante notar que the decision boundaries são uma aproximação, uma vez que foi aplicado o PCA retendo apenas as duas primeiras direções, pelo que alguma da variação foi perdidade na criação dos decision boundaries, sendo perdido algum desempenho do modelo na visualização gráfica.
+In order to provide a visual representation of the decision boundaries between the classes, principal component analysis (PCA) was performed for each model on the test dataset. The predicted and real classifications were plotted along the two principal components, each explaining 42.3 \% and 26.3\%. It is worth reminding that the decision boundaries are an approximation, given that once PCA was applied and only the first two PC were used, roughly 31.5 \% of the dataset's variance was lost, meaning that these visualizations are not an accurate representation of the model's performance, but rather a rough estimation.
 
-atraves da analise das seguintes figuras, pode-se verificar entao no fundo uma aproximacao do decision bondarie no espaço das componentes pricipains, revelando que categoriza as observacacoes mais a esquerda como low/minimal, as do meio como optimal, e as mais a direita como risk/caution (NS SE SE META ISSO, QUERIA FAZER UMA INTERPRETACAO MAIS GERAL DE TODOS IDK, OQ ACHAS?)
+From the Figure~\ref{pca_reglog} to \ref{pca_dtree} it is possible to observe the approximation to what the actual decision boundaries are in the space of the principal components. The decision regions are distributed by colors, for LogReg going from 'Low/Minimal' on the left, 'Optimal' center, and 'Risk/Caution' on the right. For SVM and DTree the decision boundaries are more complex, occupying more than one contiguous region.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/pca_reglog.png}
     \caption{Approximation of decision boundaries for logistic regression on principal component axes, showing true and predicted classes.}
     \label{pca_reglog}
-\end{figure}
+\end{figure} % pca logreg
 
-No caso da análise da Regressão Logística, observa-se uma maior precisão na classificação da classe Low/Minimal, o que também é confirmado pelo boxplot correspondente, que mostra uma mediana mais alta para essa classe em comparação com as outras. Isso indica que o modelo apresenta um desempenho relativamente consistente e confiável ao classificar instâncias dessa classe. 
+For LogReg the 'Low/Minimal' shows high precision with several of the true classes correctly placed in the specific region (consistent with the previous analysis and the box plot). The median was highest relative to the other classes, showing a consistent performance and reliable in classifying this class.
 
-Quanto às restantes classes, Optimal e Risk/Caution, estas não parecem ter resultados tão precisos, não havendo uma separação mais significativa entre as classes, indicando que o modelo tem dificuldade em distinguir claramente entre essas classes, especialmente quando se observa a distribuição das previsões e as misclassifications no gráfico.
+For the remaining classes it seems to be hit or miss for any given point. There's a clear challenge in distinguishing clearly how several of the observations should be classified. 
 
+From the class mapping for the SVM model (Figure~\ref{pca_svm} the use of the RBF solver is evident with more complex boundaries, and non-contiguous class regions. These regions might indicate some overfitting, given that no observations fall in these regions (but again it is important that this representation does not correspond to the space of features used during the fitting). These decision boundaries provide a more accurate classification, although the region of 'Risk/Caution' shows several observations that should be 'Optimal', evidencing how difficult it is to create a proper decision boundary that would not be an overfitting.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/pca_svm.png}
     \caption{Approximation of SVM decision boundaries on principal component axes, showing true and predicted classes.}
     \label{pca_svm}
-\end{figure}
-
-Através da análise da figura \ref{pca_svm}, é possível observar claramente o comportamento do kernel RBF no SVM, evidenciado pela delimitação mais precisa das fronteiras de decisão entre as classes. Esta delimitacao, e atendendo a classificacao real de cada observacao, leve a querer que haja uma melhor precisão na classificação das diferentes classes, capturando melhor as complexidades dos dados, o que também foi confimrado pelos resultados da figura \ref{box_precision}.
+\end{figure} % pca svm
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{assets/pca_dtree.png}
     \caption{Approximation of decision boundaries for decision tree on principal component axes, showing true and predicted classes.}
     \label{pca_dtree}
-\end{figure}
+\end{figure} % pca dtree
 
-por ultimo, a decision tree apresenta decision boundaries mais complexos, o que se pode dever as suas decisões discretas, poeque ao contrário dos outros modelos, que tentam ajustar uma superfície contínua para separar as classes, o decision tree divide o espaço de características de forma hierárquica e discreta, poeque em cada nó da árvore acontece uma divisao baseadas em condições binárias
+Lastly the DTree displays even more complex decision boundaries, trying to account for the observations that populate the 'Risk/Caution' region. This might be a result of DTree's nature, due to its discrete decisions. Unlike the previous models that need to adjust a continuous surface to separate classes, DTree splits the characteristic space in a hierarchical and discrete fashion given the binary nature of the tree's nodes.
 
-embora a dtree seja um modelo poderoso para capturar relações não-lineares, a sua representação gráfica neste contexto mostra que enfrenta dificuldades para separar claramente as observações entre as classes, com exceção da classe "Risk/Caution", que apresenta um comportamento mais favorável.
+Even though DTree is a powerful ML model to capture non-linear relations, its' graphical interpretation in this context shows the hardships faced to clearly separate observations between classes.
 
-AUMENTO DIMENSIONALIDADE E OVERFITING ?
 
-sobre todos: 
+%AUMENTO DIMENSIONALIDADE E OVERFITING ?
+% Não sei bem o que querias dizer com isto
 
-Estas análises gráficas ajudam a perceber a complexidade do problema e a dificuldade dos modelos em conseguir uma separação eficiente entre as classes. A sobreposição, especialmente da classe Optimal, destaca a necessidade de considerar ajustes nos modelos, transformações adicionais nos dados ou até modelos mais robustos que possam capturar melhor as relações subjacentes entre as classes e melhorar a precisão da classificação. (CONCLUSAO OU AQUI?)
+The graphical representations of the models allow to better perceive the complexity behind the problem and the challenges the models face in obtaining an efficient separation between classes. The overlap of classes, especially 'Optimal', shows the need to consider further adjustments to the models, different features for the raw data, or even more robust models that can better capture the relations inherent to the classes.
+
+\subsection{Literature benchmark}
+
+In the literature the vast majority of work is dedicated to predicting injury. This scenario is strikingly different from the case in study, due to its binary nature (meaning reduced complexity and the tendency to prefer metrics as the area under the curve, AUC, rather than the ones used in this project). Moreover, the studies found while writing the \textit{State of the Art} were related to contact sports (e.g., football, soccer). Nonetheless, the methodology and feature selection is somewhat comparable, despite a clear focus on relying on measurable data (i.e., GPS tracking, smart watches for sleep monitoring, among others). It is also noteworthy that the datasets available in the studies cited are considerably larger, consisting of several athletes (two to three times more than for this project's dataset) and spanning over at least two to three seasons. 
+
+In the work by Ruddy et al. focused on modeling hamstring strain injuries in Australian footballers, where with 10-fold cross-validation the AUC ranged between 0.26 and 0.91 for the best performing model (Näive Bayes) \cite{ruddy2018predictive}. In a different work by Carey et al., the authors modelled the training loads and injury likelihood in Australian footballers. The cross validation was also 10-fold, where the best performing model was regularized LogReg, achieving an AUC of 0.72. Vallance et al. explored the combination of internal and external training loads to predict non-contact injuries in soccer, where the precision and recall for random forest and extreme gradient boosting (XGB) models were close to 0.97 for one-month prediction performance \cite{Carey_2018}.
+
+Despite the different metrics employed, it is safe to assume the best performing model in this project is well within the range of those in the literature. It is important to bear in mind that the target feature for the studies cited (i.e., injury) was measured and based of real observations. In contrast, the fatigue index in the dataset of this project was estimated based on empirical knowledge of the Head Coach. This fact alone highlights the inherent limitations of the original dataset, considering that the fatigue was not actually measured, which is understandable given the complexity and multifaceted nature defining and quantifying what a fatigued state is.
 
 \section{Conclusion}
 
-SVM apresenta um desempenho superior, com maior consistência e precisão em relação às outras abordagens analisadas.
+The objective of this project was to employ different machine learning models to predict the fatigue index in elite swimming athletes, as determined from feedback from athlete's under various forms. The results of this study show that with a reduced dataset, focusing on highly correlated features to fatigue, and careful methodology design it was possible to obtain a well performing model using a support vector machine model. 
 
-The conclusion goes here.
+Finally, the model will be implemented at the local club, and further work is planned, to improve data collection and feature selection.
 
 % use section* for acknowledgment
 \section*{Acknowledgment}
 
 
-The authors would like to thank... professora petia e treinador e organizacao do clue
+The authors would like to thank Professor Petia Georgieva for the support and fruitful discussions, the Head Coach Daniel Tavares and CAPGE for the data and encouragement in developing this project.
 
 
 \section{NOTAS}
