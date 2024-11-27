@@ -26,6 +26,8 @@
 
 - `report.pdf`: Comprehensive final report detailing the methodology, results, and conclusions (high-quality version, recommended).
 
-- `report (compressed).pdf`: Compressed version of the final report with reduced file size.
+- `report (lowqual).pdf`: Compressed version of the final report with reduced file size (lower quality).
 
 - `slides.pptx`: Presentation slides summarizing the project's key points, for use in a presentation.
+
+- `slides.pdf`: PDF version of the presentation slides.
