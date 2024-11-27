@@ -24,6 +24,8 @@
 
 - `Models Results.ipynb`: Compares the performance of the logistic regression, SVM, and decision tree models.
 
+- `report` (foler): Contains the .tex and .bib files used to generate the final report.
+
 - `report.pdf`: Comprehensive final report detailing the methodology, results, and conclusions (high-quality version, recommended).
 
 - `report (lowqual).pdf`: Compressed version of the final report with reduced file size (lower quality).
