@@ -162,7 +162,7 @@ $< 40$ & Low/Minimal & Low/Minimal \\
 \end{table}
 
 
-There is a big gap between fatigue classes due to the nature of training and performing high effort workouts in specific times of the training cycle. The dataset was provided in Excel format (per athlete), from which we imported and combined the data as a pandas dataFrame to apply the different models.
+There is a large gap between fatigue classes due to the nature of training and performing high effort workouts in specific times of the training cycle. The dataset was provided in Excel format (per athlete), from which we imported and combined the data as a \textit{pandas DataFrame} to apply the different models.
 
 
 
@@ -232,7 +232,7 @@ Fig. \ref{fadig_ts} illustrates the periodicity of higher training loads and sub
 \end{figure} %precision, recall, f1
 
 
-In order to keep the time series nature of training, increase and decrease of training intensity, and varying fatigue with training, a exponentially weighted moving averages (EWMA) was included \cite{Williams17}.
+In order to keep the time series nature of training, increase and decrease of training intensity, and varying fatigue with training, an exponentially weighted moving averages (EWMA) was included \cite{Williams17}.
 
 This way memory is introduced in the models, allowing consideration of the decay in the weights of events further away from any given day. The mathematical expression used to calculate EWMA for each selected feature is,
 \begin{equation*}
@@ -315,7 +315,7 @@ The learning curve shown in Fig. \ref{lcLogReg} illustrates the relationship bet
 
 Considering the confusion matrices of the training (Fig.~\ref{cf_train_LogReg}) and test datasets (Fig.~\ref{cm_Test_LogReg}), it is possible to learn how well the model attributes true and false positives, and how they are distributed. For this particular model it is visible how similar they are, and how much better the prediction performance is for the classes in the extremities ('Low/Minimal' and 'Risk/Caution'), regardless of the weight attributed to the 'Optimal' class (even though a marginal improvement was observed compared to the initial weightless model).
 
-The classification report provides a more straight forward comparison between the training (Table~\ref{crTrainLogReg}) and the test datasets (Table~\ref{crTestLogREg}), while showing class specific the performance metrics, further confirming the interpretation of the confusion matrix. Both classification reports present similar values, which is a good indicator that the model is properly fitted. As previously mentioned, the performance metrics are worse for 'Optimal' when compared to the remaining classes.
+The classification report provides a more straightforward comparison between the training (Table~\ref{crTrainLogReg}) and the test datasets (Table~\ref{crTestLogREg}), while showing class specific the performance metrics, further confirming the interpretation of the confusion matrix. Both classification reports present similar values, which is a good indicator that the model is properly fitted. As previously mentioned, the performance metrics are worse for 'Optimal' when compared to the remaining classes.
 
 \begin{figure}[H]
     \centering
@@ -418,7 +418,7 @@ In this case, the learning curves  for both the training and cross-validation se
     \label{svm_learningcurve}
 \end{figure} % learning curve
 
-The confusion matrices for both training (Fig.~\ref{svm_cm_train}) and testing datasets (Fig.~\ref{svm_cm_test}) show a good performance in the classification of all classes, especially for those in the extremities (as already verified in the previous model).
+The confusion matrices for both training (Fig.~\ref{svm_cm_train}) and testing datasets (Fig.~\ref{svm_cm_test}) show a good performance in the classification of all classes, especially for those in the extremities (as verified in the previous model).
 
 The classification reports of the training (Table~\ref{crTrainSVM}) and testing datasets (Table~\ref{crTestSVM}) show consistent results among them. However, it is noteworthy the low value of Recall for the 'Optimal' class in both cases, indicating several misclassification occurrences (observations that should be 'Optimal' but were classified as one of the other classes). 
 
@@ -509,7 +509,7 @@ The optimized DTree resulted in the structure as seen in Fig.~\ref{dtree_tree}.
 
 The decision paths are characterized by the certainty in each node, highlighted by the color saturation for each of the classes ('Low/Minimal', 'Optimal', 'Risk/Caution'). The diminished proportion of end nodes with higher color saturation for 'Optimal' when comparing with the other classes is noteworthy, and consistent with the observations for the remaining models.
 
-The learning curves were assessed from Fig.~\ref{dtree_lcurve}, which shows a significant improvement up until a training set size of 250, but with there's no significant gain with increasing set sizes, with the learning curves even slightly diverging at 450 samples.
+The learning curves were assessed from Fig.~\ref{dtree_lcurve}, which shows a significant improvement up until a training set size of 250, but there's no significant gain with increasing set sizes, with the learning curves even slightly diverging at 450 samples.
 
 \begin{figure}[H]
     \centering
@@ -616,7 +616,7 @@ The results were obtained from 8-fold cross-validation for the whole dataset in 
     \label{box_plots1}
 \end{figure} %precision, recall, f1
 
-The SVM model stands out with the best performance metrics for all the classes, but the analysis does not end there. The range of scores is not consistently good for any of the models (for some metrics it is narrow with few outliers, most of the times is rather wide). This is a result of the small size of the dataset, where better performing models might be seeing repeated observations from the training to the test dataset, given that the minority class had to have its observations over sampled by duplicating at random some of its observations. For these cases there might be some positive bias, but further analysis of the models would be necessary to confirm to which extent is it happening. The median F1-score for SVM is 0.84 for 'Low/Minimal' class, 0.77 for 'Risk/Caution' with a wider distribution of values, and 0.66 for 'Optimal' with an even wider range. 
+The SVM model stands out with the best performance metrics for all the classes, but the analysis does not end there. The range of scores is not consistently good for any of the models (for some metrics it is narrow with few outliers, most of the times is rather wide). This is a result of the small size of the dataset, where better performing models might be seeing repeated observations from the training to the test dataset, given that the minority class had to have its observations over sampled by duplicating at random some of its observations. For these cases there might be some positive bias, but further analysis of the models would be necessary to confirm to what extent it is happening. The median F1-score for SVM is 0.84 for 'Low/Minimal' class, 0.77 for 'Risk/Caution' with a wider distribution of values, and 0.66 for 'Optimal' with an even wider range. 
 
 The two other models show particularly low values when assessing the sensitivity score, indicating a challenging performance to accurately classify any of the classes (i.e., with a substantial amount of false negatives). The decision tree model fares particularly bad in this aspect, with a spread of possible recall scores from $0.5$ to $0.80$, and 50\% of the values ranging from $0.55$ to $0.65$ for the high stakes class 'Risk/Caution'. However, for the 'Optimal' class none of the models performs adequately: 50\% of the sensitivity scores for LogReg range from $0.48$ to $0.57$, showing that for a good part of the trained models would miss more than 50\% of the true positives, performing worse than guessing at random; SVM and DTree are closer to each other, with the DTree performing slightly better for this class.
 
